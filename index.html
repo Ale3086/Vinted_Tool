@@ -6,10 +6,19 @@
   <title>ListAI — Crea Annunci Vinted</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
+
+<!-- Scroll progress bar -->
+<div id="scroll-progress"></div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast" style="display:none">
+  <div class="toast-dot"></div>
+  <span id="toast-msg"></span>
+</div>
 
 <!-- Modal salvataggio chiave -->
 <div class="modal-o" id="saveModal">
@@ -17,7 +26,7 @@
     <h3>💾 Salvare la chiave API?</h3>
     <p>Vuoi memorizzare la tua OpenRouter API Key per <strong>1 mese</strong>? Verrà inserita automaticamente ad ogni visita. Resta solo nel tuo browser.</p>
     <div class="mbtns">
-      <button class="mbtn y" onclick="saveKey(true)">✅ Sì, salva per 1 mese</button>
+      <button class="mbtn y" onclick="saveKey(true)">✅ Sì, salva</button>
       <button class="mbtn n" onclick="saveKey(false)">No, grazie</button>
     </div>
   </div>
@@ -36,17 +45,25 @@
 
 <main>
   <div class="hero">
-    <h1>Annunci Vinted <em>perfetti</em><br>in pochi secondi</h1>
+    <p class="hero-tagline">// analisi prezzi avanzata con AI</p>
+    <h1>Annunci Vinted <span class="gradient-text">perfetti</span><br>in pochi secondi</h1>
     <p>
-      Abbigliamento, elettronica, casa, sport e molto altro. Carica le foto e ottieni titolo SEO, descrizione multilingue e analisi
-      prezzi professionale. Il sito funziona tramite API a bassissimo prezzo, meno di un centesimo per richiesta. C'è una lista di
-      modelli ottimizzati per questo scopo, ma si è liberi di scegliere qualsiasi modello si voglia.
+      Carica le foto e ottieni titolo SEO, descrizione multilingue e
+      analisi prezzi professionale con <strong>breakdown fattori stagionali, brand e mercato</strong>.
+      Meno di un centesimo per richiesta.
     </p>
   </div>
 
   <!-- API Key + Modello -->
-  <div class="card" style="display:flex;flex-direction:column;gap:.82rem">
-    <div class="api-row">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-header-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+      </div>
+      <div class="card-title">Configurazione API</div>
+    </div>
+
+    <div class="api-row" style="margin-bottom:.85rem">
       <span class="albl">API Key</span>
       <div class="aiw">
         <input class="ainp" type="password" id="apiKey" placeholder="Incolla la tua OpenRouter API Key…" autocomplete="off"/>
@@ -59,11 +76,11 @@
       <span class="ahint">
         Gratuita su <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys ↗</a>
         &nbsp;·&nbsp;
-        <a href="guide.html">📖 Guida alla registrazione</a>
+        <a href="guide.html">📖 Guida</a>
       </span>
     </div>
 
-    <div class="api-row">
+    <div class="api-row" style="margin-bottom:.85rem">
       <span class="albl">Modello</span>
       <div style="flex:1;min-width:190px;display:flex;flex-direction:column;gap:.38rem">
         <select class="msel" id="modelSelect" onchange="onModelChange()">
@@ -71,7 +88,7 @@
             <option value="google/gemini-2.5-flash" selected>Gemini 2.5 Flash — ~€0.001/analisi ⭐</option>
           </optgroup>
           <optgroup label="✨ Gemini">
-            <option value="google/gemini-3.1-flash-lite">Gemini 3.1 Flash Lite — ~€0.0004/analisi 🔥 Nuovo</option>
+            <option value="google/gemini-3.1-flash-lite">Gemini 3.1 Flash Lite — ~€0.0004/analisi 🔥</option>
             <option value="google/gemini-3-flash-preview">Gemini 3 Flash — ~€0.001/analisi</option>
             <option value="google/gemini-3.1-pro-preview">Gemini 3.1 Pro — ~€0.008/analisi</option>
             <option value="google/gemini-2.5-flash-lite">Gemini 2.5 Flash Lite — ~€0.0002/analisi</option>
@@ -85,12 +102,11 @@
             <option value="custom">✏️ Inserisci il tuo modello…</option>
           </optgroup>
         </select>
-        <input class="ainp-plain" type="text" id="customModel" placeholder="es. google/gemini-2.5-flash, meta-llama/llama-3.3-70b-instruct…" style="display:none" autocomplete="off"/>
+        <input class="ainp-plain" type="text" id="customModel" placeholder="es. google/gemini-2.5-flash…" style="display:none" autocomplete="off"/>
       </div>
-      <span class="ahint" style="color:var(--ac)">↑ Scegli in base alle tue preferenze</span>
+      <span class="ahint" style="color:var(--color-accent)">↑ Scegli il modello</span>
     </div>
 
-    <!-- Lingue -->
     <div class="api-row" style="align-items:flex-start">
       <span class="albl" style="padding-top:.35rem">Lingue</span>
       <div style="flex:1;min-width:190px;display:flex;flex-direction:column;gap:.48rem">
@@ -115,10 +131,16 @@
     </div>
   </div>
 
-  <!-- Categoria + Condizione + Taglia/Sottocat + Info extra -->
+  <!-- Categoria + Condizione + Taglia + Info extra -->
   <div class="card">
+    <div class="card-header">
+      <div class="card-header-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      </div>
+      <div class="card-title">Dettagli Articolo</div>
+    </div>
 
-    <!-- Categoria articolo -->
+    <!-- Categoria -->
     <div class="ig" style="margin-bottom:.85rem">
       <label>Categoria articolo</label>
       <select id="categoria" onchange="onCategoriaChange()">
@@ -133,7 +155,6 @@
         <option value="intrattenimento">🎬 Intrattenimento</option>
         <option value="hobby">🎨 Hobby e Collezionismo</option>
       </select>
-      <!-- Sub-menu Bambini -->
       <div class="bambini-sub" id="bambiniSub">
         <div class="ig" style="margin-top:.45rem">
           <label>Tipo articolo bambini</label>
@@ -146,19 +167,17 @@
     </div>
 
     <div class="egrid">
-      <!-- Condizione -->
       <div class="ig">
         <label>Condizione articolo</label>
         <select id="condizione">
           <option value="NWT">🏷️ Nuovo con cartellino</option>
           <option value="NWOT">✨ Nuovo senza cartellino</option>
-          <option value="EUC">⭐ Usato — condizioni ottime</option>
-          <option value="GUC">👍 Usato — condizioni buone</option>
+          <option value="EUC">⭐ Usato — ottime condizioni</option>
+          <option value="GUC">👍 Usato — buone condizioni</option>
           <option value="POOR">⚠️ Usato — condizioni pessime</option>
         </select>
       </div>
 
-      <!-- Taglia (vestiti) -->
       <div class="ig" id="blockTaglia">
         <label>Taglia</label>
         <select id="tagliaTipo" onchange="onT()">
@@ -223,24 +242,74 @@
         </div>
       </div>
 
-      <!-- Sottocategoria oggetto (non-vestiti) -->
       <div class="ig" id="blockSottocat" style="display:none">
         <label>Sottocategoria oggetto</label>
-        <input type="text" id="sottocatVal" placeholder="es. iPhone, Lampada, Libro, Racchetta… (lascia vuoto se non sai)"/>
-        <span class="hint">Opzionale — il modello lo identifica dalle foto</span>
+        <input type="text" id="sottocatVal" placeholder="es. iPhone, Lampada, Libro… (opzionale)"/>
+        <span class="hint">Il modello lo identifica dalle foto</span>
       </div>
     </div>
 
+    <!-- Nuovi campi FASE 2 -->
+    <div class="section-divider" style="margin-top:1rem">Campi aggiuntivi (opzionali)</div>
+
+    <div class="egrid" style="margin-bottom:.85rem">
+      <div class="ig">
+        <label>Colore</label>
+        <input type="text" id="colorField" placeholder="es. nero, rosso bordeaux, teal…"/>
+      </div>
+      <div class="ig">
+        <label>Materiale</label>
+        <input type="text" id="materialField" placeholder="es. 100% cotone, pelle, cashmere…"/>
+      </div>
+      <div class="ig">
+        <label>Anno acquisto</label>
+        <select id="purchasedYear">
+          <option value="">Non specificato</option>
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+          <option value="2022">2022</option>
+          <option value="2021">2021</option>
+          <option value="prima">Prima del 2021</option>
+        </select>
+      </div>
+      <div class="ig">
+        <label>Spedizione</label>
+        <select id="shippingIncluded">
+          <option value="no">Non inclusa nel prezzo</option>
+          <option value="yes">Inclusa nel prezzo</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="checkbox-group" style="flex-direction:row;flex-wrap:wrap;gap:.75rem 1.5rem">
+      <label class="checkbox-item">
+        <input type="checkbox" id="hasTags"/>
+        <span>Ha ancora il cartellino originale</span>
+      </label>
+      <label class="checkbox-item">
+        <input type="checkbox" id="hasBox"/>
+        <span>Ha scatola / imballo originale</span>
+      </label>
+    </div>
+
     <!-- Info aggiuntive libere -->
-    <div class="ig" style="margin-top:.95rem">
+    <div class="ig" style="margin-top:var(--space-4)">
       <label>ℹ️ Informazioni aggiuntive <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.68rem">(opzionale)</span></label>
-      <textarea id="extraInfo" placeholder="Es: acquistato a Londra nel 2022, piccolo difetto sul bottone, mai lavato in lavatrice, colore esatto verde militare, modello limited edition, accessori inclusi…"></textarea>
-      <span class="hint">Il modello verificherà, completerà e integrerà queste info nell'annuncio</span>
+      <textarea id="extraInfo" placeholder="Es: acquistato a Londra nel 2022, piccolo difetto sul bottone, mai lavato in lavatrice, colore esatto verde militare, limited edition, accessori inclusi…"></textarea>
+      <span class="hint">Il modello verificherà e integrerà queste info nell'annuncio</span>
     </div>
   </div>
 
   <!-- Upload foto -->
   <div class="card">
+    <div class="card-header">
+      <div class="card-header-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </div>
+      <div class="card-title">Foto Prodotto</div>
+    </div>
+
     <div class="drop" id="dz">
       <input type="file" id="fi" accept=".jpg,.jpeg,.png" multiple/>
       <svg class="drop-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -263,12 +332,14 @@
   <!-- Results -->
   <div id="results">
     <div class="rh">
-      <svg width="18" height="18" fill="none" stroke="var(--ac)" stroke-width="2" viewBox="0 0 24 24">
+      <svg width="18" height="18" fill="none" stroke="var(--color-accent)" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
       </svg>
       <h2>Risultati Analisi</h2>
+      <div style="margin-left:auto" id="seasonBadgeWrap"></div>
     </div>
 
+    <!-- Titolo SEO -->
     <div class="card">
       <div class="clbl">
         <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 7h10M7 12h7"/></svg>
@@ -279,6 +350,7 @@
       <div class="tlen" id="titleLen"></div>
     </div>
 
+    <!-- Descrizioni -->
     <div class="dgrid">
       <div class="dc">
         <div class="clbl">🌍 Completo (tutte le lingue + hashtag)
@@ -290,7 +362,88 @@
       <div style="display:flex;flex-direction:column;gap:.95rem" id="descLangCards"></div>
     </div>
 
-    <div class="pgrd3">
+    <!-- ══ NUOVO: Price Slider visivo ══ -->
+    <div class="price-slider-wrap" id="priceSliderWrap" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-6)">
+        <div class="price-slider-title">💰 Prezzo Consigliato</div>
+        <div class="confidence-badge" id="confidenceBadge" style="display:none">
+          <svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <span id="confidenceText">—</span>
+        </div>
+      </div>
+
+      <div class="price-tier-row">
+        <div class="price-tier tier-fast">
+          <div class="price-tier-label">⚡ Rapido</div>
+          <div class="price-tier-value" id="ptFast">—</div>
+          <div class="price-tier-sub">Vendi in 24-48h</div>
+        </div>
+        <div class="price-tier tier-ideal">
+          <div class="price-tier-label">🎯 Ideale</div>
+          <div class="price-tier-value" id="ptIdeal">—</div>
+          <div class="price-tier-sub">Valore ottimale</div>
+        </div>
+        <div class="price-tier tier-max">
+          <div class="price-tier-label">💎 Massimo</div>
+          <div class="price-tier-value" id="ptMax">—</div>
+          <div class="price-tier-sub">Con margine trattativa</div>
+        </div>
+      </div>
+
+      <div class="price-bar-container">
+        <div class="price-bar-track">
+          <div class="price-bar-fill" id="priceBarFill" style="width:0%"></div>
+        </div>
+        <div class="price-bar-dots">
+          <span class="price-bar-dot-label" id="barLabelFast">Rapido</span>
+          <span class="price-bar-dot-label" id="barLabelIdeal">Ideale</span>
+          <span class="price-bar-dot-label" id="barLabelMax">Max</span>
+        </div>
+      </div>
+
+      <div class="velocity-row" id="velocityRow" style="display:none">
+        <div class="velocity-item">
+          <div class="velocity-label" style="color:var(--color-warning)">⚡ Al prezzo rapido</div>
+          <div class="velocity-price" id="velFastPrice">—</div>
+          <div class="velocity-time" id="velFastTime">—</div>
+        </div>
+        <div class="velocity-item">
+          <div class="velocity-label" style="color:var(--color-accent)">🎯 Al prezzo ideale</div>
+          <div class="velocity-price" id="velIdealPrice">—</div>
+          <div class="velocity-time" id="velIdealTime">—</div>
+        </div>
+        <div class="velocity-item">
+          <div class="velocity-label" style="color:#a78bfa">💎 Al prezzo massimo</div>
+          <div class="velocity-price" id="velMaxPrice">—</div>
+          <div class="velocity-time" id="velMaxTime">—</div>
+        </div>
+      </div>
+
+      <div id="timingBanner" style="display:none" class="timing-banner"></div>
+    </div>
+
+    <!-- ══ Breakdown fattori ══ -->
+    <div class="breakdown-wrap" id="breakdownWrap" style="display:none">
+      <div class="breakdown-title">📊 Breakdown Fattori Prezzo</div>
+      <div id="factorsList"></div>
+    </div>
+
+    <!-- ══ Consigli annuncio ══ -->
+    <div class="card" id="consigliCard" style="display:none">
+      <div class="clbl">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        Consigli per l'annuncio
+      </div>
+      <ul class="consigli-list" id="consigliList"></ul>
+    </div>
+
+    <!-- ══ Warnings ══ -->
+    <div id="warningsWrap" style="display:none">
+      <div class="warning-list" id="warningsList"></div>
+    </div>
+
+    <!-- Prezzi legacy (mantenuti) -->
+    <div class="pgrd3" id="legacyPrices" style="display:none">
       <div class="pc">
         <div class="pclbl">🏪 Prezzo in negozio (nuovo)</div>
         <div class="prow"><span class="pl">Minimo mercato</span><span class="pv" id="pNMin">—</span></div>
@@ -302,17 +455,19 @@
         <div class="prow hi"><span class="pl">Massimo consigliato</span><span class="pv" id="pVMax">—</span></div>
       </div>
       <div class="pc nego-card">
-        <div class="pclbl">💬 Da pubblicare (con margine ~15%)</div>
+        <div class="pclbl">💬 Da pubblicare (~+15%)</div>
         <div class="prow nego"><span class="pl">Minimo da pubblicare</span><span class="pv" id="pCMin">—</span></div>
         <div class="prow nego"><span class="pl">Massimo da pubblicare</span><span class="pv" id="pCMax">—</span></div>
         <div class="nego-hint">Pubblica a questi prezzi: dopo trattativa arrivi al valore equo</div>
       </div>
     </div>
+
     <div class="pnote">
       <div class="pnlbl">📊 Analisi di mercato</div>
       <div id="priceNote">—</div>
     </div>
 
+    <!-- Scheda prodotto -->
     <div class="card">
       <div class="clbl">
         <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
@@ -322,7 +477,7 @@
     </div>
   </div>
 
-  <!-- ── Storico analisi ── -->
+  <!-- Storico analisi -->
   <div class="hist-wrap" id="histWrap">
     <div class="hist-header" onclick="toggleHistory()">
       <div class="hist-title">

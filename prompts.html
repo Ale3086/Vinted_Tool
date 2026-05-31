@@ -6,10 +6,12 @@
   <title>ListAI — Prompt Utili Vinted</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
+
+<div id="scroll-progress"></div>
 
 <header>
   <div class="hi">
@@ -24,11 +26,11 @@
 
 <main>
   <div class="hero">
-    <h1>Database di <em>Prompt</em><br>per Vinted</h1>
+    <p class="hero-tagline">// prompt pronti all'uso</p>
+    <h1>Database di <span class="gradient-text">Prompt</span><br>per Vinted</h1>
     <p>
-      Prompt pronti da usare per ottimizzare la creazionee di annunci, negoziare prezzi e verificarne guadagni e rispondere agli acquirenti 
-      in modo professionale per qualsiasi problema. Aggiungi i tuoi prompt personali se vuoi, salvati nel browser ad ogni visita. Per ogni prompt
-      consiglio di caricare varie immagini del prodotto/situazione e successivamente incollare il prompt.
+      Prompt pronti da usare per ottimizzare annunci, negoziare prezzi e rispondere agli acquirenti.
+      Aggiungi i tuoi prompt personali, salvati nel browser ad ogni visita.
     </p>
   </div>
 
@@ -398,24 +400,21 @@ CONTESTO ANNUNCIO (opzionale ma consigliato):
 ANALISI DEL MESSAGGIO:
 - Tipo di richiesta: offerta / domanda info / richiesta foto / trattativa / altro
 - Tono dell'acquirente: serio / curioso / aggressivo / indeciso
-- Intenzione di acquisto stimata: Alta / Media / Bassa
-- Leva principale che sta usando (es. prezzo, urgenza, difetti)
+- Probabilità di acquisto: Alta / Media / Bassa
 
-STRATEGIA RISPOSTA CONSIGLIATA:
-- Obiettivo: chiudere la vendita / mantenere il prezzo / raccogliere più info
-- Tono consigliato e perché
-- Cosa NON dire in questa risposta
+3 RISPOSTE PRONTE (copiaincolla):
 
-RISPOSTA PRONTA — VERSIONE 1 (mantieni il prezzo):
-[testo completo, tono fermo ma cordiale, max 3 righe]
+RISPOSTA 1 — Mantieni il prezzo:
+[tono fermo ma cortese, spiega il valore]
 
-RISPOSTA PRONTA — VERSIONE 2 (apri alla trattativa):
-[testo completo, cedi leggermente senza svalutare l'articolo, max 3 righe]
+RISPOSTA 2 — Apri alla trattativa:
+[disponibile ma non disperato, suggerisci un contro-prezzo]
 
-RISPOSTA PRONTA — VERSIONE 3 (bundle/alternativa):
-[proponi uno sconto solo se compra anche un altro tuo articolo, o offri spedizione inclusa invece dello sconto sul prezzo]
+RISPOSTA 3 — Proponi alternativa:
+[bundle, sconto su spese spedizione, o offerta tempo limitato]
 
-Indica quale delle 3 versioni consigli in questo caso specifico e perché.</div>
+RACCOMANDAZIONE:
+Quale risposta usare in questo caso specifico e perché.</div>
       </div>
       <div class="pcard-foot">
         <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
@@ -426,43 +425,38 @@ Indica quale delle 3 versioni consigli in questo caso specifico e perché.</div>
     <div class="prompt-card" data-cat="risposta">
       <div class="pcard-top">
         <span class="prompt-tag">💬 Risposta</span>
-        <div class="prompt-title">Gestione Recensione Negativa</div>
-        <p class="prompt-preview">Ricevuto un feedback negativo? Analizza la recensione e genera 3 risposte professionali: mea culpa, tutela reputazione o contestazione — con raccomandazione su quale usare.</p>
+        <div class="prompt-title">Gestione Problemi Post-Vendita</div>
+        <p class="prompt-preview">Risposte professionali per reclami, articoli non conformi, richieste di rimborso e dispute — tutela i tuoi diritti mantenendo un profilo positivo.</p>
       </div>
       <div class="prompt-body-wrap" hidden>
-        <div class="prompt-body">Sei un esperto di gestione della reputazione su marketplace second-hand. Ho ricevuto una recensione negativa su Vinted e ho bisogno di rispondere in modo professionale, costruttivo e che tuteli la mia reputazione agli occhi dei futuri acquirenti.
+        <div class="prompt-body">Sei un esperto di diritto dei consumatori e gestione controversie su marketplace. Ho un problema post-vendita su Vinted e ho bisogno di risposte professionali.
 
-RECENSIONE RICEVUTA:
----
-[incolla qui il testo della recensione negativa]
----
+TIPO DI PROBLEMA:
+[ ] L'acquirente dice che l'articolo non corrisponde alla descrizione
+[ ] L'acquirente vuole il rimborso senza motivo valido
+[ ] Il pacco è arrivato danneggiato
+[ ] L'acquirente non rilascia la conferma ricezione
+[ ] Altro: [descrivi]
 
-CONTESTO (più info dai, meglio rispondo):
-- Articolo venduto: [descrivi]
+DETTAGLI CASO:
+- Cosa hai venduto: [descrivi]
 - Prezzo: €X
-- Spedizione: [corriere usato, giorni impiegati]
-- Problemi effettivamente accaduti: [sii onesto qui]
-- La recensione è: giusta / parzialmente giusta / ingiusta / falsa o ritorsiva
+- Data vendita: [X giorni fa]
+- Stato in cui hai spedito: [descrivi onestamente]
+- Foto che hai della condizione pre-spedizione: sì / no
+- Messaggi già scambiati: [riassumi]
 
-ANALISI DELLA RECENSIONE:
-- Motivo principale del malcontento
-- Quanto impatta sulla tua credibilità (1-5): X/5
-- È contestabile su Vinted? Sì/No + perché
-- Rischio che scoraggi futuri acquirenti: Alto / Medio / Basso
+RISPOSTA PROFESSIONALE:
+Genera una risposta all'acquirente che:
+1. Sia cortese ma ferma
+2. Citi le policy Vinted corrette
+3. Proponga una soluzione equa
+4. Tuteli i tuoi diritti come venditore
 
-RISPOSTA OTTIMIZZATA:
-Criteri: max 4 righe, tono sempre professionale, non difensivo, non aggressivo. Chi legge deve pensare "questo venditore è serio".
-
-VERSIONE A — Recensione giusta (mea culpa parziale):
-[riconosci il disagio senza ammettere colpe eccessive, mostra che hai imparato, offri soluzione se ancora possibile]
-
-VERSIONE B — Recensione ingiusta/esagerata (tutela reputazione):
-[contesta i fatti con educazione, porta la tua versione, invita alla verifica oggettiva, non attaccare mai personalmente]
-
-VERSIONE C — Recensione falsa o ritorsiva:
-[tono neutro, esponi i fatti verificabili, segnala l'anomalia senza perdere la calma, indirizza i lettori a valutare le prove]
-
-Indica quale versione si adatta al caso e suggerisci se conviene contattare il supporto Vinted per contestare formalmente.</div>
+COME PROCEDERE CON VINTED:
+- Quando aprire una disputa
+- Cosa allegare alla segnalazione
+- Tempistiche di risposta del supporto</div>
       </div>
       <div class="pcard-foot">
         <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
@@ -474,38 +468,72 @@ Indica quale versione si adatta al caso e suggerisci se conviene contattare il s
     <div class="prompt-card" data-cat="seo">
       <div class="pcard-top">
         <span class="prompt-tag">🔍 SEO</span>
-        <div class="prompt-title">10 Hashtag SEO Massimizzati</div>
-        <p class="prompt-preview">Genera 10 hashtag su 3 livelli strategici (alto volume, medio volume, nicchia ad alta conversione) con motivazione e sequenza pronta da incollare nell'annuncio.</p>
+        <div class="prompt-title">Audit SEO Annuncio Esistente</div>
+        <p class="prompt-preview">Analizza un tuo annuncio attivo e ottieni un punteggio SEO, i punti deboli e una versione migliorata di titolo, descrizione e hashtag.</p>
       </div>
       <div class="prompt-body-wrap" hidden>
-        <div class="prompt-body">Sei un esperto SEO specializzato in Vinted Italia con conoscenza approfondita degli algoritmi di ricerca dei marketplace second-hand europei. Il tuo obiettivo è generare gli hashtag con il massimo volume di ricerca e la minima concorrenza per questo articolo.
+        <div class="prompt-body">Sei un esperto SEO specializzato nell'ottimizzazione di annunci su Vinted Italia. Analizza questo annuncio e dimmi come migliorarlo per aumentare le visualizzazioni.
 
-ARTICOLO:
-[descrivi l'articolo OPPURE allega la foto — Gemini analizzerà]
+MIO ANNUNCIO ATTUALE:
+TITOLO: [incolla]
+DESCRIZIONE: [incolla]
+HASHTAG: [incolla]
+CATEGORIA: [es. Donna > Tops > T-shirt]
 
-GENERA ESATTAMENTE 10 HASHTAG seguendo questa strategia:
+AUDIT SEO VINTED:
+Valuta ogni elemento con un punteggio 1-10 e spiega il perché:
+- Titolo: X/10 — [punti forti e deboli]
+- Keyword principali: presenti / mancanti / sbagliate
+- Descrizione: X/10 — [lunghezza, struttura, leggibilità, keyword density]
+- Hashtag: X/10 — [rilevanza, mix lingue, volume di ricerca stimato]
+- Categoria: corretta / da cambiare in [X]
 
-🔴 HASHTAG AD ALTO VOLUME (3) — i più cercati in assoluto:
-Termini generici e brand molto noti. Alta concorrenza ma massima visibilità. Es: #nike #vintage #zara
+PUNTEGGIO GLOBALE: X/10
 
-🟡 HASHTAG A MEDIO VOLUME (4) — il cuore della strategia:
-Categoria specifica, stile, materiale, stagione. Buon bilanciamento tra ricerche e concorrenza. Es: #felpadonna #oversize #cotone
+TOP 3 MIGLIORAMENTI URGENTI:
+1. [azione specifica con impatto stimato]
+2. [azione specifica con impatto stimato]
+3. [azione specifica con impatto stimato]
 
-🟢 HASHTAG DI NICCHIA (3) — bassa concorrenza, alta conversione:
-Termini molto specifici cercati da chi sa già cosa vuole. Chi arriva qui è pronto ad acquistare. Es: #90sgrunge #capsulewardrobe
+VERSIONE OTTIMIZZATA:
+TITOLO: [max 50 char, migliorato]
+DESCRIZIONE: [400 char, ristrutturata]
+HASHTAG: [7 nuovi, ottimizzati]</div>
+      </div>
+      <div class="pcard-foot">
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
+        <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
+      </div>
+    </div>
 
-OUTPUT:
-Per ogni hashtag indica:
-- Il tag: #parola
-- Lingua: 🇮🇹 / 🇬🇧
-- Stima volume ricerche: Alto / Medio / Basso
-- Perché lo hai scelto per questo specifico articolo
+    <div class="prompt-card" data-cat="seo">
+      <div class="pcard-top">
+        <span class="prompt-tag">🔍 SEO</span>
+        <div class="prompt-title">Keyword Research per Categoria Specifica</div>
+        <p class="prompt-preview">Trova le 20 keyword più cercate su Vinted per una categoria prodotto specifica, con volume stimato e consigli su come usarle nel titolo.</p>
+      </div>
+      <div class="prompt-body-wrap" hidden>
+        <div class="prompt-body">Sei un esperto di search behavior su Vinted Italia. Analizza le keyword migliori per questa categoria di prodotti.
 
-SEQUENZA CONSIGLIATA (come incollarli nell'annuncio):
-[tutti e 10 in ordine strategico, pronti da copiare]
+CATEGORIA: [es. "giacche invernali donna", "sneakers uomo", "borse pelle"]
+BRAND PRINCIPALE: [se applicabile]
+FASCIA DI PREZZO TARGET: €X-€Y
 
-HASHTAG BONUS — DA EVITARE:
-Indica 3 hashtag che sembrerebbero ovvi ma abbassano la visibilità per questo articolo specifico, e spiega perché.</div>
+TOP 20 KEYWORD SU VINTED IT:
+Per ognuna indica:
+- La keyword esatta (come la digitano gli utenti)
+- Volume di ricerca stimato: Alto / Medio / Basso
+- Competizione: Alta / Media / Bassa
+- Dove usarla: Titolo / Descrizione / Hashtag
+
+KEYWORD LONG-TAIL (nicchia, meno concorrenza):
+5 keyword specifiche con alto intento di acquisto
+
+KEYWORD DA EVITARE:
+Termini troppo generici o con bassa conversione per questa categoria
+
+STRUTTURA TITOLO OTTIMALE:
+Template con le keyword nell'ordine giusto per questa categoria specifica</div>
       </div>
       <div class="pcard-foot">
         <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
@@ -517,51 +545,70 @@ Indica 3 hashtag che sembrerebbero ovvi ma abbassano la visibilità per questo a
     <div class="prompt-card" data-cat="spedizione">
       <div class="pcard-top">
         <span class="prompt-tag">📦 Spedizione</span>
-        <div class="prompt-title">Gestione Problema / Ritardo Spedizione</div>
-        <p class="prompt-preview">4 messaggi pronti per ogni scenario critico: aggiornamento proattivo, acquirente preoccupato, arrabbiato o pacco smarrito — con lista di frasi da non dire mai.</p>
+        <div class="prompt-title">Calcolo Costo Spedizione Ottimale</div>
+        <p class="prompt-preview">Calcola il corriere più economico per il tuo articolo considerando peso, dimensioni e destinazione — con confronto prezzi e consiglio su come includere la spedizione nel prezzo.</p>
       </div>
       <div class="prompt-body-wrap" hidden>
-        <div class="prompt-body">Sei un esperto di customer care per Vinted e marketplace second-hand. Ho un problema con una spedizione e ho bisogno di comunicare con l'acquirente nel modo più professionale possibile per evitare una recensione negativa e mantenere la fiducia.
+        <div class="prompt-body">Sei un esperto di logistica e spedizioni per e-commerce e marketplace italiani. Aiutami a trovare la soluzione di spedizione più conveniente per questo articolo su Vinted.
 
-SITUAZIONE:
----
-[descrivi il problema: ritardo, pacco smarrito, danneggiato in transito, spedito al corriere sbagliato, indirizzo errato, pacco fermo al deposito, altro]
----
+DETTAGLI ARTICOLO:
+- Tipo: [es. giacca, scarpe, smartphone, libro]
+- Peso stimato (con imballo): [X] kg o grammi
+- Dimensioni stimate (con imballo): [X × X × X] cm
+- Valore dichiarato: €X
+- Destinazione: Italia / Tutta Europa / Solo Nord Italia ecc.
 
-DETTAGLI:
-- Data acquisto: [X]
-- Data spedizione dichiarata: [X]
-- Corriere usato: [es. BRT, GLS, Poste, SDA…]
-- Tracking disponibile: Sì / No
-- Ultimo aggiornamento tracking: [incolla qui]
-- L'acquirente ha già scritto? Sì / No
-- Tono dell'acquirente (se ha scritto): [tranquillo / preoccupato / arrabbiato / minaccia recensione negativa]
+CONFRONTO CORRIERI VINTED IT (aggiornato):
+Per ogni corriere integrato in Vinted, dimmi:
+- Nome corriere e servizio
+- Prezzo per questo peso/dimensioni
+- Tempo di consegna stimato
+- Massimale assicurazione inclusa
+- Pro e contro per questo tipo di articolo
 
-DIAGNOSI DEL PROBLEMA:
-- Causa più probabile del ritardo/problema
-- È colpa del corriere, mia, o forza maggiore?
-- Probabilità che si risolva da solo: Alta / Media / Bassa
-- Azioni immediate che puoi fare adesso (lista pratica)
+CONSIGLIO OTTIMALE:
+- Corriere consigliato per il miglior rapporto prezzo/affidabilità
+- Se conviene offrire spedizione gratuita (inclusa nel prezzo) — e come ricalcolare il prezzo di vendita
+- Imballo consigliato per questo articolo specifico (materiali, dimensioni box)
 
-MESSAGGI PRONTI:
+CALCOLO PREZZO FINALE:
+Se voglio guadagnare €X netto dopo commissioni Vinted (5%) + spedizione:
+Prezzo da pubblicare = €[calcola]</div>
+      </div>
+      <div class="pcard-foot">
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
+        <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
+      </div>
+    </div>
 
-📩 MESSAGGIO 1 — Aggiornamento proattivo (prima che si lamenti):
-[scrivi tu per primo, tono rassicurante, mostra che monitori la situazione]
+    <div class="prompt-card" data-cat="spedizione">
+      <div class="pcard-top">
+        <span class="prompt-tag">📦 Spedizione</span>
+        <div class="prompt-title">Guida Imballaggio Anti-Danni per Categoria</div>
+        <p class="prompt-preview">Istruzioni specifiche per imballare correttamente qualsiasi tipo di articolo: materiali da usare, tecniche di protezione e come fotografare il pacco prima di spedire.</p>
+      </div>
+      <div class="prompt-body-wrap" hidden>
+        <div class="prompt-body">Sei un esperto di logistica e packaging per marketplace. Dammi una guida completa per imballare correttamente questo articolo.
 
-📩 MESSAGGIO 2 — Risposta se l'acquirente è preoccupato:
-[rassicura, dai aggiornamento concreto, indica tempistica realistica]
+ARTICOLO DA SPEDIRE: [descrivi — es. "paio di scarpe tacco 10cm", "smartphone con schermo", "maglione di lana"]
+CORRIERE SCELTO: [es. BRT, InPost, GLS, Poste]
 
-📩 MESSAGGIO 3 — Risposta se l'acquirente è arrabbiato:
-[mantieni calma assoluta, riconosci il disagio, proponi soluzione concreta — rimborso parziale / rispedizione / attesa con scadenza]
+GUIDA IMBALLAGGIO STEP BY STEP:
+1. Materiali necessari (lista specifica — cosa comprare/usare)
+2. Come proteggere le parti fragili/delicate di questo articolo specifico
+3. Tecnica di avvolgimento/posizionamento nel box
+4. Come fissare/immobilizzare l'articolo dentro la scatola
+5. Come chiudere e sigillare il pacco
 
-📩 MESSAGGIO 4 — Pacco ufficialmente smarrito:
-[procedura di rimborso, come aprire reclamo al corriere, tutele Vinted attivabili, tempistiche realistiche]
+MISURE BOX CONSIGLIATE: [X × X × X] cm
 
-COSA NON DIRE MAI:
-Lista di frasi da evitare assolutamente in queste situazioni (es. "non è colpa mia", "il corriere è inaffidabile", "aspetta ancora un po'") e perché danneggiano la tua reputazione.
+PESO TOTALE STIMATO: [X] kg
 
-PREVENZIONE FUTURA:
-3 azioni concrete per evitare questo problema nelle prossime vendite.</div>
+FOTO PRE-SPEDIZIONE (tutela legale):
+Fotografa obbligatoriamente: [lista specifica di cosa fotografare prima di sigillare]
+
+COSA SCRIVERE SUL PACCO:
+Etichetta, fragile?, istruzioni per il corriere</div>
       </div>
       <div class="pcard-foot">
         <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
@@ -575,7 +622,7 @@ PREVENZIONE FUTURA:
   </div><!-- /prompt-grid -->
 
   <!-- ═══ SEZIONE AGGIUNGI PROMPT ═══ -->
-  <div class="add-section">
+  <div class="add-section card" style="margin-top:var(--space-8)">
     <div class="add-header">
       <div class="add-header-left">
         <span class="add-icon">⭐</span>
@@ -633,225 +680,164 @@ PREVENZIONE FUTURA:
   &middot; <a href="guide.html">Guida API</a>
 </footer>
 
-<!-- ─── STILI EXTRA ─── -->
+<!-- Extra styles for prompts page elements not in main CSS -->
 <style>
-  /* ── Filter bar ── */
-  .filter-bar{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.5rem}
-  .filter-btn{padding:.38rem .95rem;border-radius:20px;border:1px solid var(--br);background:var(--sf);color:var(--ink2);font-family:'DM Sans',sans-serif;font-size:.79rem;font-weight:500;cursor:pointer;transition:all var(--tr)}
-  .filter-btn:hover{border-color:var(--ac);color:var(--ac)}
-  .filter-btn.active{background:var(--ac);border-color:var(--ac);color:#fff}
-
-  /* ── Grid ── */
-  .prompt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;margin-bottom:1.5rem;align-items:start}
-
-  /* ── Prompt card ── */
-  .prompt-card{background:var(--sf);border:1px solid var(--br);border-radius:var(--r);padding:1.15rem 1.3rem;box-shadow:var(--sh);display:flex;flex-direction:column;gap:.55rem;transition:opacity .2s,transform .15s}
-  .prompt-card:hover{transform:translateY(-1px)}
-  .prompt-card.hidden{display:none}
-  .prompt-card.personal{border-color:#d4b84a;background:#fffef5}
-  .prompt-card.personal .prompt-tag{background:#fef8e1;color:#8a6f1e;border:1px solid #e8d68a}
-
-  .pcard-top{display:flex;flex-direction:column;gap:.38rem}
-  .prompt-tag{font-size:.62rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ac);background:var(--acl);padding:2px 8px;border-radius:10px;display:inline-block;width:fit-content}
-  .prompt-title{font-weight:600;font-size:.96rem;color:var(--ink);line-height:1.35}
-  .prompt-preview{font-size:.82rem;color:var(--ink2);line-height:1.6;margin:0}
-
-  /* ── Expandable body ── */
-  .prompt-body-wrap{margin-top:.1rem}
-  .prompt-body{font-size:.79rem;color:var(--ink2);line-height:1.65;white-space:pre-wrap;word-break:break-word;background:var(--bg);border:1px solid var(--br);border-radius:var(--rs);padding:.85rem 1rem;margin-top:.42rem;max-height:240px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--br) transparent}
-  .prompt-body::-webkit-scrollbar{width:4px}
-  .prompt-body::-webkit-scrollbar-thumb{background:var(--br);border-radius:4px}
-
-  /* ── Card footer ── */
-  .pcard-foot{display:flex;align-items:center;justify-content:space-between;padding-top:.5rem;border-top:1px solid var(--br);margin-top:auto;gap:.5rem}
-  .prompt-toggle{font-size:.73rem;color:var(--ac);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;padding:0;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
-  .prompt-toggle:hover{color:var(--ach)}
-  .prompt-copy{background:none;border:1px solid var(--br);border-radius:var(--rs);padding:3px 11px;font-size:.72rem;font-family:'DM Sans',sans-serif;color:var(--ink3);cursor:pointer;transition:all var(--tr)}
-  .prompt-copy:hover{border-color:var(--ac);color:var(--ac)}
-  .prompt-copy.ok{border-color:var(--ac);color:var(--ac);background:var(--acl)}
-  .prompt-delete{background:none;border:1px solid #f0c4ac;border-radius:var(--rs);padding:3px 10px;font-size:.72rem;font-family:'DM Sans',sans-serif;color:var(--wn);cursor:pointer;transition:all var(--tr)}
-  .prompt-delete:hover{background:var(--wnl);border-color:var(--wn)}
-  .personal-foot-right{display:flex;gap:.45rem;align-items:center}
-
-  /* ── Add section ── */
-  .add-section{background:var(--sf);border:1px solid var(--br);border-radius:var(--r);padding:1.35rem 1.5rem;box-shadow:var(--sh);margin-bottom:2.5rem}
-  .add-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-  .add-header-left{display:flex;align-items:flex-start;gap:.75rem}
-  .add-icon{font-size:1.45rem;line-height:1}
-  .add-title{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--ink)}
-  .add-subtitle{font-size:.77rem;color:var(--ink2);margin-top:.12rem}
-  .add-toggle-btn{padding:.46rem 1.15rem;background:var(--ac);color:#fff;border:none;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:.84rem;font-weight:500;cursor:pointer;transition:all var(--tr);white-space:nowrap;flex-shrink:0}
-  .add-toggle-btn:hover{background:var(--ach)}
-  .add-toggle-btn.is-open{background:var(--sf2);color:var(--ink2);border:1px solid var(--br)}
-
-  .add-form{margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--br)}
-  .add-fields{display:flex;flex-direction:column;gap:.9rem}
-  .add-field-row{display:grid;grid-template-columns:1fr auto;gap:.8rem;align-items:end}
+  .add-section { margin-bottom: 0; }
+  .add-header { display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap; }
+  .add-header-left { display:flex;align-items:flex-start;gap:.75rem; }
+  .add-icon { font-size:1.45rem;line-height:1; }
+  .add-title { font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--color-text-primary); }
+  .add-subtitle { font-size:var(--text-sm);color:var(--color-text-secondary);margin-top:.12rem; }
+  .add-toggle-btn { padding:8px 18px;background:var(--color-accent);color:#0D0F14;border:none;border-radius:var(--radius-full);font-family:var(--font-display);font-size:var(--text-sm);font-weight:700;cursor:pointer;transition:all var(--transition-base);white-space:nowrap;flex-shrink:0; }
+  .add-toggle-btn:hover { background:var(--color-accent-hover); box-shadow: var(--shadow-glow-sm); }
+  .add-toggle-btn.is-open { background:var(--color-surface-2);color:var(--color-text-secondary);border:1px solid var(--color-border); }
+  .add-form { margin-top:var(--space-6);padding-top:var(--space-6);border-top:1px solid var(--color-border); }
+  .add-fields { display:flex;flex-direction:column;gap:var(--space-4); }
+  .add-field-row { display:grid;grid-template-columns:1fr auto;gap:var(--space-4);align-items:end; }
   @media(max-width:480px){.add-field-row{grid-template-columns:1fr}}
-  .add-field{display:flex;flex-direction:column;gap:.28rem}
-  .add-lbl{font-size:.7rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3)}
-  .add-inp{padding:.5rem .85rem;border:1px solid var(--br);border-radius:var(--rs);background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:.87rem;outline:none;transition:border-color var(--tr)}
-  .add-inp:focus{border-color:var(--ac)}
-  .add-ta{padding:.6rem .85rem;border:1px solid var(--br);border-radius:var(--rs);background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:.82rem;outline:none;transition:border-color var(--tr);resize:vertical;line-height:1.65;min-height:170px}
-  .add-ta:focus{border-color:var(--ac)}
-  .add-footer{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
-  .add-err{font-size:.76rem;color:var(--wn);min-height:1em}
-  .add-cancel{padding:.45rem 1rem;border:1px solid var(--br);border-radius:var(--rs);background:var(--bg);color:var(--ink2);font-family:'DM Sans',sans-serif;font-size:.84rem;cursor:pointer;transition:all var(--tr)}
-  .add-cancel:hover{border-color:var(--ink3);color:var(--ink)}
-  .add-save{padding:.45rem 1.3rem;background:var(--ac);color:#fff;border:none;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:.84rem;font-weight:500;cursor:pointer;transition:all var(--tr)}
-  .add-save:hover{background:var(--ach);box-shadow:0 3px 12px rgba(45,106,79,.25)}
+  .add-field { display:flex;flex-direction:column;gap:6px; }
+  .add-lbl { font-size:var(--text-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-muted); }
+  .add-inp { padding:10px 14px;border:1px solid var(--color-border);border-radius:var(--radius-sm);background:var(--color-bg);color:var(--color-text-primary);font-family:var(--font-body);font-size:var(--text-sm);outline:none;transition:border-color var(--transition-fast); }
+  .add-inp:focus { border-color:rgba(110,231,183,0.5);box-shadow:0 0 0 3px rgba(110,231,183,0.08); }
+  .add-ta { padding:10px 14px;border:1px solid var(--color-border);border-radius:var(--radius-sm);background:var(--color-bg);color:var(--color-text-primary);font-family:var(--font-body);font-size:var(--text-sm);outline:none;transition:border-color var(--transition-fast);resize:vertical;line-height:1.65;min-height:170px;width:100%; }
+  .add-ta:focus { border-color:rgba(110,231,183,0.5);box-shadow:0 0 0 3px rgba(110,231,183,0.08); }
+  .add-footer { display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap; }
+  .add-err { font-size:var(--text-sm);color:var(--color-danger);min-height:1em; }
+  .add-cancel { padding:9px 18px;border:1px solid var(--color-border);border-radius:var(--radius-full);background:var(--color-bg);color:var(--color-text-secondary);font-family:var(--font-body);font-size:var(--text-sm);cursor:pointer;transition:all var(--transition-fast); }
+  .add-cancel:hover { border-color:var(--color-border-strong);color:var(--color-text-primary); }
+  .add-save { padding:9px 22px;background:var(--color-accent);color:#0D0F14;border:none;border-radius:var(--radius-full);font-family:var(--font-display);font-size:var(--text-sm);font-weight:700;cursor:pointer;transition:all var(--transition-base); }
+  .add-save:hover { background:var(--color-accent-hover);box-shadow:var(--shadow-glow-sm); }
+  .prompt-delete { background:none;border:1px solid rgba(248,113,113,0.3);border-radius:var(--radius-sm);padding:3px 10px;font-size:0.72rem;font-family:var(--font-body);color:var(--color-danger);cursor:pointer;transition:all var(--transition-fast); }
+  .prompt-delete:hover { background:var(--color-danger-bg);border-color:rgba(248,113,113,0.5); }
+  .personal-foot-right { display:flex;gap:.45rem;align-items:center; }
+  .hidden { display:none !important; }
 </style>
 
-<!-- ─── SCRIPT ─── -->
 <script>
-  /* ── Filtro ── */
-  let activeFilter = 'all';
+  window.addEventListener('scroll', function() {
+    var el = document.getElementById('scroll-progress');
+    if (!el) return;
+    var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    el.style.width = Math.min(pct, 100) + '%';
+  });
+
+  var activeFilter = 'all';
 
   function filterPrompts(cat, btn) {
     activeFilter = cat;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
     btn.classList.add('active');
-    document.querySelectorAll('.prompt-card').forEach(c => {
-      const match = cat === 'all' || c.dataset.cat === cat;
+    document.querySelectorAll('.prompt-card').forEach(function(c) {
+      var match = cat === 'all' || c.dataset.cat === cat;
       c.classList.toggle('hidden', !match);
     });
   }
 
-  /* ── Espandi/comprimi corpo ── */
   function toggleBody(btn) {
-    const wrap = btn.closest('.prompt-card').querySelector('.prompt-body-wrap');
-    const opening = wrap.hidden;
+    var wrap = btn.closest('.prompt-card').querySelector('.prompt-body-wrap');
+    var opening = wrap.hidden;
     wrap.hidden = !opening;
     btn.textContent = opening ? '↑ Nascondi prompt' : '↓ Mostra prompt';
   }
 
-  /* ── Copia ── */
   function cpPrompt(btn) {
-    const card = btn.closest('.prompt-card');
-    const text = card.querySelector('.prompt-body').textContent.trim();
-    navigator.clipboard.writeText(text).then(() => {
-      btn.textContent = '✓ copiato';
-      btn.classList.add('ok');
-      setTimeout(() => { btn.textContent = 'copia'; btn.classList.remove('ok'); }, 2200);
-    }).catch(() => {
-      /* fallback per browser senza clipboard API */
-      const ta = document.createElement('textarea');
+    var card = btn.closest('.prompt-card');
+    var text = card.querySelector('.prompt-body').textContent.trim();
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = '✓ copiato'; btn.classList.add('ok');
+      setTimeout(function() { btn.textContent = 'copia'; btn.classList.remove('ok'); }, 2200);
+    }).catch(function() {
+      var ta = document.createElement('textarea');
       ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
       document.body.appendChild(ta); ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
+      document.execCommand('copy'); document.body.removeChild(ta);
       btn.textContent = '✓ copiato'; btn.classList.add('ok');
-      setTimeout(() => { btn.textContent = 'copia'; btn.classList.remove('ok'); }, 2200);
+      setTimeout(function() { btn.textContent = 'copia'; btn.classList.remove('ok'); }, 2200);
     });
   }
 
-  /* ── Form ── */
   function toggleAddForm() {
-    const form = document.getElementById('addForm');
-    const btn  = document.getElementById('addToggleBtn');
-    const opening = form.hidden;
+    var form = document.getElementById('addForm');
+    var btn = document.getElementById('addToggleBtn');
+    var opening = form.hidden;
     form.hidden = !opening;
     btn.textContent = opening ? '✕ Chiudi' : '+ Aggiungi prompt';
     btn.classList.toggle('is-open', opening);
     document.getElementById('addError').textContent = '';
   }
 
-  /* ── LocalStorage ── */
-  const LS_KEY = 'listai_personal_prompts_v1';
+  var LS_KEY = 'listai_personal_prompts_v1';
+  function loadPrompts() { try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch(e) { return []; } }
+  function savePrompts(arr) { try { localStorage.setItem(LS_KEY, JSON.stringify(arr)); } catch(e) {} }
 
-  function loadPrompts() {
-    try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; }
-    catch { return []; }
-  }
-  function savePrompts(arr) {
-    try { localStorage.setItem(LS_KEY, JSON.stringify(arr)); } catch {}
-  }
-
-  const CAT_LABELS = {
-    personale:  '⭐ Personale',
-    descrizione:'📝 Descrizione',
-    prezzo:     '💰 Prezzo',
-    risposta:   '💬 Risposta',
-    seo:        '🔍 SEO',
-    spedizione: '📦 Spedizione'
+  var CAT_LABELS = {
+    personale: '⭐ Personale', descrizione: '📝 Descrizione',
+    prezzo: '💰 Prezzo', risposta: '💬 Risposta',
+    seo: '🔍 SEO', spedizione: '📦 Spedizione'
   };
 
   function esc(s) {
-    return String(s)
-      .replace(/&/g,'&amp;')
-      .replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;')
-      .replace(/"/g,'&quot;');
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
   function renderPersonalPrompts() {
-    const container = document.getElementById('personalPromptsContainer');
+    var container = document.getElementById('personalPromptsContainer');
     container.innerHTML = '';
-    const prompts = loadPrompts();
-
-    prompts.forEach((p, idx) => {
-      const cat = p.cat || 'personale';
-      const isHidden = (activeFilter !== 'all' && cat !== activeFilter) ? ' hidden' : '';
-
-      const card = document.createElement('div');
+    var prompts = loadPrompts();
+    prompts.forEach(function(p, idx) {
+      var cat = p.cat || 'personale';
+      var isHidden = (activeFilter !== 'all' && cat !== activeFilter) ? ' hidden' : '';
+      var card = document.createElement('div');
       card.className = 'prompt-card personal' + isHidden;
       card.dataset.cat = cat;
-      card.innerHTML = `
-        <div class="pcard-top">
-          <span class="prompt-tag">${esc(CAT_LABELS[cat] || '⭐ Personale')}</span>
-          <div class="prompt-title">${esc(p.title)}</div>
-          ${p.preview ? `<p class="prompt-preview">${esc(p.preview)}</p>` : ''}
-        </div>
-        <div class="prompt-body-wrap" hidden>
-          <div class="prompt-body">${esc(p.body)}</div>
-        </div>
-        <div class="pcard-foot">
-          <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
-          <div class="personal-foot-right">
-            <button class="prompt-delete" onclick="deletePrompt(${idx})">🗑 Rimuovi</button>
-            <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
-          </div>
-        </div>`;
+      card.innerHTML =
+        '<div class="pcard-top">' +
+          '<span class="prompt-tag">' + esc(CAT_LABELS[cat] || '⭐ Personale') + '</span>' +
+          '<div class="prompt-title">' + esc(p.title) + '</div>' +
+          (p.preview ? '<p class="prompt-preview">' + esc(p.preview) + '</p>' : '') +
+        '</div>' +
+        '<div class="prompt-body-wrap" hidden>' +
+          '<div class="prompt-body">' + esc(p.body) + '</div>' +
+        '</div>' +
+        '<div class="pcard-foot">' +
+          '<button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>' +
+          '<div class="personal-foot-right">' +
+            '<button class="prompt-delete" onclick="deletePrompt(' + idx + ')">🗑 Rimuovi</button>' +
+            '<button class="prompt-copy" onclick="cpPrompt(this)">copia</button>' +
+          '</div>' +
+        '</div>';
       container.appendChild(card);
     });
-
-    /* Aggiorna badge filtro */
-    const fb = document.getElementById('filterPersonale');
-    fb.textContent = prompts.length ? `⭐ Miei Prompt (${prompts.length})` : '⭐ Miei Prompt';
+    var fb = document.getElementById('filterPersonale');
+    fb.textContent = prompts.length ? '⭐ Miei Prompt (' + prompts.length + ')' : '⭐ Miei Prompt';
   }
 
   function savePersonalPrompt() {
-    const title   = document.getElementById('newTitle').value.trim();
-    const cat     = document.getElementById('newCat').value;
-    const preview = document.getElementById('newPreview').value.trim();
-    const body    = document.getElementById('newBody').value.trim();
-    const err     = document.getElementById('addError');
-
+    var title   = document.getElementById('newTitle').value.trim();
+    var cat     = document.getElementById('newCat').value;
+    var preview = document.getElementById('newPreview').value.trim();
+    var body    = document.getElementById('newBody').value.trim();
+    var err     = document.getElementById('addError');
     if (!title) { err.textContent = '⚠ Inserisci un titolo per il prompt.'; return; }
     if (!body)  { err.textContent = '⚠ Il testo del prompt non può essere vuoto.'; return; }
     err.textContent = '';
-
-    const prompts = loadPrompts();
-    prompts.push({ title, cat, preview, body, createdAt: Date.now() });
+    var prompts = loadPrompts();
+    prompts.push({ title: title, cat: cat, preview: preview, body: body, createdAt: Date.now() });
     savePrompts(prompts);
-
-    /* Reset campi */
-    ['newTitle','newPreview','newBody'].forEach(id => document.getElementById(id).value = '');
+    ['newTitle','newPreview','newBody'].forEach(function(id) { document.getElementById(id).value = ''; });
     document.getElementById('newCat').value = 'personale';
-
     toggleAddForm();
     renderPersonalPrompts();
   }
 
   function deletePrompt(idx) {
     if (!confirm('Rimuovere questo prompt personale?\nL\'operazione non è reversibile.')) return;
-    const prompts = loadPrompts();
+    var prompts = loadPrompts();
     prompts.splice(idx, 1);
     savePrompts(prompts);
     renderPersonalPrompts();
   }
 
-  /* ── Avvio ── */
   renderPersonalPrompts();
 </script>
 

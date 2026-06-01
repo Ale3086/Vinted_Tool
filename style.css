@@ -770,13 +770,14 @@ main { max-width: 1000px; margin: 0 auto; padding: var(--space-12) var(--space-6
   background: var(--color-accent-dim); border-color: rgba(110,231,183,0.3);
   color: var(--color-accent);
 }
-.prompt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: var(--space-4); margin-top: var(--space-5); }
+.prompt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: var(--space-4); margin-top: var(--space-5); padding: 30px; }
 .prompt-card {
   background: var(--color-surface); border: 1px solid var(--color-border);
   border-radius: var(--radius-md); padding: var(--space-5);
   box-shadow: var(--shadow-sm);
   display: flex; flex-direction: column; gap: var(--space-3);
   transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  padding: 20px;
 }
 .prompt-card:hover { border-color: var(--color-border-strong); box-shadow: var(--shadow-md); }
 .pcard-top { display: flex; flex-direction: column; gap: var(--space-2); }

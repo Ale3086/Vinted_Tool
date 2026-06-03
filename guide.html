@@ -17,8 +17,9 @@
   <div class="hi">
     <a href="index.html" class="logo">List<span>AI</span></a>
     <nav class="nav">
-      <a href="index.html">✨ Crea Annuncio</a>
-      <a href="prompts.html">📚 Prompt Utili</a>
+      <a href="index.html" id="nav-create">✨ Crea Annuncio</a>
+      <a href="resell.html" id="nav-resell">🔍 Analisi Resell</a>
+      <a href="prompts.html" id="nav-prompts">📚 Prompt</a>
     </nav>
     <span class="badge">Guida</span>
   </div>
@@ -172,6 +173,13 @@ window.addEventListener('scroll', function() {
   var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
   el.style.width = Math.min(pct, 100) + '%';
 });
+</script>
+<script>
+(function(){
+  var page = location.pathname.split('/').pop() || 'index.html';
+  var link = document.querySelector('a[href="' + page + '"]');
+  if (link) link.classList.add('active');
+})();
 </script>
 </body>
 </html>

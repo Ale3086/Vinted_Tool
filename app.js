@@ -414,44 +414,101 @@ async function analyze() {
     var langJsonTemplate = selectedLangs.map(function(c) { return '"' + c + '":""'; }).join(',');
     var maxTokens = Math.max(1600, 800 + selectedLangs.length * 400);
 
-    /* ══ PROMPT AVANZATO FASE 2 ══ */
-    var prompt = 'Sei un esperto analista di prezzi per marketplace di seconda mano, specializzato in Vinted Italia. Hai conoscenza profonda dei mercati fashion europei, trend stagionali e psicologia del prezzo nel re-commerce.\n\n' +
-      'Categoria: ' + categoria + '. Analizza TUTTE le immagini → JSON.\n\n' +
-      'FISSO (non modificare):\n- Condizione: ' + cond + '\n- ' + tagliaLabel + ': ' + tagliaValore +
-      '\n- Stagione corrente: ' + seasonInfo.seasonName + ' (impatto stimato: ' + seasonInfo.impactStr + ')' +
-      '\n- Mese: ' + (seasonInfo.month + 1) + ', Giorno: ' + seasonInfo.day +
-      (seasonInfo.events.length ? '\n- Evento mercato: ' + seasonInfo.events.join(', ') : '') +
-      (extraBlock ? '\n' + extraBlock : '') +
+    /* ══ PROMPT POTENZIATO v3 ══ */
+    var prompt =
+      // ═══ IDENTITÀ E MISSIONE ═══
+      'Sei LISTAI, un analista di prezzi d\'élite per Vinted Italia con accesso a dati di mercato in tempo reale. ' +
+      'La tua analisi deve essere IMPECCABILE: zero stime vaghe, zero valori generici. ' +
+      'Ogni prezzo che fornisci deve essere difendibile con dati reali di mercato.\n\n' +
 
-      '\n\nREGOLE LISTING:\n1. t: ≤50 chars. ' + (isCloth ? 'Brand+tipo+taglia IT+keyword SEO' : 'Brand+modello+specifiche chiave') + '. NO articoli iniziali.\n' +
+      // ═══ CONTESTO ANALISI ═══
+      'OGGETTO DA ANALIZZARE:\n' +
+      '- Categoria: ' + categoria + '\n' +
+      '- Condizione dichiarata: ' + cond + '\n' +
+      '- ' + tagliaLabel + ': ' + tagliaValore + '\n' +
+      '- Stagione attuale: ' + seasonInfo.seasonName + ' (moltiplicatore: ' + seasonInfo.impactStr + ')\n' +
+      (seasonInfo.events.length ? '- Evento di mercato attivo: ' + seasonInfo.events.join(', ') + '\n' : '') +
+      (extraBlock ? extraBlock + '\n' : '') +
+
+      // ═══ ISTRUZIONI ANALISI VISIVA ═══
+      '\nFASE 1 — ANALISI VISIVA OBBLIGATORIA (da immagini):\n' +
+      'Esamina TUTTE le immagini caricate con la massima attenzione. Identifica con certezza:\n' +
+      '1. Brand/marchio (cerca logo, etichette, stampe, tag interni, caratteristiche distintive del brand)\n' +
+      '2. Modello specifico se identificabile (es. "Nike Air Force 1", "Levi\'s 501", "iPhone 13 Pro")\n' +
+      '3. Colore esatto e materiale (non scrivere "nero" se è antracite, non "cotone" se è jersey)\n' +
+      '4. Condizione reale dalle foto (confronta con condizione dichiarata, segnala discrepanze)\n' +
+      '5. Difetti visibili (macchie, usura, sfilacciature, graffi, ammaccature)\n' +
+      '6. Taglia/misura se visibile su etichette nelle foto\n' +
+      '7. Anno/stagione di produzione se desumibile da caratteristiche stilistiche\n' +
+      'NON INVENTARE nulla che non sia visibile. Se un dato non è desumibile, scrivi "non determinabile dalle foto".\n\n' +
+
+      // ═══ ISTRUZIONI RICERCA PREZZI ═══
+      '\nFASE 2 — RICERCA PREZZI DI MERCATO (obbligatoria e precisa):\n' +
+      'Per il prodotto identificato, stima i prezzi nei seguenti canali. Usa dati reali, non formule generiche:\n\n' +
+
+      'A) PREZZO NUOVO (retail):\n' +
+      '   - Amazon.it: cerca il prezzo attuale o più recente per questo esatto articolo/modello\n' +
+      '   - Zalando.it / ASOS / sito ufficiale brand: prezzo di listino corrente o medio storico\n' +
+      '   - Indica da quale fonte proviene ogni stima (es. "Amazon IT ~€89", "Zalando ~€95")\n\n' +
+
+      'B) PREZZI SU VINTED ITALIA (analisi competitiva):\n' +
+      '   - Stima il range di prezzi attualmente su Vinted.it per questo articolo in condizione simile\n' +
+      '   - Considera: concorrenza alta/media/bassa, prezzo mediano, prezzo venduto\n' +
+      '   - Considera stagionalità e domanda attuale per questa categoria\n\n' +
+
+      'C) CALCOLO FASCE PREZZO VINTED (3 livelli obbligatori):\n' +
+      '   Formula base: prezzo_nuovo × sconto_condizione × moltiplicatore_stagionale\n' +
+      '   Sconti per condizione: NWT=55-65%, NWOT=45-55%, EUC=35-45%, GUC=25-35%, POOR=10-20%\n' +
+      '   Poi aggiusta in base a brand tier, rarità taglia, concorrenza Vinted, domanda attuale\n\n' +
+      '   - prezzo_rapido: prezzo per vendere entro 24-48h. 20° percentile Vinted per questo articolo.\n' +
+      '   - prezzo_ideale: miglior equilibrio tra valore e velocità. Batte il 60% della concorrenza.\n' +
+      '   - prezzo_massimo: massimo realistico con margine per trattativa (+15%). Max 35% del nuovo.\n\n' +
+      '   IMPORTANTE: I prezzi devono essere COMPETITIVI su Vinted, non solo teorici.\n\n' +
+
+      // ═══ REGOLE LISTING ═══
+      '\nFASE 3 — CREAZIONE ANNUNCIO:\n' +
+      'Regole INVIOLABILI per il listing:\n' +
+      '1. t (titolo SEO): ≤50 caratteri. Formula: [Brand] + [tipo prodotto] + [caratteristica chiave] + [keyword ricercata su Vinted]\n' +
+      '   NO articoli iniziali (non iniziare con "Un", "Una", "Il", "La")\n' +
       langRules + '\n' +
-      htRuleNum + '. ht: 7 hashtag separati da spazio. Rilevanti per categoria e prodotto. Mix di lingue.\n' +
+      htRuleNum + '. ht: esattamente 7 hashtag, separati da spazio, mix IT+EN, pertinenti al prodotto specifico.\n\n' +
 
-      '\nREGOLE PREZZI AVANZATE (OBBLIGATORIO):\n' +
-      (htRuleNum+1) + '. p.nMin/nMax: prezzo nuovo € (Amazon IT/Zalando, stima realistica).\n' +
-      '   p.vMin=nMin×' + discount + ' arrotonda €0.50, p.vMax=nMax×' + discount + ' arrotonda €0.50.\n' +
-      '   vMin<vMax, entrambi<nMin.\n' +
-      '   p.note: cita fonte+€ e giustifica il prezzo Vinted in 1 frase.\n' +
-      (htRuleNum+2) + '. p.advanced: analisi avanzata OBBLIGATORIA con TUTTI questi campi:\n' +
-      '   - prezzo_rapido: prezzo per vendita in 24-48h (vMin - 20%)\n' +
-      '   - prezzo_ideale: miglior equilibrio valore/velocità (media vMin+vMax)\n' +
-      '   - prezzo_massimo: massimo realistico con margine trattativa (vMax + 15%)\n' +
-      '   - confidence_score: 0-100 (quanto sei sicuro della stima)\n' +
-      '   - breakdown_fattori: array di 4-6 fattori che impattano il prezzo. Ogni fattore: {fattore, impatto (es "+20%" o "-15%"), spiegazione (max 8 parole)}\n' +
-      '     INCLUDI SEMPRE: Stagionalità, Brand, Stato usura, Competizione mercato\n' +
-      '     Aggiungi se rilevanti: Periodo saldi, Taglia rarità, Materiale premium\n' +
-      '   - stima_velocita_vendita: {al_prezzo_rapido: "X-Y ore", al_prezzo_ideale: "X-Y giorni", al_prezzo_massimo: "X settimane"}\n' +
-      '   - consigli_annuncio: array di 3 consigli pratici per massimizzare le visualizzazioni\n' +
-      '   - timing_ottimale: stringa con consiglio su quando pubblicare (es. "Giovedì-domenica sera, traffico +40%")\n' +
-      '   - warning: array di 0-3 avvertenze (se vendibilità scarsa, taglia insolita, brand in declino, ecc.)\n\n' +
-      (htRuleNum+3) + '. s: usa ESATTAMENTE questo schema → ' + schedaTemplate + '\n\n' +
-      'SOLO JSON VALIDO, zero markdown, zero testo extra:\n' +
-      '{"t":"","langs":{' + langJsonTemplate + '},"ht":"","p":{"nMin":"€X","nMax":"€X","vMin":"€X","vMax":"€X","note":"","advanced":{"prezzo_rapido":"€X","prezzo_ideale":"€X","prezzo_massimo":"€X","confidence_score":80,"breakdown_fattori":[{"fattore":"Stagionalità","impatto":"+20%","spiegazione":"Estate favorisce questo capo"}],"stima_velocita_vendita":{"al_prezzo_rapido":"24-48 ore","al_prezzo_ideale":"3-7 giorni","al_prezzo_massimo":"2-4 settimane"},"consigli_annuncio":["consiglio1","consiglio2","consiglio3"],"timing_ottimale":"Pubblica giovedì-domenica","window":[]}},"s":' + schedaTemplate + '}';
+      // ═══ OUTPUT JSON ═══
+      '\nOUTPUT: SOLO JSON VALIDO, zero markdown, zero testo extra.\n' +
+      'Schema obbligatorio:\n' +
+      '{' +
+      '"t":"",' +
+      '"langs":{' + langJsonTemplate + '},' +
+      '"ht":"",' +
+      '"p":{' +
+        '"nMin":"€X","nMax":"€X",' +
+        '"vMin":"€X","vMax":"€X",' +
+        '"note":"Fonte prezzi nuovo: [fonti]. Su Vinted articoli simili: [range]. Giustificazione fascia consigliata in 1-2 frasi.",' +
+        '"advanced":{' +
+          '"prezzo_rapido":"€X",' +
+          '"prezzo_ideale":"€X",' +
+          '"prezzo_massimo":"€X",' +
+          '"confidence_score":85,' +
+          '"breakdown_fattori":[' +
+            '{"fattore":"Brand","impatto":"+20%","spiegazione":"Brand premium riconoscibile"},' +
+            '{"fattore":"Stagionalità","impatto":"+15%","spiegazione":"Stagione favorevole per questo capo"},' +
+            '{"fattore":"Concorrenza Vinted","impatto":"-10%","spiegazione":"Alta offerta articoli simili"},' +
+            '{"fattore":"Condizione","impatto":"+5%","spiegazione":"Condizione eccellente rispetto media"}' +
+          '],' +
+          '"stima_velocita_vendita":{"al_prezzo_rapido":"24-48 ore","al_prezzo_ideale":"3-7 giorni","al_prezzo_massimo":"2-4 settimane"},' +
+          '"consigli_annuncio":["consiglio specifico 1","consiglio specifico 2","consiglio specifico 3"],' +
+          '"timing_ottimale":"Esempio: pubblica giovedì-domenica 18-21, traffico Vinted IT +35%",' +
+          '"warning":[]' +
+        '}' +
+      '},' +
+      '"s":' + schedaTemplate +
+      '}';
+
 
     var body = {
       model: model,
       messages: [{ role: 'user', content: [{ type: 'text', text: prompt }].concat(imgs) }],
-      temperature: 0.15,
+      temperature: 0.10,  // Maggiore precisione
       max_tokens: maxTokens
     };
 

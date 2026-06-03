@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>ListAI — Analisi Resell</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+<div class="toast" id="toast" style="display:none">
+  <div class="toast-dot"></div>
+  <span id="toast-msg"></span>
+</div>
+
+<!-- Modal salvataggio chiave -->
+<div class="modal-o" id="saveModal">
+  <div class="modal">
+    <h3>💾 Salvare la chiave API?</h3>
+    <p>Vuoi memorizzare la tua OpenRouter API Key per <strong>1 mese</strong>? Verrà inserita automaticamente ad ogni visita. Resta solo nel tuo browser.</p>
+    <div class="mbtns">
+      <button class="mbtn y" onclick="saveKey(true)">✅ Sì, salva</button>
+      <button class="mbtn n" onclick="saveKey(false)">No, grazie</button>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="hi">
+    <a href="index.html" class="logo">List<span>AI</span></a>
+    <nav class="nav">
+      <a href="index.html" id="nav-create">✨ Crea Annuncio</a>
+      <a href="resell.html" id="nav-resell">🔍 Analisi Resell</a>
+      <a href="prompts.html" id="nav-prompts">📚 Prompt</a>
+    </nav>
+    <span class="badge">OpenRouter</span>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <p class="hero-tagline">// potenziale di rivendita con AI</p>
+    <h1>Analisi Investimento <span class="gradient-text">Resell</span></h1>
+    <p>
+      Fotografa un oggetto → scopri il suo valore reale, il ROI potenziale
+      e un <strong>piano d'azione step-by-step</strong> per massimizzare il guadagno.
+    </p>
+  </div>
+
+  <!-- API Key + Modello -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-header-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+      </div>
+      <div class="card-title">Configurazione API</div>
+    </div>
+
+    <div class="api-row" style="margin-bottom:.85rem">
+      <span class="albl">API Key</span>
+      <div class="aiw">
+        <input class="ainp" type="password" id="apiKey" placeholder="Incolla la tua OpenRouter API Key…" autocomplete="off"/>
+        <button class="eye" onclick="toggleKey()">
+          <svg id="eyeIcon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+      </div>
+      <span class="ahint">
+        Stessa chiave di <a href="index.html">Crea Annuncio</a>
+        &nbsp;·&nbsp;
+        <a href="guide.html">📖 Guida</a>
+      </span>
+    </div>
+
+    <div class="api-row">
+      <span class="albl">Modello</span>
+      <div style="flex:1;min-width:190px;display:flex;flex-direction:column;gap:.38rem">
+        <select class="msel" id="modelSelect" onchange="onModelChange()">
+          <optgroup label="⭐ Migliore qualità/prezzo">
+            <option value="google/gemini-3.1-flash-lite" selected>Gemini 3.1 Flash Lite — ~€0.0004/analisi 🔥</option>
+          </optgroup>
+          <optgroup label="✨ Gemini">
+            <option value="google/gemini-2.5-flash">Gemini 2.5 Flash — ~€0.001/analisi ⭐</option>
+            <option value="google/gemini-3-flash-preview">Gemini 3 Flash — ~€0.001/analisi</option>
+            <option value="google/gemini-3.1-pro-preview">Gemini 3.1 Pro — ~€0.008/analisi</option>
+            <option value="google/gemini-2.5-pro">Gemini 2.5 Pro — ~€0.010/analisi</option>
+          </optgroup>
+          <optgroup label="🌐 Altri">
+            <option value="openai/gpt-4o-mini">GPT-4o Mini — ~€0.002/analisi</option>
+          </optgroup>
+          <optgroup label="🔧 Personalizzato">
+            <option value="custom">✏️ Inserisci il tuo modello…</option>
+          </optgroup>
+        </select>
+        <input class="ainp-plain" type="text" id="customModel" placeholder="es. google/gemini-2.5-flash…" style="display:none" autocomplete="off"/>
+      </div>
+      <span class="ahint" style="color:var(--color-accent)">↑ Scegli il modello</span>
+    </div>
+  </div>
+
+  <!-- Info Prodotto -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-header-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      </div>
+      <div class="card-title">Info Prodotto</div>
+    </div>
+
+    <div class="egrid" style="margin-bottom:.85rem">
+      <div class="ig">
+        <label>Categoria</label>
+        <select id="r-categoria" onchange="onResellCategoriaChange()">
+          <option value="uomo">👔 Abbigliamento Uomo</option>
+          <option value="donna">👗 Abbigliamento Donna</option>
+          <option value="unisex">🧥 Abbigliamento Unisex</option>
+          <option value="griffati">💎 Articoli Griffati</option>
+          <option value="bambini">🧸 Bambini</option>
+          <option value="sport">⚽ Sport</option>
+          <option value="elettronica">📱 Elettronica</option>
+          <option value="casa">🏠 Casa / Arredamento</option>
+          <option value="intrattenimento">🎬 Intrattenimento</option>
+          <option value="hobby">🎨 Hobby e Collezionismo</option>
+        </select>
+      </div>
+      <div class="ig">
+        <label>Prezzo pagato / budget <span style="font-weight:400;font-size:.68rem;text-transform:none">(opzionale)</span></label>
+        <input type="number" id="r-prezzo" min="0" step="0.5" placeholder="€ es. 15.00"/>
+        <span class="hint">Se visibile nelle foto (cartellino, annuncio), lascia vuoto</span>
+      </div>
+    </div>
+
+    <!-- Opzioni contestuali per categoria -->
+    <div class="conditional-opts" id="opts-elettronica">
+      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">📱 Gestione elettronica:</label>
+      <div class="radio-group">
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Riparo da solo (DIY)"/><span>🔧 Riparo da solo (DIY)</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Porto da un tecnico specializzato"/><span>🏪 Porto da un tecnico</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo as-is senza riparare"/><span>💸 Vendo as-is (senza riparare)</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Smonto per parti"/><span>🔩 Smonto per parti</span></label>
+      </div>
+    </div>
+
+    <div class="conditional-opts" id="opts-abbigliamento">
+      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">👗 Gestione difetti:</label>
+      <div class="radio-group">
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Lavo e stiro da solo"/><span>🫧 Lavo/stiro da solo</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Porto in lavanderia professionale"/><span>👔 Lavanderia professionale</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Porto da una sartoria"/><span>🧵 Sartoria (riparazioni)</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo com'è dichiarando i difetti"/><span>💬 Vendo com'è (dichiaro difetti)</span></label>
+      </div>
+    </div>
+
+    <div class="conditional-opts" id="opts-griffati">
+      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">💎 Autenticazione:</label>
+      <div class="radio-group">
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Autenticazione online (Entrupy, Real Authentication)"/><span>✅ Servizio autenticazione online</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo fidandomi delle foto senza autenticazione"/><span>📸 Vendo fidandomi delle foto</span></label>
+      </div>
+    </div>
+
+    <div class="conditional-opts" id="opts-casa">
+      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">🏠 Dove vuoi vendere:</label>
+      <div class="radio-group">
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo su Vinted (articoli piccoli)"/><span>🛍 Vinted (articoli piccoli)</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo su Marketplace o Subito (articoli grandi)"/><span>🚚 Marketplace/Subito (articoli grandi)</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Valuta entrambe le opzioni di vendita"/><span>🔍 Valuta entrambe le opzioni</span></label>
+      </div>
+    </div>
+
+    <div class="conditional-opts" id="opts-hobby">
+      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">🎨 Piattaforma preferita:</label>
+      <div class="radio-group">
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Vinted"/><span>🛍 Vinted</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="eBay"/><span>🌐 eBay</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Mercatino specializzato"/><span>🏪 Mercatino specializzato</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Valuta la migliore opzione di vendita"/><span>🔍 Valuta la migliore opzione</span></label>
+      </div>
+    </div>
+
+    <div class="ig" style="margin-top:var(--space-4)">
+      <label>ℹ️ Info aggiuntive <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.68rem">(opzionale)</span></label>
+      <textarea id="r-extra" placeholder="Es: schermo rotto ma accende, manca caricabatteria, piccolo graffio sul retro, acquistato in Germania…"></textarea>
+    </div>
+  </div>
+
+  <!-- Upload foto -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-header-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </div>
+      <div class="card-title">Foto Prodotto</div>
+    </div>
+
+    <div class="drop" id="dz">
+      <input type="file" id="fi" accept=".jpg,.jpeg,.png" multiple/>
+      <svg class="drop-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+      </svg>
+      <p class="drop-t">Trascina le foto qui oppure clicca</p>
+      <p class="drop-s">PNG e JPEG — max <strong>10 immagini</strong></p>
+    </div>
+    <div class="pgrid" id="pg"></div>
+    <p class="pcnt" id="pc"></p>
+    <div class="errmsg" id="em"></div>
+    <button class="btn-go" id="go" onclick="analyzeResell()" disabled>
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
+      </svg>
+      Analizza Potenziale Resell →
+    </button>
+  </div>
+
+  <!-- RESULTS (hidden initially) -->
+  <div id="results-r" style="display:none">
+
+    <div class="rh">
+      <svg width="18" height="18" fill="none" stroke="var(--color-accent)" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <h2>Analisi Resell</h2>
+    </div>
+
+    <!-- Card 1: Prodotto Identificato -->
+    <div class="card">
+      <div class="clbl">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        Prodotto Identificato
+      </div>
+      <div id="r-prodotto" class="prodotto-header">
+        <div>
+          <div class="prodotto-nome" id="r-prodotto-nome">—</div>
+          <div class="prodotto-condizioni" id="r-prodotto-cond">—</div>
+        </div>
+        <span class="auth-badge auth-nd" id="r-auth-badge">—</span>
+      </div>
+    </div>
+
+    <!-- Card 2: Valore di Mercato -->
+    <div class="card">
+      <div class="clbl">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        Valore di Mercato
+      </div>
+      <div class="value-comparison" id="r-values"></div>
+      <div class="roi-display" id="r-roi" style="display:none">
+        <div class="roi-item">
+          <div class="roi-label">ROI as-is</div>
+          <div class="roi-value" id="r-roi-asis">—</div>
+        </div>
+        <div class="roi-item">
+          <div class="roi-label">ROI ottimale</div>
+          <div class="roi-value" id="r-roi-ottimale">—</div>
+        </div>
+        <div class="roi-item">
+          <div class="roi-label">Prezzo acquisto</div>
+          <div class="roi-value neutral" id="r-roi-prezzo">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Piano d'Azione Step by Step -->
+    <div class="card">
+      <div class="clbl">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        Piano d'Azione Step-by-Step
+      </div>
+      <div id="r-steps"></div>
+    </div>
+
+    <!-- Card 4: Dove Vendere -->
+    <div class="card">
+      <div class="clbl">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Dove Vendere
+      </div>
+      <div class="platform-list" id="r-platforms"></div>
+    </div>
+
+    <!-- Card 5: Raccomandazione Finale -->
+    <div class="card recommendation-card">
+      <div class="clbl" style="color:var(--color-accent)">
+        <svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Raccomandazione Finale
+      </div>
+      <div class="rec-price" id="r-rec-price">—</div>
+      <div class="rec-gain" id="r-rec-gain">—</div>
+      <div class="rec-time" id="r-rec-time">—</div>
+      <div class="rec-why" id="r-rec-why">—</div>
+    </div>
+
+    <!-- Card 6: Avvertenze (se presenti) -->
+    <div class="card" id="r-warnings-card" style="display:none">
+      <div class="clbl" style="color:var(--color-warning)">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Avvertenze
+      </div>
+      <div id="r-warnings-list"></div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  ListAI — Powered by <a href="https://openrouter.ai" target="_blank">OpenRouter</a>
+  &middot; <a href="guide.html">Guida API</a>
+  &middot; <a href="prompts.html">Prompt Utili</a>
+</footer>
+
+<script>
+/* ════════════════════════════════════════════
+   resell.js — inline (pagina autonoma)
+   ════════════════════════════════════════════ */
+
+var files = [], pendingKey = '';
+
+/* ── Scroll progress ── */
+window.addEventListener('scroll', function() {
+  var el = document.getElementById('scroll-progress');
+  if (!el) return;
+  var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  el.style.width = Math.min(pct, 100) + '%';
+});
+
+/* ── Toast ── */
+function showToast(msg) {
+  var t = document.getElementById('toast'), m = document.getElementById('toast-msg');
+  if (!t || !m) return;
+  m.textContent = msg; t.style.display = 'flex';
+  clearTimeout(t._timeout);
+  t._timeout = setTimeout(function() { t.style.display = 'none'; }, 2800);
+}
+
+/* ── Nav active ── */
+(function() {
+  var page = location.pathname.split('/').pop() || 'index.html';
+  var link = document.querySelector('a[href="' + page + '"]');
+  if (link) link.classList.add('active');
+})();
+
+/* ── Carica chiave salvata ── */
+(function() {
+  try {
+    var k = localStorage.getItem('lai_k'), e = localStorage.getItem('lai_e');
+    if (k && e && Date.now() < +e) document.getElementById('apiKey').value = k;
+  } catch (_) {}
+})();
+
+function toggleKey() {
+  var i = document.getElementById('apiKey');
+  i.type = i.type === 'password' ? 'text' : 'password';
+}
+function promptSave(k) { pendingKey = k; document.getElementById('saveModal').classList.add('open'); }
+function saveKey(yes) {
+  document.getElementById('saveModal').classList.remove('open');
+  if (yes && pendingKey) {
+    try { localStorage.setItem('lai_k', pendingKey); localStorage.setItem('lai_e', Date.now() + 30*24*60*60*1000); } catch (_) {}
+    showToast('✅ Chiave API salvata per 1 mese');
+  }
+  pendingKey = '';
+}
+
+/* ── Model ── */
+function onModelChange() {
+  var v = document.getElementById('modelSelect').value;
+  var ci = document.getElementById('customModel');
+  ci.style.display = v === 'custom' ? 'block' : 'none';
+  if (v === 'custom') ci.focus();
+}
+function getModel() {
+  var v = document.getElementById('modelSelect').value;
+  if (v === 'custom') { var c = document.getElementById('customModel').value.trim(); return c || 'google/gemini-3.1-flash-lite'; }
+  return v;
+}
+
+/* ── Opzioni contestuali ── */
+var CLOTHING_CATS_R = ['uomo', 'donna', 'unisex', 'bambini', 'sport'];
+
+function onResellCategoriaChange() {
+  var cat = document.getElementById('r-categoria').value;
+  document.getElementById('opts-elettronica').classList.toggle('visible', cat === 'elettronica');
+  document.getElementById('opts-abbigliamento').classList.toggle('visible', CLOTHING_CATS_R.includes(cat));
+  document.getElementById('opts-griffati').classList.toggle('visible', cat === 'griffati');
+  document.getElementById('opts-casa').classList.toggle('visible', cat === 'casa');
+  document.getElementById('opts-hobby').classList.toggle('visible', cat === 'hobby' || cat === 'intrattenimento');
+  // Clear previous selections when category changes
+  document.querySelectorAll('input[name="r-modalita"]').forEach(function(r) { r.checked = false; });
+}
+
+function getModalita() {
+  var sel = document.querySelector('input[name="r-modalita"]:checked');
+  return sel ? sel.value : null;
+}
+
+function getCategoriaResell() {
+  var map = {
+    donna: 'Abbigliamento Donna', uomo: 'Abbigliamento Uomo', unisex: 'Abbigliamento Unisex',
+    griffati: 'Articoli Griffati', bambini: 'Abbigliamento Bambini', sport: 'Sport',
+    elettronica: 'Elettronica', casa: 'Casa / Arredamento',
+    intrattenimento: 'Intrattenimento', hobby: 'Hobby e Collezionismo'
+  };
+  return map[document.getElementById('r-categoria').value] || 'Generico';
+}
+
+/* ── File upload ── */
+var dz = document.getElementById('dz');
+dz.addEventListener('dragover', function(e) { e.preventDefault(); dz.classList.add('over'); });
+dz.addEventListener('dragleave', function() { dz.classList.remove('over'); });
+dz.addEventListener('drop', function(e) { e.preventDefault(); dz.classList.remove('over'); addFiles([...e.dataTransfer.files]); });
+document.getElementById('fi').addEventListener('change', function(e) { addFiles([...e.target.files]); });
+
+function addFiles(f) {
+  var v = f.filter(function(x) { return x.type === 'image/jpeg' || x.type === 'image/png'; });
+  files = [...files, ...v].slice(0, 10);
+  renderP();
+  document.getElementById('go').disabled = files.length === 0;
+  hideErr();
+}
+function removeFile(i) { files.splice(i, 1); renderP(); document.getElementById('go').disabled = files.length === 0; }
+function renderP() {
+  var g = document.getElementById('pg'); g.innerHTML = '';
+  files.forEach(function(f, i) {
+    var u = URL.createObjectURL(f), d = document.createElement('div');
+    d.className = 'pi';
+    d.innerHTML = '<img src="' + u + '"/><button class="pr" onclick="removeFile(' + i + ')">&#x2715;</button>';
+    g.appendChild(d);
+  });
+  document.getElementById('pc').textContent = files.length ? files.length + '/10 immagini' : '';
+}
+function showErr(m) { var e = document.getElementById('em'); e.textContent = m; e.style.display = 'block'; }
+function hideErr() { document.getElementById('em').style.display = 'none'; }
+
+/* ── Resize ── */
+function resEnc(file, max) {
+  max = max || 640;
+  return new Promise(function(res, rej) {
+    var img = new Image(), url = URL.createObjectURL(file);
+    img.onload = function() {
+      var sc = Math.min(1, max / Math.max(img.width, img.height));
+      var w = Math.round(img.width * sc), h = Math.round(img.height * sc);
+      var c = document.createElement('canvas'); c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      res(c.toDataURL('image/jpeg', 0.82).split(',')[1]);
+    };
+    img.onerror = function() { rej(new Error('Errore lettura immagine')); };
+    img.src = url;
+  });
+}
+
+function escHtml(s) {
+  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/* ════════════════════════════════
+   ANALYZE RESELL
+   ════════════════════════════════ */
+async function analyzeResell() {
+  var apiKey = document.getElementById('apiKey').value.trim();
+  var model = getModel();
+  if (!apiKey) { showErr('Inserisci la tua OpenRouter API Key.'); return; }
+  if (!files.length) { showErr("Carica almeno un'immagine."); return; }
+  hideErr();
+
+  var btn = document.getElementById('go');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="sp"></span> Analisi in corso…';
+  document.getElementById('results-r').style.display = 'none';
+
+  var savedKey = (function() { try { return localStorage.getItem('lai_k'); } catch (_) { return null; } })();
+
+  try {
+    var imgs = await Promise.all(files.map(async function(f) {
+      var b64 = await resEnc(f, 640);
+      return { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + b64 } };
+    }));
+
+    var categoria = getCategoriaResell();
+    var prezzoAcquisto = document.getElementById('r-prezzo').value.trim();
+    var modalitaRiparazione = getModalita();
+    var infoExtra = document.getElementById('r-extra').value.trim();
+
+    var resellPrompt =
+      // ═══ IDENTITÀ ═══
+      'Sei RESELLAI, un esperto analista di investimenti nel mercato del second hand e resell. ' +
+      'La tua missione: valutare oggetti e fornire piani d\'azione CONCRETI e REALISTICI per massimizzare il guadagno. ' +
+      'Ogni consiglio deve essere specifico, pratico e basato su dati reali di mercato. ZERO genericità.\n\n' +
+
+      // ═══ DATI INPUT ═══
+      'PRODOTTO DA ANALIZZARE:\n' +
+      '- Categoria: ' + categoria + '\n' +
+      (prezzoAcquisto ? '- Prezzo pagato / budget acquisto: €' + prezzoAcquisto + '\n' : '- Prezzo acquisto: non fornito, stimalo dalle foto se visibile\n') +
+      (modalitaRiparazione ? '- Preferenza gestione: ' + modalitaRiparazione + '\n' : '') +
+      (infoExtra ? '- Info aggiuntive: ' + infoExtra + '\n' : '') +
+
+      // ═══ ANALISI VISIVA ═══
+      '\nFASE 1 — IDENTIFICAZIONE PRODOTTO (da immagini, massima precisione):\n' +
+      'Analizza TUTTE le immagini. Identifica:\n' +
+      '1. Prodotto esatto: brand, modello, anno/generazione se identificabile\n' +
+      '2. Condizioni attuali: descrivi TUTTI i difetti visibili (graffi, rotture, usura, macchie)\n' +
+      '3. Componenti presenti/mancanti (es: telefono senza caricabatteria, borsa senza tracolla)\n' +
+      '4. Autenticità: segnali di contraffazione se visibili (scrivi: verificata / sospetta / non determinabile)\n' +
+      '5. Prezzo visibile nelle foto (es: cartellino, schermata annuncio) — se presente, estrailo\n' +
+      'Sii ONESTO: se non riesci a identificare il modello esatto, dillo chiaramente.\n\n' +
+
+      // ═══ ANALISI VALORE ═══
+      '\nFASE 2 — ANALISI VALORE DI MERCATO:\n' +
+      'A) Valore attuale "as-is":\n' +
+      '   - Su Vinted Italia: stima range realistico per questo articolo in queste condizioni\n' +
+      '   - Su eBay Italia: range prezzi usato\n' +
+      '   - Su Subito/Marketplace Facebook: se rilevante per categoria\n' +
+      '   - Valore come "per parti" se è un dispositivo elettronico (oppure null)\n\n' +
+      'B) Valore potenziale dopo intervento:\n' +
+      '   - Valore dopo pulizia/lavaggio: stima (o null se non applicabile)\n' +
+      '   - Valore dopo riparazione: stima (o null se non applicabile)\n' +
+      '   - Valore massimo raggiungibile con intervento ottimale\n\n' +
+      'C) Calcolo ROI (solo se prezzo_acquisto noto):\n' +
+      '   ROI = (valore_vendita - prezzo_acquisto - costo_intervento) / prezzo_acquisto × 100\n' +
+      '   Calcola per scenario as-is e ottimale\n\n' +
+
+      // ═══ PIANO D\'AZIONE ═══
+      '\nFASE 3 — PIANO D\'AZIONE STEP-BY-STEP:\n' +
+      'Fornisci un piano concreto, adattato alla modalità: ' + (modalitaRiparazione || 'determina il piano migliore') + '\n' +
+      'Per OGNI step specifica:\n' +
+      '- Cosa fare esattamente (istruzioni pratiche, non vaghe)\n' +
+      '- Tempo stimato (es. "30 minuti")\n' +
+      '- Costo stimato (es. "€0 fai da te")\n' +
+      '- Difficoltà: facile / media / difficile\n' +
+      '- Rischio: basso / medio / alto\n' +
+      '- Guadagno atteso da questo step (es. "+€30 sul valore")\n\n' +
+
+      // ═══ PIATTAFORME ═══
+      '\nFASE 4 — DOVE VENDERE:\n' +
+      'Per questo prodotto confronta: Vinted, eBay, Subito/Facebook, piattaforme specializzate.\n' +
+      'Indica commissioni, pro, contro, e una raccomandazione finale.\n\n' +
+
+      // ═══ OUTPUT JSON ═══
+      '\nOUTPUT: SOLO JSON VALIDO, zero markdown, zero testo extra.\n' +
+      'Schema:\n' +
+      '{\n' +
+      '  "prodotto": {\n' +
+      '    "identificato": "Brand Modello anno",\n' +
+      '    "condizioni_attuali": "descrizione onesta e completa",\n' +
+      '    "prezzo_acquisto_rilevato": "€X o null",\n' +
+      '    "autenticita": "verificata o sospetta o non determinabile"\n' +
+      '  },\n' +
+      '  "valori": {\n' +
+      '    "as_is": {"vinted": "€X-Y", "ebay": "€X-Y", "subito": "€X-Y", "per_parti": "€X-Y o null"},\n' +
+      '    "dopo_pulizia": "€X-Y o null",\n' +
+      '    "dopo_riparazione": "€X-Y o null",\n' +
+      '    "valore_massimo_raggiungibile": "€X",\n' +
+      '    "roi_as_is": "X% o null",\n' +
+      '    "roi_ottimale": "X% o null"\n' +
+      '  },\n' +
+      '  "piano_azione": [\n' +
+      '    {\n' +
+      '      "step": 1,\n' +
+      '      "titolo": "Titolo breve step",\n' +
+      '      "descrizione": "Istruzioni pratiche dettagliate",\n' +
+      '      "tempo": "es. 20 minuti",\n' +
+      '      "costo": "€0-5",\n' +
+      '      "difficolta": "facile",\n' +
+      '      "rischio": "basso",\n' +
+      '      "guadagno_atteso": "+€15 sul valore"\n' +
+      '    }\n' +
+      '  ],\n' +
+      '  "piattaforme": [\n' +
+      '    {"nome": "Vinted", "commissione": "5%+€0.70", "pro": "...", "contro": "...", "consigliata": true},\n' +
+      '    {"nome": "eBay", "commissione": "~12.8%", "pro": "...", "contro": "...", "consigliata": false}\n' +
+      '  ],\n' +
+      '  "raccomandazione_finale": {\n' +
+      '    "piattaforma": "Nome",\n' +
+      '    "strategia": "as_is o dopo_pulizia o dopo_riparazione o per_parti",\n' +
+      '    "prezzo_target": "€X",\n' +
+      '    "guadagno_netto_stimato": "€X (dopo commissioni e costi)",\n' +
+      '    "tempo_totale_stimato": "es. 2-3 ore + 3-7 giorni attesa vendita",\n' +
+      '    "perche": "Spiegazione 2-3 frasi del perché questa è la scelta migliore"\n' +
+      '  },\n' +
+      '  "avvertenze": [],\n' +
+      '  "confidence_score": 85\n' +
+      '}';
+
+    var body = {
+      model: model,
+      messages: [{ role: 'user', content: [{ type: 'text', text: resellPrompt }].concat(imgs) }],
+      temperature: 0.10,
+      max_tokens: 2000
+    };
+
+    async function fetchR(url, opts, n) {
+      n = n || 3;
+      for (var i = 1; i <= n; i++) {
+        var r = await fetch(url, opts);
+        if ((r.status === 429 || r.status === 503) && i < n) {
+          var w = i * 10;
+          btn.innerHTML = '<span class="sp"></span> Occupato, riprovo tra ' + w + 's…';
+          await new Promise(function(res) { setTimeout(res, w * 1000); });
+          continue;
+        }
+        return r;
+      }
+    }
+
+    var resp = await fetchR('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey,
+        'HTTP-Referer': location.href,
+        'X-Title': 'ListAI Resell'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!resp.ok) {
+      var err = await resp.json().catch(function() { return {}; });
+      if (resp.status === 401) throw new Error('API Key non valida — controlla su openrouter.ai/keys');
+      if (resp.status === 429) throw new Error('Modello sovraccarico — prova un altro dal menu!');
+      throw new Error((err && err.error && err.error.message) || 'Errore API (' + resp.status + ')');
+    }
+
+    var data = await resp.json();
+    var raw = (data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
+    var parsed;
+    try {
+      var clean = raw.replace(/```json|```/g, '').replace(/^[^{]*/, '').replace(/[^}]*$/, '').trim();
+      parsed = JSON.parse(clean);
+    } catch (e) {
+      var match = raw.match(/\{[\s\S]*\}/);
+      if (match) {
+        try { parsed = JSON.parse(match[0]); }
+        catch (_) { throw new Error('Risposta AI non valida. Riprova o cambia modello.'); }
+      } else {
+        throw new Error('Risposta AI non valida. Riprova o cambia modello.');
+      }
+    }
+
+    renderResellResults(parsed);
+    if (apiKey !== savedKey) promptSave(apiKey);
+    showToast('✅ Analisi resell completata!');
+
+  } catch (e) {
+    showErr(e.message || 'Errore imprevisto.');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/></svg> Analizza di nuovo';
+  }
+}
+
+/* ════════════════════════════════
+   RENDER RESELL RESULTS
+   ════════════════════════════════ */
+function renderResellResults(d) {
+  var prodotto = d.prodotto || {};
+  var valori = d.valori || {};
+  var piano = d.piano_azione || [];
+  var piattaforme = d.piattaforme || [];
+  var rec = d.raccomandazione_finale || {};
+  var avvertenze = d.avvertenze || [];
+  var confidence = d.confidence_score || 0;
+
+  // ── Prodotto Identificato ──
+  document.getElementById('r-prodotto-nome').textContent = prodotto.identificato || 'Non identificato';
+  document.getElementById('r-prodotto-cond').textContent = prodotto.condizioni_attuali || '—';
+
+  var authBadge = document.getElementById('r-auth-badge');
+  var auth = (prodotto.autenticita || 'non determinabile').toLowerCase();
+  authBadge.textContent = auth === 'verificata' ? '✅ Autenticità verificata' :
+    auth === 'sospetta' ? '⚠️ Autenticità sospetta' : '❓ Non determinabile';
+  authBadge.className = 'auth-badge ' + (auth === 'verificata' ? 'auth-verificata' : auth === 'sospetta' ? 'auth-sospetta' : 'auth-nd');
+
+  // ── Valore di Mercato ──
+  var asIs = valori.as_is || {};
+  var valCells = [
+    { label: 'As-is · Vinted', val: asIs.vinted, sub: 'Stato attuale' },
+    { label: 'As-is · eBay', val: asIs.ebay, sub: 'Stato attuale' },
+    asIs.subito ? { label: 'As-is · Subito', val: asIs.subito, sub: 'Marketplace locale' } : null,
+    asIs.per_parti && asIs.per_parti !== 'null' ? { label: '🔩 Per parti', val: asIs.per_parti, sub: 'Smontaggio' } : null,
+    valori.dopo_pulizia && valori.dopo_pulizia !== 'null' ? { label: '🫧 Dopo pulizia', val: valori.dopo_pulizia, sub: 'Con pulizia' } : null,
+    valori.dopo_riparazione && valori.dopo_riparazione !== 'null' ? { label: '🔧 Dopo riparazione', val: valori.dopo_riparazione, sub: 'Con riparazione' } : null,
+    { label: '★ Valore massimo', val: valori.valore_massimo_raggiungibile, sub: 'Intervento ottimale', highlight: true }
+  ].filter(Boolean);
+
+  document.getElementById('r-values').innerHTML = valCells.map(function(c) {
+    return '<div class="val-cell' + (c.highlight ? ' highlight' : '') + '">' +
+      '<div class="val-cell-label">' + escHtml(c.label) + '</div>' +
+      '<div class="val-cell-value">' + escHtml(c.val || '—') + '</div>' +
+      '<div class="val-cell-sub">' + escHtml(c.sub) + '</div>' +
+      '</div>';
+  }).join('');
+
+  // ── ROI ──
+  if (valori.roi_as_is || valori.roi_ottimale) {
+    document.getElementById('r-roi').style.display = 'flex';
+    var roiAsis = valori.roi_as_is || '—';
+    var roiOtt = valori.roi_ottimale || '—';
+    var prezzoAcq = prodotto.prezzo_acquisto_rilevato || (document.getElementById('r-prezzo').value ? '€' + document.getElementById('r-prezzo').value : null);
+
+    var roiAsisEl = document.getElementById('r-roi-asis');
+    roiAsisEl.textContent = roiAsis;
+    var num = parseFloat(String(roiAsis).replace('%',''));
+    roiAsisEl.className = 'roi-value ' + (num > 0 ? 'positive' : num < 0 ? 'negative' : 'neutral');
+
+    var roiOttEl = document.getElementById('r-roi-ottimale');
+    roiOttEl.textContent = roiOtt;
+    var num2 = parseFloat(String(roiOtt).replace('%',''));
+    roiOttEl.className = 'roi-value ' + (num2 > 0 ? 'positive' : num2 < 0 ? 'negative' : 'neutral');
+
+    document.getElementById('r-roi-prezzo').textContent = prezzoAcq || '—';
+  } else {
+    document.getElementById('r-roi').style.display = 'none';
+  }
+
+  // ── Piano d'azione ──
+  document.getElementById('r-steps').innerHTML = piano.map(function(s) {
+    var diff = (s.difficolta || 'facile').toLowerCase();
+    return '<div class="step" onclick="this.classList.toggle(\'open\')">' +
+      '<div class="step-header">' +
+        '<span class="step-num">' + escHtml(String(s.step)) + '</span>' +
+        '<span class="step-title">' + escHtml(s.titolo || '') + '</span>' +
+        '<div class="step-meta">' +
+          '<span class="badge-tempo">⏱ ' + escHtml(s.tempo || '') + '</span>' +
+          '<span class="badge-costo">💰 ' + escHtml(s.costo || '') + '</span>' +
+          '<span class="badge-diff diff-' + diff + '">' + escHtml(s.difficolta || '') + '</span>' +
+        '</div>' +
+        '<span class="step-gain">' + escHtml(s.guadagno_atteso || '') + '</span>' +
+      '</div>' +
+      '<div class="step-body">' + escHtml(s.descrizione || '') + '</div>' +
+    '</div>';
+  }).join('');
+
+  // ── Piattaforme ──
+  document.getElementById('r-platforms').innerHTML = piattaforme.map(function(p) {
+    return '<div class="platform-card' + (p.consigliata ? ' recommended' : '') + '">' +
+      '<div style="flex:1">' +
+        '<div class="platform-name">' + escHtml(p.nome || '') + '</div>' +
+        '<div class="platform-comm">Commissione: ' + escHtml(p.commissione || '') + '</div>' +
+        '<div class="platform-pros-cons">' +
+          (p.pro ? '<span class="platform-pro">✓ ' + escHtml(p.pro) + '</span>' : '') +
+          (p.contro ? '<span class="platform-con">✗ ' + escHtml(p.contro) + '</span>' : '') +
+        '</div>' +
+      '</div>' +
+      (p.consigliata ? '<span class="platform-badge-rec">⭐ Consigliata</span>' : '') +
+    '</div>';
+  }).join('');
+
+  // ── Raccomandazione finale ──
+  document.getElementById('r-rec-price').textContent = rec.prezzo_target || '—';
+  document.getElementById('r-rec-gain').textContent = rec.guadagno_netto_stimato ? '💰 Guadagno netto: ' + rec.guadagno_netto_stimato : '—';
+  document.getElementById('r-rec-time').textContent = rec.tempo_totale_stimato ? '⏱ ' + rec.tempo_totale_stimato : '—';
+  document.getElementById('r-rec-why').textContent = rec.perche || '—';
+
+  // ── Avvertenze ──
+  if (avvertenze.length) {
+    document.getElementById('r-warnings-card').style.display = 'block';
+    document.getElementById('r-warnings-list').innerHTML = avvertenze.map(function(w) {
+      return '<div class="warning-item">⚠️ ' + escHtml(w) + '</div>';
+    }).join('');
+  } else {
+    document.getElementById('r-warnings-card').style.display = 'none';
+  }
+
+  // ── Low confidence banner ──
+  var existingBanner = document.getElementById('low-conf-banner');
+  if (existingBanner) existingBanner.remove();
+  if (confidence < 60) {
+    var banner = document.createElement('div');
+    banner.id = 'low-conf-banner';
+    banner.className = 'low-confidence-banner';
+    banner.innerHTML = '⚠️ <strong>Bassa affidabilità (' + confidence + '%)</strong> — Il modello non ha identificato il prodotto con certezza. Verifica manualmente i prezzi prima di procedere.';
+    document.getElementById('results-r').insertBefore(banner, document.getElementById('results-r').firstChild.nextSibling);
+  }
+
+  var r = document.getElementById('results-r');
+  r.style.display = 'block';
+  r.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>

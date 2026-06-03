@@ -17,8 +17,9 @@
   <div class="hi">
     <a href="index.html" class="logo">List<span>AI</span></a>
     <nav class="nav">
-      <a href="index.html">✨ Crea Annuncio</a>
-      <a href="prompts.html" class="active">📚 Prompt Utili</a>
+      <a href="index.html" id="nav-create">✨ Crea Annuncio</a>
+      <a href="resell.html" id="nav-resell">🔍 Analisi Resell</a>
+      <a href="prompts.html" id="nav-prompts">📚 Prompt</a>
     </nav>
     <span class="badge">Database</span>
   </div>
@@ -841,5 +842,12 @@ Etichetta, fragile?, istruzioni per il corriere</div>
   renderPersonalPrompts();
 </script>
 
+<script>
+(function(){
+  var page = location.pathname.split('/').pop() || 'index.html';
+  var link = document.querySelector('a[href="' + page + '"]');
+  if (link) link.classList.add('active');
+})();
+</script>
 </body>
 </html>

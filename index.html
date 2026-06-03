@@ -36,8 +36,9 @@
   <div class="hi">
     <a href="index.html" class="logo">List<span>AI</span></a>
     <nav class="nav">
-      <a href="index.html" class="active">✨ Crea Annuncio</a>
-      <a href="prompts.html">📚 Prompt Utili</a>
+      <a href="index.html" id="nav-create">✨ Crea Annuncio</a>
+      <a href="resell.html" id="nav-resell">🔍 Analisi Resell</a>
+      <a href="prompts.html" id="nav-prompts">📚 Prompt</a>
     </nav>
     <span class="badge">OpenRouter</span>
   </div>
@@ -85,10 +86,10 @@
       <div style="flex:1;min-width:190px;display:flex;flex-direction:column;gap:.38rem">
         <select class="msel" id="modelSelect" onchange="onModelChange()">
           <optgroup label="⭐ Migliore qualità/prezzo">
-            <option value="google/gemini-3.1-flash-lite">Gemini 3.1 Flash Lite — ~€0.0004/analisi 🔥</option>
+            <option value="google/gemini-3.1-flash-lite" selected>Gemini 3.1 Flash Lite — ~€0.0004/analisi 🔥</option>
           </optgroup>
           <optgroup label="✨ Gemini">
-            <option value="google/gemini-2.5-flash" selected>Gemini 2.5 Flash — ~€0.001/analisi ⭐</option>
+            <option value="google/gemini-2.5-flash">Gemini 2.5 Flash — ~€0.001/analisi ⭐</option>
             <option value="google/gemini-3-flash-preview">Gemini 3 Flash — ~€0.001/analisi</option>
             <option value="google/gemini-3.1-pro-preview">Gemini 3.1 Pro — ~€0.008/analisi</option>
             <option value="google/gemini-2.5-flash-lite">Gemini 2.5 Flash Lite — ~€0.0002/analisi</option>
@@ -107,31 +108,9 @@
       <span class="ahint" style="color:var(--color-accent)">↑ Scegli il modello</span>
     </div>
 
-    <div class="api-row" style="align-items:flex-start">
-      <span class="albl" style="padding-top:.35rem">Lingue</span>
-      <div style="flex:1;min-width:190px;display:flex;flex-direction:column;gap:.48rem">
-        <div class="lang-tags-row" id="langTags"></div>
-        <div style="display:flex;gap:.5rem;align-items:center">
-          <select class="msel" id="langAdd" onchange="addLangFromSelect()" style="flex:1">
-            <option value="">+ Aggiungi lingua…</option>
-            <option value="it">🇮🇹 Italiano</option>
-            <option value="en">🇬🇧 English</option>
-            <option value="fr">🇫🇷 Français</option>
-            <option value="de">🇩🇪 Deutsch</option>
-            <option value="es">🇪🇸 Español</option>
-            <option value="pt">🇵🇹 Português</option>
-            <option value="nl">🇳🇱 Nederlands</option>
-            <option value="pl">🇵🇱 Polski</option>
-            <option value="sv">🇸🇪 Svenska</option>
-            <option value="ro">🇷🇴 Română</option>
-          </select>
-        </div>
-      </div>
-      <span class="ahint" style="padding-top:.35rem">Default IT + EN · salvate nel browser</span>
-    </div>
   </div>
 
-  <!-- Categoria + Condizione + Taglia + Info extra -->
+  <!-- Categoria + Condizione + Accordion opzioni avanzate -->
   <div class="card">
     <div class="card-header">
       <div class="card-header-icon">
@@ -166,138 +145,178 @@
       </div>
     </div>
 
-    <div class="egrid">
-      <div class="ig">
-        <label>Condizione articolo</label>
-        <select id="condizione">
-          <option value="NWT">🏷️ Nuovo con cartellino</option>
-          <option value="NWOT">✨ Nuovo senza cartellino</option>
-          <option value="EUC">⭐ Usato — ottime condizioni</option>
-          <option value="GUC">👍 Usato — buone condizioni</option>
-          <option value="POOR">⚠️ Usato — condizioni pessime</option>
-        </select>
-      </div>
+    <div class="ig" style="margin-bottom:.85rem">
+      <label>Condizione articolo</label>
+      <select id="condizione">
+        <option value="NWT">🏷️ Nuovo con cartellino</option>
+        <option value="NWOT">✨ Nuovo senza cartellino</option>
+        <option value="EUC">⭐ Usato — ottime condizioni</option>
+        <option value="GUC">👍 Usato — buone condizioni</option>
+        <option value="POOR">⚠️ Usato — condizioni pessime</option>
+      </select>
+    </div>
 
-      <div class="ig" id="blockTaglia">
-        <label>Taglia</label>
-        <select id="tagliaTipo" onchange="onT()">
-          <option value="photo">📸 Visibile nelle foto</option>
-          <option value="unica">📐 Taglia Unica</option>
-          <option value="na">❌ Non applicabile</option>
-          <option value="manual">✏️ Inserisci manualmente</option>
-        </select>
-        <div class="tsub" id="tsub">
-          <div class="trow">
-            <select id="catCapo" style="flex:1.3">
-              <option>T-shirt/Top donna</option><option>T-shirt/Top uomo</option>
-              <option>Camicia donna</option><option>Camicia uomo</option>
-              <option>Pantalone donna</option><option>Pantalone uomo</option>
-              <option>Giacca/Cappotto donna</option><option>Giacca/Cappotto uomo</option>
-              <option>Vestito/Gonna</option><option>Scarpe donna</option>
-              <option>Scarpe uomo</option><option>Bambino/a</option>
-            </select>
-            <input type="text" id="tagliaVal" placeholder="es. M, 42…" style="flex:.7;min-width:55px"/>
-          </div>
-          <button class="szbt" onclick="toggleSz()">📏 Tabella taglie IT</button>
-          <div class="szwrap" id="szwrap">
-            <div class="sztabs">
-              <button class="sztab active" onclick="showSz('donna',this)">Donna</button>
-              <button class="sztab" onclick="showSz('uomo',this)">Uomo</button>
-              <button class="sztab" onclick="showSz('scarpe',this)">Scarpe</button>
+    <!-- Accordion opzioni avanzate -->
+    <details id="advanced-opts" class="advanced-accordion">
+      <summary class="advanced-summary">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        ⚙️ Opzioni avanzate
+        <svg class="acc-arrow" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+
+      <div class="advanced-body">
+        <!-- Taglia (clothing only) -->
+        <div class="ig" id="blockTaglia" style="margin-bottom:.85rem">
+          <label>Taglia <span style="font-weight:400;font-size:.68rem;text-transform:none;letter-spacing:0">(AI la ricava dalle foto)</span></label>
+          <select id="tagliaTipo" onchange="onT()">
+            <option value="photo">📸 Visibile nelle foto</option>
+            <option value="unica">📐 Taglia Unica</option>
+            <option value="na">❌ Non applicabile</option>
+            <option value="manual">✏️ Inserisci manualmente</option>
+          </select>
+          <div class="tsub" id="tsub">
+            <div class="trow">
+              <select id="catCapo" style="flex:1.3">
+                <option>T-shirt/Top donna</option><option>T-shirt/Top uomo</option>
+                <option>Camicia donna</option><option>Camicia uomo</option>
+                <option>Pantalone donna</option><option>Pantalone uomo</option>
+                <option>Giacca/Cappotto donna</option><option>Giacca/Cappotto uomo</option>
+                <option>Vestito/Gonna</option><option>Scarpe donna</option>
+                <option>Scarpe uomo</option><option>Bambino/a</option>
+              </select>
+              <input type="text" id="tagliaVal" placeholder="es. M, 42…" style="flex:.7;min-width:55px"/>
             </div>
-            <div class="szp active" id="szp-donna"><table>
-              <tr><th>Label</th><th>IT</th><th>EU</th><th>UK</th><th>US</th></tr>
-              <tr><td>XXS</td><td>34</td><td>32</td><td>4</td><td>0</td></tr>
-              <tr><td>XS</td><td>36</td><td>34</td><td>6</td><td>2</td></tr>
-              <tr><td>S</td><td>38</td><td>36</td><td>8</td><td>4</td></tr>
-              <tr><td>M</td><td>40</td><td>38</td><td>10</td><td>6</td></tr>
-              <tr><td>L</td><td>42</td><td>40</td><td>12</td><td>8</td></tr>
-              <tr><td>XL</td><td>44</td><td>42</td><td>14</td><td>10</td></tr>
-              <tr><td>XXL</td><td>46</td><td>44</td><td>16</td><td>12</td></tr>
-            </table></div>
-            <div class="szp" id="szp-uomo"><table>
-              <tr><th>Label</th><th>IT</th><th>EU</th><th>UK</th><th>US</th></tr>
-              <tr><td>XS</td><td>44</td><td>44</td><td>34</td><td>34</td></tr>
-              <tr><td>S</td><td>46</td><td>46</td><td>36</td><td>36</td></tr>
-              <tr><td>M</td><td>48</td><td>48</td><td>38</td><td>38</td></tr>
-              <tr><td>L</td><td>50</td><td>50</td><td>40</td><td>40</td></tr>
-              <tr><td>XL</td><td>52</td><td>52</td><td>42</td><td>42</td></tr>
-              <tr><td>XXL</td><td>54</td><td>54</td><td>44</td><td>44</td></tr>
-            </table></div>
-            <div class="szp" id="szp-scarpe"><table>
-              <tr><th>IT/EU</th><th>UK</th><th>US♀</th><th>US♂</th></tr>
-              <tr><td>35</td><td>2.5</td><td>5</td><td>3.5</td></tr>
-              <tr><td>36</td><td>3.5</td><td>6</td><td>4.5</td></tr>
-              <tr><td>37</td><td>4</td><td>6.5</td><td>5</td></tr>
-              <tr><td>38</td><td>5</td><td>7.5</td><td>6</td></tr>
-              <tr><td>39</td><td>5.5</td><td>8</td><td>6.5</td></tr>
-              <tr><td>40</td><td>6.5</td><td>9</td><td>7.5</td></tr>
-              <tr><td>41</td><td>7</td><td>9.5</td><td>8</td></tr>
-              <tr><td>42</td><td>8</td><td>10.5</td><td>9</td></tr>
-              <tr><td>43</td><td>9</td><td>11</td><td>10</td></tr>
-              <tr><td>44</td><td>9.5</td><td>11.5</td><td>10.5</td></tr>
-              <tr><td>45</td><td>10.5</td><td>12.5</td><td>11.5</td></tr>
-            </table></div>
+            <a href="#" class="szbt-link" onclick="document.getElementById('sizeModal').classList.add('open');return false;">📏 Tabella taglie IT</a>
           </div>
         </div>
-      </div>
 
-      <div class="ig" id="blockSottocat" style="display:none">
-        <label>Sottocategoria oggetto</label>
-        <input type="text" id="sottocatVal" placeholder="es. iPhone, Lampada, Libro… (opzionale)"/>
-        <span class="hint">Il modello lo identifica dalle foto</span>
-      </div>
-    </div>
+        <!-- Sottocategoria (non-clothing) -->
+        <div class="ig" id="blockSottocat" style="display:none;margin-bottom:.85rem">
+          <label>Sottocategoria oggetto</label>
+          <input type="text" id="sottocatVal" placeholder="es. iPhone, Lampada, Libro… (opzionale)"/>
+          <span class="hint">Il modello lo identifica dalle foto</span>
+        </div>
 
-    <!-- Nuovi campi FASE 2 -->
-    <div class="section-divider" style="margin-top:1rem">Campi aggiuntivi (opzionali)</div>
+        <div class="egrid" style="margin-bottom:.85rem">
+          <div class="ig">
+            <label>Colore</label>
+            <input type="text" id="colorField" placeholder="es. nero, rosso bordeaux…"/>
+          </div>
+          <div class="ig">
+            <label>Materiale</label>
+            <input type="text" id="materialField" placeholder="es. 100% cotone, pelle…"/>
+          </div>
+          <div class="ig">
+            <label>Anno acquisto</label>
+            <select id="purchasedYear">
+              <option value="">Non specificato</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="prima">Prima del 2021</option>
+            </select>
+          </div>
+          <div class="ig">
+            <label>Spedizione</label>
+            <select id="shippingIncluded">
+              <option value="no">Non inclusa nel prezzo</option>
+              <option value="yes">Inclusa nel prezzo</option>
+            </select>
+          </div>
+        </div>
 
-    <div class="egrid" style="margin-bottom:.85rem">
-      <div class="ig">
-        <label>Colore</label>
-        <input type="text" id="colorField" placeholder="es. nero, rosso bordeaux, teal…"/>
-      </div>
-      <div class="ig">
-        <label>Materiale</label>
-        <input type="text" id="materialField" placeholder="es. 100% cotone, pelle, cashmere…"/>
-      </div>
-      <div class="ig">
-        <label>Anno acquisto</label>
-        <select id="purchasedYear">
-          <option value="">Non specificato</option>
-          <option value="2025">2025</option>
-          <option value="2024">2024</option>
-          <option value="2023">2023</option>
-          <option value="2022">2022</option>
-          <option value="2021">2021</option>
-          <option value="prima">Prima del 2021</option>
-        </select>
-      </div>
-      <div class="ig">
-        <label>Spedizione</label>
-        <select id="shippingIncluded">
-          <option value="no">Non inclusa nel prezzo</option>
-          <option value="yes">Inclusa nel prezzo</option>
-        </select>
-      </div>
-    </div>
+        <div class="checkbox-group" style="flex-direction:row;flex-wrap:wrap;gap:.75rem 1.5rem;margin-bottom:.85rem">
+          <label class="checkbox-item">
+            <input type="checkbox" id="hasTags"/>
+            <span>Ha ancora il cartellino originale</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="hasBox"/>
+            <span>Ha scatola / imballo originale</span>
+          </label>
+        </div>
 
-    <div class="checkbox-group" style="flex-direction:row;flex-wrap:wrap;gap:.75rem 1.5rem">
-      <label class="checkbox-item">
-        <input type="checkbox" id="hasTags"/>
-        <span>Ha ancora il cartellino originale</span>
-      </label>
-      <label class="checkbox-item">
-        <input type="checkbox" id="hasBox"/>
-        <span>Ha scatola / imballo originale</span>
-      </label>
-    </div>
+        <!-- Info aggiuntive -->
+        <div class="ig">
+          <label>ℹ️ Informazioni aggiuntive</label>
+          <textarea id="extraInfo" placeholder="Es: acquistato a Londra, piccolo difetto sul bottone, limited edition…"></textarea>
+          <span class="hint">Il modello verificherà e integrerà queste info nell'annuncio</span>
+        </div>
 
-    <!-- Info aggiuntive libere -->
-    <div class="ig" style="margin-top:var(--space-4)">
-      <label>ℹ️ Informazioni aggiuntive <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.68rem">(opzionale)</span></label>
-      <textarea id="extraInfo" placeholder="Es: acquistato a Londra nel 2022, piccolo difetto sul bottone, mai lavato in lavatrice, colore esatto verde militare, limited edition, accessori inclusi…"></textarea>
-      <span class="hint">Il modello verificherà e integrerà queste info nell'annuncio</span>
+        <!-- Lingue (moved from API config) -->
+        <div class="ig" style="margin-top:var(--space-4)">
+          <label>🌍 Lingue annuncio</label>
+          <div style="display:flex;flex-direction:column;gap:.48rem">
+            <div class="lang-tags-row" id="langTags"></div>
+            <div style="display:flex;gap:.5rem;align-items:center">
+              <select class="msel" id="langAdd" onchange="addLangFromSelect()" style="flex:1">
+                <option value="">+ Aggiungi lingua…</option>
+                <option value="it">🇮🇹 Italiano</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="fr">🇫🇷 Français</option>
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="pt">🇵🇹 Português</option>
+                <option value="nl">🇳🇱 Nederlands</option>
+                <option value="pl">🇵🇱 Polski</option>
+                <option value="sv">🇸🇪 Svenska</option>
+                <option value="ro">🇷🇴 Română</option>
+              </select>
+            </div>
+          </div>
+          <span class="hint">Default IT + EN · salvate nel browser</span>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Modal tabella taglie -->
+  <div class="modal-o" id="sizeModal">
+    <div class="modal">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4)">
+        <h3>📏 Tabella Taglie IT</h3>
+        <button class="mbtn n" onclick="document.getElementById('sizeModal').classList.remove('open')" style="padding:4px 12px;min-width:auto">✕</button>
+      </div>
+      <div class="sztabs">
+        <button class="sztab active" onclick="showSz('donna',this)">Donna</button>
+        <button class="sztab" onclick="showSz('uomo',this)">Uomo</button>
+        <button class="sztab" onclick="showSz('scarpe',this)">Scarpe</button>
+      </div>
+      <div class="szp active" id="szp-donna"><table>
+        <tr><th>Label</th><th>IT</th><th>EU</th><th>UK</th><th>US</th></tr>
+        <tr><td>XXS</td><td>34</td><td>32</td><td>4</td><td>0</td></tr>
+        <tr><td>XS</td><td>36</td><td>34</td><td>6</td><td>2</td></tr>
+        <tr><td>S</td><td>38</td><td>36</td><td>8</td><td>4</td></tr>
+        <tr><td>M</td><td>40</td><td>38</td><td>10</td><td>6</td></tr>
+        <tr><td>L</td><td>42</td><td>40</td><td>12</td><td>8</td></tr>
+        <tr><td>XL</td><td>44</td><td>42</td><td>14</td><td>10</td></tr>
+        <tr><td>XXL</td><td>46</td><td>44</td><td>16</td><td>12</td></tr>
+      </table></div>
+      <div class="szp" id="szp-uomo"><table>
+        <tr><th>Label</th><th>IT</th><th>EU</th><th>UK</th><th>US</th></tr>
+        <tr><td>XS</td><td>44</td><td>44</td><td>34</td><td>34</td></tr>
+        <tr><td>S</td><td>46</td><td>46</td><td>36</td><td>36</td></tr>
+        <tr><td>M</td><td>48</td><td>48</td><td>38</td><td>38</td></tr>
+        <tr><td>L</td><td>50</td><td>50</td><td>40</td><td>40</td></tr>
+        <tr><td>XL</td><td>52</td><td>52</td><td>42</td><td>42</td></tr>
+        <tr><td>XXL</td><td>54</td><td>54</td><td>44</td><td>44</td></tr>
+      </table></div>
+      <div class="szp" id="szp-scarpe"><table>
+        <tr><th>IT/EU</th><th>UK</th><th>US♀</th><th>US♂</th></tr>
+        <tr><td>35</td><td>2.5</td><td>5</td><td>3.5</td></tr>
+        <tr><td>36</td><td>3.5</td><td>6</td><td>4.5</td></tr>
+        <tr><td>37</td><td>4</td><td>6.5</td><td>5</td></tr>
+        <tr><td>38</td><td>5</td><td>7.5</td><td>6</td></tr>
+        <tr><td>39</td><td>5.5</td><td>8</td><td>6.5</td></tr>
+        <tr><td>40</td><td>6.5</td><td>9</td><td>7.5</td></tr>
+        <tr><td>41</td><td>7</td><td>9.5</td><td>8</td></tr>
+        <tr><td>42</td><td>8</td><td>10.5</td><td>9</td></tr>
+        <tr><td>43</td><td>9</td><td>11</td><td>10</td></tr>
+        <tr><td>44</td><td>9.5</td><td>11.5</td><td>10.5</td></tr>
+        <tr><td>45</td><td>10.5</td><td>12.5</td><td>11.5</td></tr>
+      </table></div>
     </div>
   </div>
 
@@ -503,5 +522,12 @@
 </footer>
 
 <script src="app.js"></script>
+<script>
+(function(){
+  var page = location.pathname.split('/').pop() || 'index.html';
+  var link = document.querySelector('a[href="' + page + '"]');
+  if (link) link.classList.add('active');
+})();
+</script>
 </body>
 </html>

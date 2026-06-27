@@ -38,6 +38,7 @@
     <nav class="nav">
       <a href="index.html" id="nav-create">✨ Crea Annuncio</a>
       <a href="resell.html" id="nav-resell">🔍 Analisi Resell</a>
+      <a href="scout.html" id="nav-scout">🎯 Scout</a>
       <a href="prompts.html" id="nav-prompts">📚 Prompt</a>
     </nav>
     <span class="badge">OpenRouter</span>
@@ -358,7 +359,7 @@
       <div style="margin-left:auto" id="seasonBadgeWrap"></div>
     </div>
 
-    <!-- Titolo SEO -->
+    <!-- 1. ✅ TITOLO SEO (primo, copia immediata) -->
     <div class="card">
       <div class="clbl">
         <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 7h10M7 12h7"/></svg>
@@ -369,26 +370,22 @@
       <div class="tlen" id="titleLen"></div>
     </div>
 
-    <!-- Descrizioni -->
-    <div class="dgrid">
-      <div class="dc">
-        <div class="clbl">🌍 Completo (tutte le lingue + hashtag)
-          <button class="cpbtn" onclick="cp('descFull',this)">copia</button>
-        </div>
-        <div class="dtxt" id="descFull">—</div>
-        <div class="dlen" id="descFullLen"></div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:.95rem" id="descLangCards"></div>
-    </div>
-
-    <!-- ══ NUOVO: Price Slider visivo ══ -->
+    <!-- 2. 💰 PREZZO CONSIGLIATO -->
     <div class="price-slider-wrap" id="priceSliderWrap" style="display:none">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-6)">
         <div class="price-slider-title">💰 Prezzo Consigliato</div>
-        <div class="confidence-badge" id="confidenceBadge" style="display:none">
-          <svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <span id="confidenceText">—</span>
+        <div style="display:flex;gap:.5rem;align-items:center">
+          <div class="confidence-badge" id="confidenceBadge" style="display:none">
+            <svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span id="confidenceText">—</span>
+          </div>
         </div>
+      </div>
+
+      <!-- Difficulty badge -->
+      <div class="difficulty-wrap" id="difficultyWrap" style="display:none">
+        <span class="diff-badge" id="difficultyBadge"></span>
+        <span class="diff-motivo" id="difficultyMotivo"></span>
       </div>
 
       <div class="price-tier-row">
@@ -409,31 +406,20 @@
         </div>
       </div>
 
-      <div class="price-bar-container">
-        <div class="price-bar-track">
-          <div class="price-bar-fill" id="priceBarFill" style="width:0%"></div>
-        </div>
-        <div class="price-bar-dots">
-          <span class="price-bar-dot-label" id="barLabelFast">Rapido</span>
-          <span class="price-bar-dot-label" id="barLabelIdeal">Ideale</span>
-          <span class="price-bar-dot-label" id="barLabelMax">Max</span>
-        </div>
-      </div>
+      <!-- Commission display -->
+      <div class="commissione-display" id="commissioneDisplay" style="display:none"></div>
 
       <div class="velocity-row" id="velocityRow" style="display:none">
         <div class="velocity-item">
-          <div class="velocity-label" style="color:var(--color-warning)">⚡ Al prezzo rapido</div>
-          <div class="velocity-price" id="velFastPrice">—</div>
+          <div class="velocity-label" style="color:var(--color-warning)">⚡ Rapido</div>
           <div class="velocity-time" id="velFastTime">—</div>
         </div>
         <div class="velocity-item">
-          <div class="velocity-label" style="color:var(--color-accent)">🎯 Al prezzo ideale</div>
-          <div class="velocity-price" id="velIdealPrice">—</div>
+          <div class="velocity-label" style="color:var(--color-accent)">🎯 Ideale</div>
           <div class="velocity-time" id="velIdealTime">—</div>
         </div>
         <div class="velocity-item">
-          <div class="velocity-label" style="color:#a78bfa">💎 Al prezzo massimo</div>
-          <div class="velocity-price" id="velMaxPrice">—</div>
+          <div class="velocity-label" style="color:#a78bfa">💎 Massimo</div>
           <div class="velocity-time" id="velMaxTime">—</div>
         </div>
       </div>
@@ -441,27 +427,75 @@
       <div id="timingBanner" style="display:none" class="timing-banner"></div>
     </div>
 
-    <!-- ══ Breakdown fattori ══ -->
-    <div class="breakdown-wrap" id="breakdownWrap" style="display:none">
-      <div class="breakdown-title">📊 Breakdown Fattori Prezzo</div>
-      <div id="factorsList"></div>
-    </div>
-
-    <!-- ══ Consigli annuncio ══ -->
-    <div class="card" id="consigliCard" style="display:none">
-      <div class="clbl">
-        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-        Consigli per l'annuncio
+    <!-- 3. 📝 DESCRIZIONE COMPLETA (tutte le lingue + hashtag) -->
+    <div class="dgrid">
+      <div class="dc">
+        <div class="clbl">📝 Annuncio completo (descrizione + hashtag)
+          <button class="cpbtn qcb-primary" onclick="cp('descFull',this)">📋 Copia tutto</button>
+        </div>
+        <div class="dtxt" id="descFull">—</div>
+        <div class="dlen" id="descFullLen"></div>
       </div>
-      <ul class="consigli-list" id="consigliList"></ul>
     </div>
 
-    <!-- ══ Warnings ══ -->
-    <div id="warningsWrap" style="display:none">
-      <div class="warning-list" id="warningsList"></div>
-    </div>
+    <!-- 5. 🌍 DESCRIZIONI ALTRE LINGUE (collapsabile) -->
+    <details class="collapsible-section">
+      <summary class="collapsible-summary">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        🌍 Descrizioni in altre lingue
+      </summary>
+      <div class="collapsible-body">
+        <div style="display:flex;flex-direction:column;gap:.95rem" id="descLangCards"></div>
+      </div>
+    </details>
 
-    <!-- Prezzi legacy (mantenuti) -->
+    <!-- 6. 📊 SCHEDA PRODOTTO (collapsabile) -->
+    <details class="collapsible-section">
+      <summary class="collapsible-summary">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        📊 Scheda Prodotto
+      </summary>
+      <div class="collapsible-body">
+        <table class="dt" id="detailTable"></table>
+      </div>
+    </details>
+
+    <!-- 7. 🔍 ANALISI AVANZATA (collapsabile) -->
+    <details class="collapsible-section">
+      <summary class="collapsible-summary">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        🔍 Analisi Avanzata
+      </summary>
+      <div class="collapsible-body">
+        <!-- Breakdown fattori -->
+        <div class="breakdown-wrap" id="breakdownWrap" style="display:none">
+          <div class="breakdown-title">📊 Breakdown Fattori Prezzo</div>
+          <div id="factorsList"></div>
+        </div>
+
+        <!-- Consigli annuncio -->
+        <div class="card" id="consigliCard" style="display:none">
+          <div class="clbl">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            Consigli per l'annuncio
+          </div>
+          <ul class="consigli-list" id="consigliList"></ul>
+        </div>
+
+        <!-- Analisi mercato -->
+        <div class="pnote">
+          <div class="pnlbl">📊 Analisi di mercato</div>
+          <div id="priceNote">—</div>
+        </div>
+
+        <!-- Warnings -->
+        <div id="warningsWrap" style="display:none">
+          <div class="warning-list" id="warningsList"></div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Prezzi legacy (fallback se advanced non disponibili) -->
     <div class="pgrd3" id="legacyPrices" style="display:none">
       <div class="pc">
         <div class="pclbl">🏪 Prezzo in negozio (nuovo)</div>
@@ -481,19 +515,7 @@
       </div>
     </div>
 
-    <div class="pnote">
-      <div class="pnlbl">📊 Analisi di mercato</div>
-      <div id="priceNote">—</div>
-    </div>
 
-    <!-- Scheda prodotto -->
-    <div class="card">
-      <div class="clbl">
-        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        Scheda Prodotto
-      </div>
-      <table class="dt" id="detailTable"></table>
-    </div>
   </div>
 
   <!-- Storico analisi -->

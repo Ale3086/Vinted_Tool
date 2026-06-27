@@ -35,6 +35,7 @@
     <nav class="nav">
       <a href="index.html" id="nav-create">✨ Crea Annuncio</a>
       <a href="resell.html" id="nav-resell">🔍 Analisi Resell</a>
+      <a href="scout.html" id="nav-scout">🎯 Scout</a>
       <a href="prompts.html" id="nav-prompts">📚 Prompt</a>
     </nav>
     <span class="badge">OpenRouter</span>
@@ -233,12 +234,16 @@
         <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
         Prodotto Identificato
       </div>
-      <div id="r-prodotto" class="prodotto-header">
+      <div id="r-prodotto"  class="prodotto-header">
         <div>
           <div class="prodotto-nome" id="r-prodotto-nome">—</div>
           <div class="prodotto-condizioni" id="r-prodotto-cond">—</div>
+          <div class="prodotto-timing" id="r-timing-vendita" style="display:none"></div>
         </div>
-        <span class="auth-badge auth-nd" id="r-auth-badge">—</span>
+        <div style="display:flex;flex-direction:column;gap:.35rem;align-items:flex-end">
+          <span class="auth-badge auth-nd" id="r-auth-badge">—</span>
+          <span class="trend-badge" id="r-trend-badge" style="display:none">—</span>
+        </div>
       </div>
     </div>
 
@@ -261,6 +266,14 @@
         <div class="roi-item">
           <div class="roi-label">Prezzo acquisto</div>
           <div class="roi-value neutral" id="r-roi-prezzo">—</div>
+        </div>
+        <div class="roi-item" style="display:none">
+          <div class="roi-label">💰 Netto as-is</div>
+          <div class="roi-value" id="r-gain-asis">—</div>
+        </div>
+        <div class="roi-item" style="display:none">
+          <div class="roi-label">💰 Netto ottimale</div>
+          <div class="roi-value" id="r-gain-ottimale">—</div>
         </div>
       </div>
     </div>
@@ -486,101 +499,141 @@ async function analyzeResell() {
     var modalitaRiparazione = getModalita();
     var infoExtra = document.getElementById('r-extra').value.trim();
 
-    var resellPrompt =
-      // ═══ IDENTITÀ ═══
-      'Sei RESELLAI, un esperto analista di investimenti nel mercato del second hand e resell. ' +
-      'La tua missione: valutare oggetti e fornire piani d\'azione CONCRETI e REALISTICI per massimizzare il guadagno. ' +
-      'Ogni consiglio deve essere specifico, pratico e basato su dati reali di mercato. ZERO genericità.\n\n' +
+    var oggi = new Date();
+    var dataResell = oggi.toLocaleDateString('it-IT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-      // ═══ DATI INPUT ═══
+    var resellPrompt =
+      // ═══════════════════════════════════════════
+      // IDENTITÀ
+      // ═══════════════════════════════════════════
+      'Sei RESELLAI, un analista esperto di investimenti nel mercato second-hand con specializzazione ' +
+      'su Vinted Italia, eBay IT e Subito.it. ' +
+      'La tua analisi deve essere CONCRETA e REMUNERATIVA: zero consigli vaghi, zero ottimismo ingiustificato. ' +
+      'Se la resell non conviene, dillo chiaramente. Se conviene, mostra esattamente quanto si guadagna.\n\n' +
+
+      'DATA ANALISI: ' + dataResell + '\n\n' +
+
+      // ═══════════════════════════════════════════
+      // INPUT
+      // ═══════════════════════════════════════════
       'PRODOTTO DA ANALIZZARE:\n' +
       '- Categoria: ' + categoria + '\n' +
-      (prezzoAcquisto ? '- Prezzo pagato / budget acquisto: €' + prezzoAcquisto + '\n' : '- Prezzo acquisto: non fornito, stimalo dalle foto se visibile\n') +
-      (modalitaRiparazione ? '- Preferenza gestione: ' + modalitaRiparazione + '\n' : '') +
-      (infoExtra ? '- Info aggiuntive: ' + infoExtra + '\n' : '') +
+      (prezzoAcquisto ? '- Prezzo pagato: €' + prezzoAcquisto + '\n' : '- Prezzo acquisto: non fornito (stimalo da foto o cartellino visibile)\n') +
+      (modalitaRiparazione ? '- Approccio preferito: ' + modalitaRiparazione + '\n' : '') +
+      (infoExtra ? '- Note aggiuntive: ' + infoExtra + '\n' : '') +
 
-      // ═══ ANALISI VISIVA ═══
-      '\nFASE 1 — IDENTIFICAZIONE PRODOTTO (da immagini, massima precisione):\n' +
+      // ═══════════════════════════════════════════
+      // FASE 1 — IDENTIFICAZIONE
+      // ═══════════════════════════════════════════
+      '\n═══ FASE 1: IDENTIFICAZIONE PRODOTTO ═══\n' +
       'Analizza TUTTE le immagini. Identifica:\n' +
-      '1. Prodotto esatto: brand, modello, anno/generazione se identificabile\n' +
-      '2. Condizioni attuali: descrivi TUTTI i difetti visibili (graffi, rotture, usura, macchie)\n' +
-      '3. Componenti presenti/mancanti (es: telefono senza caricabatteria, borsa senza tracolla)\n' +
-      '4. Autenticità: segnali di contraffazione se visibili (scrivi: verificata / sospetta / non determinabile)\n' +
-      '5. Prezzo visibile nelle foto (es: cartellino, schermata annuncio) — se presente, estrailo\n' +
-      'Sii ONESTO: se non riesci a identificare il modello esatto, dillo chiaramente.\n\n' +
+      '1. Brand + modello + anno/generazione esatti (leggi le etichette)\n' +
+      '2. Tutti i difetti visibili: graffi, rotture, macchie, usura, deformazioni\n' +
+      '3. Componenti presenti/mancanti (es: iPhone senza caricabatterie, borsa senza tracolla)\n' +
+      '4. Autenticità: "verificata visivamente" / "sospetta (motivo: X)" / "non determinabile"\n' +
+      '5. Prezzo originale dal cartellino se visibile nelle foto\n' +
+      '6. Valore specifico come oggetto da collezione se applicabile\n\n' +
 
-      // ═══ ANALISI VALORE ═══
-      '\nFASE 2 — ANALISI VALORE DI MERCATO:\n' +
-      'A) Valore attuale "as-is":\n' +
-      '   - Su Vinted Italia: stima range realistico per questo articolo in queste condizioni\n' +
-      '   - Su eBay Italia: range prezzi usato\n' +
-      '   - Su Subito/Marketplace Facebook: se rilevante per categoria\n' +
-      '   - Valore come "per parti" se è un dispositivo elettronico (oppure null)\n\n' +
-      'B) Valore potenziale dopo intervento:\n' +
-      '   - Valore dopo pulizia/lavaggio: stima (o null se non applicabile)\n' +
-      '   - Valore dopo riparazione: stima (o null se non applicabile)\n' +
-      '   - Valore massimo raggiungibile con intervento ottimale\n\n' +
-      'C) Calcolo ROI (solo se prezzo_acquisto noto):\n' +
-      '   ROI = (valore_vendita - prezzo_acquisto - costo_intervento) / prezzo_acquisto × 100\n' +
-      '   Calcola per scenario as-is e ottimale\n\n' +
+      // ═══════════════════════════════════════════
+      // FASE 2 — VALORE DI MERCATO
+      // ═══════════════════════════════════════════
+      '\n═══ FASE 2: ANALISI VALORE ═══\n\n' +
+      'A) VALORE ATTUALE (as-is, senza interventi):\n' +
+      '   - Vinted.it: range realistico per questo articolo in QUESTE condizioni ora\n' +
+      '   - eBay.it: range usato (considera shipped prices, non listed prices)\n' +
+      '   - Subito/Facebook Marketplace: se rilevante per categoria e dimensioni\n' +
+      '   - "Per parti" se elettronica: valore totale dei singoli componenti venduti separatamente\n\n' +
 
-      // ═══ PIANO D\'AZIONE ═══
-      '\nFASE 3 — PIANO D\'AZIONE STEP-BY-STEP:\n' +
-      'Fornisci un piano concreto, adattato alla modalità: ' + (modalitaRiparazione || 'determina il piano migliore') + '\n' +
-      'Per OGNI step specifica:\n' +
-      '- Cosa fare esattamente (istruzioni pratiche, non vaghe)\n' +
-      '- Tempo stimato (es. "30 minuti")\n' +
-      '- Costo stimato (es. "€0 fai da te")\n' +
+      'B) VALORE DOPO INTERVENTO:\n' +
+      '   - Dopo pulizia professionale: stima incremento valore (€X in più)\n' +
+      '   - Dopo riparazione specifica: stima incremento (€X in più)\n' +
+      '   - Valore massimo raggiungibile con intervento ottimale\n' +
+      '   → Indica NULL se un intervento non è applicabile o non conviene\n\n' +
+
+      'C) CALCOLO ROI REALE (incluse commissioni):\n' +
+      '   Commissioni Vinted: 5% dell\'importo + €0.70 fissi (pagati dall\'acquirente, ma impattano sul prezzo percepito)\n' +
+      '   Commissioni eBay: ~12.8% sul totale transazione + PayPal fees ~2.5%\n' +
+      '   → Calcola guadagno_netto = valore_vendita - costo_acquisto - costo_intervento - commissioni_piattaforma\n' +
+      '   → Calcola ROI = (guadagno_netto / costo_totale) × 100\n' +
+      '   → Calcola per scenario as-is E scenario ottimale\n\n' +
+
+      'D) TREND DI MERCATO:\n' +
+      '   - Questo articolo sta salendo o scendendo di valore nel 2025-2026?\n' +
+      '   - C\'\u00e8 un trend attivo che lo valorizza? (es. Y2K, vintage 90s, gorpcore, quiet luxury)\n' +
+      '   - Conviene vendere ORA o aspettare il momento migliore? (es. piumino → aspetta ottobre)\n\n' +
+
+      // ═══════════════════════════════════════════
+      // FASE 3 — PIANO D'AZIONE
+      // ═══════════════════════════════════════════
+      '\n═══ FASE 3: PIANO D\'AZIONE STEP-BY-STEP ═══\n' +
+      'Approccio preferito dall\'utente: ' + (modalitaRiparazione || 'determina il più redditizio') + '\n' +
+      'Per OGNI step fornisci:\n' +
+      '- Azione SPECIFICA (es. "Lava a 30° in lavatrice con detersivo delicato", non "lava il capo")\n' +
+      '- Tempo stimato realistico\n' +
+      '- Costo stimato (€0 se fai da solo, stima mercato se affidata)\n' +
       '- Difficoltà: facile / media / difficile\n' +
-      '- Rischio: basso / medio / alto\n' +
-      '- Guadagno atteso da questo step (es. "+€30 sul valore")\n\n' +
+      '- Rischio di peggiorare l\'articolo: basso / medio / alto\n' +
+      '- Guadagno atteso da QUESTO step specifico (+€X sul prezzo di vendita)\n\n' +
 
-      // ═══ PIATTAFORME ═══
-      '\nFASE 4 — DOVE VENDERE:\n' +
-      'Per questo prodotto confronta: Vinted, eBay, Subito/Facebook, piattaforme specializzate.\n' +
-      'Indica commissioni, pro, contro, e una raccomandazione finale.\n\n' +
+      // ═══════════════════════════════════════════
+      // FASE 4 — PIATTAFORME
+      // ═══════════════════════════════════════════
+      '\n═══ FASE 4: DOVE VENDERE ═══\n' +
+      'Confronta le piattaforme rilevanti per questo articolo:\n' +
+      '- Vinted.it: commissioni acquirente 5%+€0.70, zero commissioni venditore, spedizione gestita\n' +
+      '- eBay.it: commissioni ~12.8% totale, audience più ampia, buyer protection più rigida\n' +
+      '- Subito.it / Facebook Marketplace: zero commissioni, consegna a mano, pubblico locale\n' +
+      '- Piattaforme specializzate se rilevanti: StockX, GOAT (sneakers), Depop (vintage), ecc.\n' +
+      'Per ogni piattaforma: pro, contro, commissione esatta, consigliata sì/no e perché.\n\n' +
 
-      // ═══ OUTPUT JSON ═══
-      '\nOUTPUT: SOLO JSON VALIDO, zero markdown, zero testo extra.\n' +
-      'Schema:\n' +
+      // ═══════════════════════════════════════════
+      // OUTPUT JSON
+      // ═══════════════════════════════════════════
+      '\n═══ OUTPUT: SOLO JSON VALIDO ═══\n' +
+      'Zero markdown. Zero testo fuori dal JSON.\n' +
       '{\n' +
       '  "prodotto": {\n' +
-      '    "identificato": "Brand Modello anno",\n' +
-      '    "condizioni_attuali": "descrizione onesta e completa",\n' +
+      '    "identificato": "Brand Modello Anno",\n' +
+      '    "condizioni_attuali": "descrizione onesta e completa di tutti i difetti",\n' +
       '    "prezzo_acquisto_rilevato": "€X o null",\n' +
-      '    "autenticita": "verificata o sospetta o non determinabile"\n' +
+      '    "autenticita": "verificata visivamente / sospetta / non determinabile",\n' +
+      '    "trend_mercato": "in crescita / stabile / in declino",\n' +
+      '    "momento_vendita_ottimale": "ora / tra X mesi (mese consigliato)"\n' +
       '  },\n' +
       '  "valori": {\n' +
-      '    "as_is": {"vinted": "€X-Y", "ebay": "€X-Y", "subito": "€X-Y", "per_parti": "€X-Y o null"},\n' +
+      '    "as_is": {"vinted": "€X-Y", "ebay": "€X-Y", "subito": "€X-Y o null", "per_parti": "€X-Y o null"},\n' +
       '    "dopo_pulizia": "€X-Y o null",\n' +
       '    "dopo_riparazione": "€X-Y o null",\n' +
       '    "valore_massimo_raggiungibile": "€X",\n' +
       '    "roi_as_is": "X% o null",\n' +
-      '    "roi_ottimale": "X% o null"\n' +
+      '    "roi_ottimale": "X% o null",\n' +
+      '    "guadagno_netto_as_is": "€X (dopo commissioni e costi) o null",\n' +
+      '    "guadagno_netto_ottimale": "€X (dopo commissioni e costi) o null"\n' +
       '  },\n' +
       '  "piano_azione": [\n' +
       '    {\n' +
       '      "step": 1,\n' +
-      '      "titolo": "Titolo breve step",\n' +
-      '      "descrizione": "Istruzioni pratiche dettagliate",\n' +
-      '      "tempo": "es. 20 minuti",\n' +
-      '      "costo": "€0-5",\n' +
+      '      "titolo": "Titolo breve e specifico",\n' +
+      '      "descrizione": "Istruzione pratica esatta, non generica",\n' +
+      '      "tempo": "X minuti/ore",\n' +
+      '      "costo": "€X",\n' +
       '      "difficolta": "facile",\n' +
       '      "rischio": "basso",\n' +
-      '      "guadagno_atteso": "+€15 sul valore"\n' +
+      '      "guadagno_atteso": "+€X sul valore finale"\n' +
       '    }\n' +
       '  ],\n' +
       '  "piattaforme": [\n' +
-      '    {"nome": "Vinted", "commissione": "5%+€0.70", "pro": "...", "contro": "...", "consigliata": true},\n' +
-      '    {"nome": "eBay", "commissione": "~12.8%", "pro": "...", "contro": "...", "consigliata": false}\n' +
+      '    {"nome": "Vinted", "commissione": "0% venditore + 5%+€0.70 acquirente", "pro": "...", "contro": "...", "consigliata": true},\n' +
+      '    {"nome": "eBay", "commissione": "~12.8% totale + PayPal", "pro": "...", "contro": "...", "consigliata": false}\n' +
       '  ],\n' +
       '  "raccomandazione_finale": {\n' +
       '    "piattaforma": "Nome",\n' +
-      '    "strategia": "as_is o dopo_pulizia o dopo_riparazione o per_parti",\n' +
+      '    "strategia": "as_is / dopo_pulizia / dopo_riparazione / per_parti / aspetta",\n' +
       '    "prezzo_target": "€X",\n' +
-      '    "guadagno_netto_stimato": "€X (dopo commissioni e costi)",\n' +
-      '    "tempo_totale_stimato": "es. 2-3 ore + 3-7 giorni attesa vendita",\n' +
-      '    "perche": "Spiegazione 2-3 frasi del perché questa è la scelta migliore"\n' +
+      '    "guadagno_netto_stimato": "€X (dopo commissioni, costi e spedizione)",\n' +
+      '    "roi_effettivo": "X%",\n' +
+      '    "tempo_totale_stimato": "X ore di lavoro + X giorni attesa vendita",\n' +
+      '    "perche": "Spiegazione 2-3 frasi con dati concreti"\n' +
       '  },\n' +
       '  "avvertenze": [],\n' +
       '  "confidence_score": 85\n' +
@@ -675,6 +728,21 @@ function renderResellResults(d) {
     auth === 'sospetta' ? '⚠️ Autenticità sospetta' : '❓ Non determinabile';
   authBadge.className = 'auth-badge ' + (auth === 'verificata' ? 'auth-verificata' : auth === 'sospetta' ? 'auth-sospetta' : 'auth-nd');
 
+  // ── Trend e Timing (nuovi campi) ──
+  var trendEl = document.getElementById('r-trend-badge');
+  if (trendEl && prodotto.trend_mercato) {
+    trendEl.style.display = 'inline-flex';
+    var trend = (prodotto.trend_mercato || '').toLowerCase();
+    var trendEmoji = trend.indexOf('crescita') >= 0 ? '📈' : (trend.indexOf('declino') >= 0 ? '📉' : '➖');
+    trendEl.textContent = trendEmoji + ' ' + prodotto.trend_mercato;
+    trendEl.className = 'trend-badge trend-' + (trend.indexOf('crescita') >= 0 ? 'up' : (trend.indexOf('declino') >= 0 ? 'down' : 'stable'));
+  }
+  var timingEl = document.getElementById('r-timing-vendita');
+  if (timingEl && prodotto.momento_vendita_ottimale) {
+    timingEl.style.display = 'block';
+    timingEl.textContent = '📅 Momento ideale: ' + prodotto.momento_vendita_ottimale;
+  }
+
   // ── Valore di Mercato ──
   var asIs = valori.as_is || {};
   var valCells = [
@@ -713,6 +781,18 @@ function renderResellResults(d) {
     roiOttEl.className = 'roi-value ' + (num2 > 0 ? 'positive' : num2 < 0 ? 'negative' : 'neutral');
 
     document.getElementById('r-roi-prezzo').textContent = prezzoAcq || '—';
+
+    /* Guadagno netto (nuovi campi) */
+    var gainAsisEl = document.getElementById('r-gain-asis');
+    var gainOttEl = document.getElementById('r-gain-ottimale');
+    if (gainAsisEl && valori.guadagno_netto_as_is) {
+      gainAsisEl.textContent = valori.guadagno_netto_as_is;
+      gainAsisEl.parentElement.style.display = '';
+    }
+    if (gainOttEl && valori.guadagno_netto_ottimale) {
+      gainOttEl.textContent = valori.guadagno_netto_ottimale;
+      gainOttEl.parentElement.style.display = '';
+    }
   } else {
     document.getElementById('r-roi').style.display = 'none';
   }

@@ -495,8 +495,7 @@ main { max-width: 1000px; margin: 0 auto; padding: var(--space-12) var(--space-6
 .tlen { font-size: 0.68rem; margin-top: var(--space-2); color: var(--color-text-muted); }
 
 /* ── Description grid ── */
-.dgrid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-bottom: var(--space-4); align-items: start; }
-@media(max-width:620px){ .dgrid { grid-template-columns: 1fr; } }
+.dgrid { display: grid; grid-template-columns: 1fr; gap: var(--space-4); margin-bottom: var(--space-4); align-items: start; }
 .dc {
   background: var(--color-surface); border: 1px solid var(--color-border);
   border-radius: var(--radius-md); padding: var(--space-4) var(--space-5);
@@ -550,21 +549,7 @@ main { max-width: 1000px; margin: 0 auto; padding: var(--space-12) var(--space-6
 }
 .price-tier-sub { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: 4px; }
 
-/* Barra slider visiva */
-.price-bar-container { margin-bottom: var(--space-4); }
-.price-bar-track {
-  height: 6px; background: var(--color-surface-2);
-  border-radius: var(--radius-full); position: relative;
-  overflow: visible; margin-bottom: var(--space-3);
-}
-.price-bar-fill {
-  position: absolute; top: 0; bottom: 0; left: 0;
-  background: linear-gradient(90deg, var(--color-warning), var(--color-accent), #a78bfa);
-  border-radius: var(--radius-full);
-  animation: progress-bar-anim 0.8s cubic-bezier(0.4,0,0.2,1) both;
-}
-.price-bar-dots { display: flex; justify-content: space-between; }
-.price-bar-dot-label { font-size: var(--text-xs); color: var(--color-text-muted); }
+
 
 /* Velocità di vendita stimata */
 .velocity-row {
@@ -576,8 +561,7 @@ main { max-width: 1000px; margin: 0 auto; padding: var(--space-12) var(--space-6
   border-radius: var(--radius-sm); border: 1px solid var(--color-border);
   background: var(--color-bg);
 }
-.velocity-price { font-family: var(--font-mono); font-size: var(--text-sm); font-weight: 500; }
-.velocity-time { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: 2px; }
+.velocity-time { font-family: var(--font-mono); font-size: var(--text-sm); font-weight: 500; }
 .velocity-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
 
 /* ── Breakdown fattori ── */
@@ -1172,3 +1156,138 @@ footer a { color: var(--color-accent); text-decoration: none; }
   .step-header { gap: var(--space-2); }
   .rec-price { font-size: var(--text-xl); }
 }
+
+/* ══════════════════════════════════════════
+   NUOVI COMPONENTI — ListAI v4
+   ══════════════════════════════════════════ */
+
+/* ── Quick Copy Sticky Bar ── */
+.quick-copy-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 200;
+  background: rgba(13,15,20,0.92);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-3) var(--space-6);
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.4);
+  animation: slideUp 0.3s ease both;
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+.qcb-info {
+  font-size: var(--text-sm); color: var(--color-text-secondary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 400px;
+}
+.qcb-info strong { color: var(--color-text-primary); }
+.qcb-buttons { display: flex; gap: var(--space-2); flex-shrink: 0; }
+.qcb-primary {
+  background: var(--color-accent-dim) !important;
+  border-color: rgba(110,231,183,0.3) !important;
+  color: var(--color-accent) !important;
+  font-weight: 600 !important;
+}
+.qcb-primary:hover {
+  background: rgba(110,231,183,0.2) !important;
+  box-shadow: var(--shadow-glow-sm);
+}
+@media(max-width:540px) {
+  .quick-copy-bar { flex-direction: column; gap: var(--space-2); padding: var(--space-3); }
+  .qcb-info { max-width: 100%; text-align: center; }
+}
+
+
+
+/* ── Difficulty Badge ── */
+.difficulty-wrap {
+  display: flex; align-items: center; gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+.diff-badge {
+  font-size: 0.72rem; font-weight: 700;
+  padding: 3px 10px; border-radius: var(--radius-full);
+  border: 1px solid; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.diff-facile { color: var(--color-success); border-color: rgba(110,231,183,0.3); background: rgba(110,231,183,0.08); }
+.diff-media  { color: var(--color-warning); border-color: rgba(252,211,77,0.3); background: rgba(252,211,77,0.08); }
+.diff-difficile { color: var(--color-danger); border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.08); }
+.diff-motivo { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+/* ── Commissione display ── */
+.commissione-display {
+  font-size: var(--text-sm); color: var(--color-text-secondary);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg); border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm); margin-top: var(--space-3);
+}
+
+/* ── Collapsible Sections ── */
+.collapsible-section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  animation: fadeUp var(--transition-slow) both;
+}
+.collapsible-summary {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--text-sm); font-weight: 600;
+  color: var(--color-text-secondary); cursor: pointer;
+  list-style: none;
+  transition: all var(--transition-fast);
+}
+.collapsible-summary::-webkit-details-marker { display: none; }
+.collapsible-summary:hover { color: var(--color-text-primary); background: var(--color-surface-hover); }
+.collapsible-summary svg {
+  transition: transform var(--transition-base); flex-shrink: 0;
+}
+details[open] > .collapsible-summary svg { transform: rotate(180deg); }
+details[open] > .collapsible-summary { border-bottom: 1px solid var(--color-border); }
+.collapsible-body {
+  padding: var(--space-5);
+  animation: slideDown var(--transition-base) both;
+}
+
+
+
+/* ── Missing Values in Product Card ── */
+.missing-val {
+  color: var(--color-warning) !important;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+/* ── Trend Badge (Resell) ── */
+.trend-badge {
+  font-size: 0.67rem; font-weight: 700;
+  padding: 3px 10px; border-radius: var(--radius-full);
+  border: 1px solid; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.trend-up { color: var(--color-success); border-color: rgba(110,231,183,0.3); background: rgba(110,231,183,0.08); }
+.trend-down { color: var(--color-danger); border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.08); }
+.trend-stable { color: var(--color-text-muted); border-color: var(--color-border); background: var(--color-surface); }
+
+/* Timing vendita (Resell) */
+.prodotto-timing {
+  font-size: var(--text-sm); color: var(--color-accent);
+  margin-top: var(--space-2);
+  font-weight: 500;
+}
+
+/* ── Bottom padding for sticky bar ── */
+body { padding-bottom: 60px; }

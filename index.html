@@ -87,24 +87,28 @@
       <div style="flex:1;min-width:190px;display:flex;flex-direction:column;gap:.38rem">
         <select class="msel" id="modelSelect" onchange="onModelChange()">
           <optgroup label="⭐ Migliore qualità/prezzo">
-            <option value="google/gemini-3.1-flash-lite" selected>Gemini 3.1 Flash Lite — ~€0.0004/analisi 🔥</option>
+            <option value="google/gemini-3.1-flash-lite" selected>Gemini 3.1 Flash Lite — ~€0.0015/analisi 🔥</option>
           </optgroup>
           <optgroup label="✨ Gemini">
-            <option value="google/gemini-2.5-flash">Gemini 2.5 Flash — ~€0.001/analisi ⭐</option>
-            <option value="google/gemini-3-flash-preview">Gemini 3 Flash — ~€0.001/analisi</option>
-            <option value="google/gemini-3.1-pro-preview">Gemini 3.1 Pro — ~€0.008/analisi</option>
-            <option value="google/gemini-2.5-flash-lite">Gemini 2.5 Flash Lite — ~€0.0002/analisi</option>
-            <option value="google/gemini-2.5-pro">Gemini 2.5 Pro — ~€0.010/analisi</option>
+            <option value="google/gemini-2.5-flash">Gemini 2.5 Flash — ~€0.002/analisi ⭐</option>
+            <option value="google/gemini-3-flash-preview">Gemini 3 Flash — ~€0.002/analisi</option>
+            <option value="google/gemini-3.1-pro-preview">Gemini 3.1 Pro — ~€0.009/analisi</option>
+            <option value="google/gemini-2.5-flash-lite">Gemini 2.5 Flash Lite — ~€0.0012/analisi</option>
+            <option value="google/gemini-2.5-pro">Gemini 2.5 Pro — ~€0.011/analisi</option>
           </optgroup>
           <optgroup label="🌐 Altri">
-            <option value="perplexity/sonar">Perplexity Sonar — ~€0.001/analisi</option>
-            <option value="openai/gpt-4o-mini">GPT-4o Mini — ~€0.002/analisi</option>
+            <option value="perplexity/sonar">Perplexity Sonar — ~€0.002/analisi</option>
+            <option value="openai/gpt-4o-mini">GPT-4o Mini — ~€0.003/analisi</option>
           </optgroup>
           <optgroup label="🔧 Personalizzato">
             <option value="custom">✏️ Inserisci il tuo modello…</option>
           </optgroup>
         </select>
         <input class="ainp-plain" type="text" id="customModel" placeholder="es. google/gemini-2.5-flash…" style="display:none" autocomplete="off"/>
+        <label style="display:flex;align-items:center;gap:.45rem;cursor:pointer;margin-top:.35rem">
+          <input type="checkbox" id="priceResearch" checked style="accent-color:var(--color-accent);width:15px;height:15px"/>
+          <span style="font-size:.75rem;color:var(--color-text-secondary)">🔍 Ricerca prezzi live via web (+~€0.001)</span>
+        </label>
       </div>
       <span class="ahint" style="color:var(--color-accent)">↑ Scegli il modello</span>
     </div>
@@ -155,6 +159,11 @@
         <option value="GUC">👍 Usato — buone condizioni</option>
         <option value="POOR">⚠️ Usato — condizioni pessime</option>
       </select>
+    </div>
+
+    <div class="ig" style="margin-bottom:.85rem">
+      <label>Brand <span style="font-weight:400;font-size:.68rem;text-transform:none;letter-spacing:0;color:var(--color-text-muted)">(opzionale — rilevamento AI automatico se vuoto)</span></label>
+      <input class="ainp" type="text" id="brandField" placeholder="es. Nike, Zara, Gucci, Samsung…" autocomplete="off"/>
     </div>
 
     <!-- Accordion opzioni avanzate -->
@@ -372,9 +381,10 @@
 
     <!-- 2. 💰 PREZZO CONSIGLIATO -->
     <div class="price-slider-wrap" id="priceSliderWrap" style="display:none">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-6)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-6);flex-wrap:wrap;gap:.4rem">
         <div class="price-slider-title">💰 Prezzo Consigliato</div>
-        <div style="display:flex;gap:.5rem;align-items:center">
+        <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
+          <div class="price-source-badge" id="priceSourceBadge" style="display:none"></div>
           <div class="confidence-badge" id="confidenceBadge" style="display:none">
             <svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             <span id="confidenceText">—</span>

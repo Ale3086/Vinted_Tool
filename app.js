@@ -211,6 +211,180 @@ function getBrandTier(brandName) {
   return { tier: 'mid', label: 'Mid Market', multiplier: 1.0 };
 }
 
+/* ══════════════════════════════════════════════
+   FASE 2.1 — NUOVE UTILITY (Prompt Overhaul)
+   ══════════════════════════════════════════════ */
+
+/* ── Timing ottimale (calcolo deterministico) ── */
+function getNextOptimalSlot() {
+  var now = new Date();
+  var bestDays = [4, 5, 0]; // Giovedì, Venerdì, Domenica
+  var bestHour = 19;
+  var dayNames = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+  for (var i = 0; i <= 7; i++) {
+    var d = new Date(now.getTime() + i * 86400000);
+    if (bestDays.includes(d.getDay())) {
+      if (i === 0 && now.getHours() >= 22) continue;
+      d.setHours(bestHour, 0, 0, 0);
+      if (d <= now) continue;
+      return dayNames[d.getDay()] + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + ' alle ' + bestHour + ':00';
+    }
+  }
+  return 'Prossimo giovedì alle 19:00';
+}
+
+/* ── Commissione Vinted (buyer protection) ── */
+function calcVintedFee(price) {
+  if (!price || price <= 0) return 0;
+  return Math.round((price * 0.05 + 0.70) * 100) / 100;
+}
+
+/* ── Confidence score (deterministico, no AI) ── */
+function calcConfidence(hasMarketData, hasBrand, hasExtraInfo) {
+  var score = 20; // base: abbiamo le foto
+  if (hasMarketData) score += 40;
+  if (hasBrand) score += 15;
+  if (hasExtraInfo) score += 10;
+  score += 10; // condizione sempre specificata
+  return Math.min(score, 95);
+}
+
+/* ── Rilevamento brand dalle foto (mini-call economica) ── */
+async function detectBrandFromPhotos(apiKey, imgs) {
+  try {
+    var resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey,
+        'HTTP-Referer': location.href,
+        'X-Title': 'ListAI Vinted'
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-3.1-flash-lite',
+        messages: [{ role: 'user', content: [
+          { type: 'text', text: 'Identifica il brand/marchio visibile nelle foto. Rispondi SOLO con JSON valido: {"brand":"NOME"} oppure {"brand":null} se non identificabile.' }
+        ].concat(imgs.slice(0, 3)) }],
+        temperature: 0.0,
+        max_tokens: 50
+      })
+    });
+    if (!resp.ok) return null;
+    var data = await resp.json();
+    var raw = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
+    var match = raw.match(/\{[\s\S]*?\}/);
+    if (match) {
+      var p = JSON.parse(match[0]);
+      return p.brand || null;
+    }
+    return null;
+  } catch (_) { return null; }
+}
+
+/* ── Ricerca prezzi di mercato (Perplexity Sonar con web search) ── */
+async function researchMarketPrices(apiKey, brand, categoria, condizione, taglia) {
+  try {
+    var prompt =
+      'Cerca i prezzi ATTUALI per questo articolo second-hand:\n' +
+      (brand ? '- Brand: ' + brand + '\n' : '') +
+      '- Categoria: ' + categoria + '\n' +
+      '- Condizione: ' + condizione + '\n' +
+      (taglia && taglia !== 'da identificare dalle foto' ? '- Taglia: ' + taglia + '\n' : '') +
+      '\nCerca su vinted.it, amazon.it, zalando.it.\n' +
+      'Rispondi SOLO con JSON valido:\n' +
+      '{"retail":{"min":null,"max":null,"fonte":""},"vinted":{"min":null,"max":null,"num_annunci":null,"fonte":""},"note":""}';
+
+    var resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey,
+        'HTTP-Referer': location.href,
+        'X-Title': 'ListAI Vinted'
+      },
+      body: JSON.stringify({
+        model: 'perplexity/sonar',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.0,
+        max_tokens: 400
+      })
+    });
+    if (!resp.ok) return null;
+    var data = await resp.json();
+    var raw = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
+    var match = raw.match(/\{[\s\S]*\}/);
+    if (match) return JSON.parse(match[0]);
+    return null;
+  } catch (_) { return null; }
+}
+
+/* ── System Prompt Builder (identità + regole + few-shot) ── */
+function buildSystemPrompt(isCloth) {
+  return 'Sei LISTAI, generatore di annunci Vinted Italia. Obiettivo: annuncio venduto entro 7 giorni al miglior prezzo.\n\n' +
+    'REGOLE ASSOLUTE:\n' +
+    '1. Output: SOLO JSON valido. Zero testo/markdown fuori dal JSON.\n' +
+    '2. Prezzi: usa ESCLUSIVAMENTE i dati in DATI_MERCATO forniti sotto. Se assenti, stima con massima cautela e dichiaralo nelle note.\n' +
+    '3. Dato non visibile nelle foto → "non determinabile dalle foto".\n' +
+    '4. Condizione foto ≠ dichiarata → aggiungi stringa in warning[].\n\n' +
+
+    'ANALISI VISIVA — dalle foto identifica:\n' +
+    '• Brand/marchio (logo, etichette, ricami). Non visibile → "non determinabile".\n' +
+    '• Modello/stagione se leggibile (es. Air Force 1, 501, Dionysus).\n' +
+    '• Colore ESATTO: antracite non "nero", cognac non "marrone", navy non "blu".\n' +
+    '• Materiale: leggi etichetta composizione, altrimenti stima dal tessuto.\n' +
+    '• Condizione REALE: TUTTI i difetti visibili (macchie, usura, pilling, graffi, sfilacciature).\n' +
+    '• Taglia da etichetta se visibile (segnala se ≠ dichiarata). Prezzo cartellino se visibile.\n' +
+    (isCloth
+      ? '• Scarpe: suola (usura), tomaia (graffi), interno. Borse: angoli, cerniere, tracolla, hardware (ossidazione).\n\n'
+      : '• Stato funzionamento, completezza accessori, compatibilità, segni di usura.\n\n') +
+
+    'TITOLO SEO (campo "t"):\n' +
+    '≤50 char totali. Formula: [Brand] [Tipo] [Colore/Materiale] [Keyword].\n' +
+    'No articoli iniziali (Il/La/Un/Una). No "usato"/"ottimo stato"/"spedisco".\n' +
+    'Keyword Vinted: vintage, oversize, y2k, crop, premium, limited, blazer…\n' +
+    'Se c\'è spazio: includi taglia IT.\n\n' +
+
+    'DESCRIZIONI (380-420 char ciascuna, struttura obbligatoria):\n' +
+    'Riga 1: emoji negoziazione (da regola lingua)\n' +
+    'Riga 2: Identificazione capo + punto forza principale\n' +
+    'Riga 3-4: Materiale esatto, colore preciso, fit/vestibilità\n' +
+    'Riga 5: Condizione reale + difetti se presenti (onestà)\n' +
+    'Riga 6: CTA naturale (spedizione rapida, sconto multipli)\n' +
+    'NO "Vendo"/"Cedo". NO hashtag nella descrizione.\n\n' +
+
+    (isCloth
+      ? 'ESEMPIO CORRETTO ABBIGLIAMENTO (IT, ~395 char — usa la STRUTTURA, non il contenuto):\n' +
+        '"🤝 Prezzo trattabile!\n' +
+        'Blazer oversize Zara in misto lana bouclé, colore écru/panna.\n' +
+        'Spalle scese, vestibilità comoda TG M. Fodera interna viscosa, chiusura bottone singolo dorato.\n' +
+        'Condizione eccellente: indossato 2 volte, nessun difetto visibile.\n' +
+        'Spedisco in 24h 📦 Sconto per acquisti multipli!"\n\n' +
+        'ESEMPIO CORRETTO (EN, ~380 char):\n' +
+        '"🤝 Price negotiable!\n' +
+        'Zara oversized bouclé wool-blend blazer, ecru/cream.\n' +
+        'Dropped shoulders, relaxed fit size M. Viscose lining, single gold button closure.\n' +
+        'Excellent condition: worn twice, zero visible flaws.\n' +
+        'Ships within 24h 📦 Bundle discount available!"\n\n'
+      : 'ESEMPIO CORRETTO ELETTRONICA (IT, ~390 char — usa la STRUTTURA, non il contenuto):\n' +
+        '"🤝 Prezzo trattabile!\n' +
+        'Sony WH-1000XM4 cuffie wireless noise-cancelling, nero opaco.\n' +
+        '30h batteria, Bluetooth 5.0 multipoint, comandi touch. Custodia rigida inclusa.\n' +
+        'Ottime condizioni: leggera usura archetto, ANC perfettamente funzionante.\n' +
+        'Spedisco in 24h 📦 Sconto per acquisti multipli!"\n\n' +
+        'ESEMPIO CORRETTO (EN, ~380 char):\n' +
+        '"🤝 Price negotiable!\n' +
+        'Sony WH-1000XM4 wireless noise-cancelling headphones, matte black.\n' +
+        '30h battery, Bluetooth 5.0 multipoint, touch controls. Hard case included.\n' +
+        'Excellent condition: minimal headband wear, fully functional ANC.\n' +
+        'Fast shipping 📦 Bundle discount available!"\n\n') +
+
+    'HASHTAG (campo "ht"): esattamente 7 separati da spazio.\n' +
+    '#1_Brand_IT · #2_TipoProdotto_IT · #3_Keyword_EN · #4_Colore_IT · #5_Trend/Stile · #6_Taglia · #7_CategoriaAmpia_IT\n' +
+    'Evita generici: #usato, #secondhand, #vendo.';
+}
+
+
+
 /* ── Categoria ── */
 var CLOTHING_CATS = ['donna', 'uomo', 'unisex', 'griffati'];
 
@@ -334,7 +508,7 @@ function hideErr() { document.getElementById('em').style.display = 'none'; }
 
 /* ── Resize immagini ── */
 function resEnc(file, max) {
-  max = max || 640;
+  max = max || 512;
   return new Promise(function(res, rej) {
     var img = new Image(), url = URL.createObjectURL(file);
     img.onload = function() {
@@ -360,7 +534,9 @@ function cp(id, btn) {
 }
 
 /* ══════════════════════════════════════════════
-   ANALYZE — Prompt IA avanzato (Fase 2)
+   ANALYZE — Architettura a 2 Fasi (v5)
+   Fase 0: Brand detect + Ricerca prezzi (Perplexity)
+   Fase 1: System+User prompt con dati reali
    ══════════════════════════════════════════════ */
 async function analyze() {
   var apiKey = document.getElementById('apiKey').value.trim();
@@ -371,17 +547,19 @@ async function analyze() {
 
   var btn = document.getElementById('go');
   btn.disabled = true;
-  btn.innerHTML = '<span class="sp"></span> Analisi in corso…';
   document.getElementById('results').style.display = 'none';
 
   var savedKey = (function() { try { return localStorage.getItem('lai_k'); } catch (_) { return null; } })();
 
   try {
+    /* ── Encode immagini (512px per token efficiency) ── */
+    btn.innerHTML = '<span class="sp"></span> Preparazione immagini…';
     var imgs = await Promise.all(files.map(async function(f) {
-      var b64 = await resEnc(f, 640);
+      var b64 = await resEnc(f, 512);
       return { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + b64 } };
     }));
 
+    /* ── Raccolta input utente ── */
     var cond = getCondLabel();
     var taglia = getTagliaIT();
     var discount = getCondDiscount();
@@ -391,20 +569,52 @@ async function analyze() {
     var extra = getExtraInfo();
     var extraFields = getExtraFields();
 
-    /* Stagionalità (calcolata nel frontend, passata al prompt) */
+    /* Stagionalità */
     var catForSeason = isCloth ? (document.getElementById('categoria').value) : 'default';
     var seasonInfo = getSeasonalityInfo(catForSeason);
 
-    /* Blocco info aggiuntive completo */
+    /* Toggle ricerca prezzi */
+    var priceResearchOn = document.getElementById('priceResearch') ? document.getElementById('priceResearch').checked : true;
+
+    /* ══════════════════════════════════════════
+       FASE 0: BRAND DETECTION + RICERCA PREZZI
+       ══════════════════════════════════════════ */
+
+    /* Brand: campo utente → priorità. Se vuoto e ricerca attiva → rilevamento AI */
+    var brandInput = document.getElementById('brandField') ? document.getElementById('brandField').value.trim() : '';
+    var brand = brandInput;
+    var brandDetected = false;
+
+    if (!brand && priceResearchOn) {
+      btn.innerHTML = '<span class="sp"></span> 🔍 Identificazione brand…';
+      brand = await detectBrandFromPhotos(apiKey, imgs);
+      if (brand) brandDetected = true;
+    }
+
+    /* Ricerca prezzi di mercato con Perplexity Sonar */
+    var marketData = null;
+    if (priceResearchOn) {
+      btn.innerHTML = '<span class="sp"></span> 🔍 Ricerca prezzi di mercato…';
+      marketData = await researchMarketPrices(apiKey, brand, categoria, cond, taglia);
+    }
+
+    /* ── Calcoli deterministici (frontend, non AI) ── */
+    var timingOttimale = getNextOptimalSlot();
+    var oggi = new Date();
+    var dataStr = oggi.toLocaleDateString('it-IT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    var oraStr = oggi.getHours() + ':' + String(oggi.getMinutes()).padStart(2, '0');
+
+    /* Blocco info aggiuntive */
     var extraBlock = '';
     if (extra) extraBlock += '\nINFO AGGIUNTIVE: "' + extra + '"';
-    if (extraFields.color) extraBlock += '\nColore specificato: ' + extraFields.color;
-    if (extraFields.material) extraBlock += '\nMateriale specificato: ' + extraFields.material;
+    if (extraFields.color) extraBlock += '\nColore: ' + extraFields.color;
+    if (extraFields.material) extraBlock += '\nMateriale: ' + extraFields.material;
     if (extraFields.purchasedYear) extraBlock += '\nAnno acquisto: ' + extraFields.purchasedYear;
-    if (extraFields.hasTags) extraBlock += '\nHa ancora il cartellino originale: SÌ';
-    if (extraFields.hasBox) extraBlock += '\nHa scatola/imballo originale: SÌ';
-    if (extraFields.shippingIncluded) extraBlock += '\nSpedizione INCLUSA nel prezzo consigliato';
+    if (extraFields.hasTags) extraBlock += '\nCartellino originale: SÌ';
+    if (extraFields.hasBox) extraBlock += '\nScatola/imballo originale: SÌ';
+    if (extraFields.shippingIncluded) extraBlock += '\nSpedizione INCLUSA nel prezzo';
 
+    /* Template scheda tecnica */
     var schedaCampi = isCloth
       ? '"Brand":"","Tipo":"","Colore":"' + (extraFields.color || '') + '","Materiale":"' + (extraFields.material || '') + '","Taglia IT":"' + (taglia === 'da identificare dalle foto' ? '[da foto]' : taglia) + '","Condizione":"' + cond.split('(')[0].trim() + '"'
       : '"Brand":"","Sottocategoria":"' + (sottocat || '[da foto]') + '","Colore/Variante":"' + (extraFields.color || '') + '","Specifiche tecniche":"","Stato":"' + cond.split('(')[0].trim() + '"';
@@ -412,217 +622,102 @@ async function analyze() {
     var tagliaLabel = isCloth ? 'Taglia IT' : 'Sottocategoria';
     var tagliaValore = isCloth ? taglia : (sottocat || 'da identificare dalle foto');
     var schedaTemplate = '{' + schedaCampi + '}';
-
     var contentDesc = isCloth
       ? 'Materiale, colore, stile, fit, punti forza, condizione'
       : 'Caratteristiche tecniche, stato, compatibilità, punti forza';
 
+    /* Regole lingue */
     var langRules = selectedLangs.map(function(code, i) {
       var info = LANG_MAP[code] || { negotiable: '🤝 Price negotiable!', label: code };
-      var ruleNum = i + 2;
+      var ruleNum = i + 1;
       if (i === 0) {
         return ruleNum + '. langs.' + code + ': 380-420 chars. Lingua: ' + info.label + '. Inizia "' + info.negotiable + '\\n". ' + contentDesc + '. Includi ' + tagliaLabel + '.' + (extra ? ' Usa info aggiuntive.' : '') + ' NO hashtag.';
       }
       return ruleNum + '. langs.' + code + ': 380-420 chars. Lingua: ' + info.label + '. Inizia "' + info.negotiable + '\\n". Stessa descrizione tradotta, adattata. Includi ' + tagliaLabel + '. NO hashtag.';
     }).join('\n');
 
-    var htRuleNum = selectedLangs.length + 2;
-    var langJsonTemplate = selectedLangs.map(function(c) { return '"' + c + '":""'; }).join(',');
+    var langJsonTemplate = selectedLangs.map(function(c) { return '"' + c + '":"' + '"'; }).join(',');
     var maxTokens = Math.max(1600, 800 + selectedLangs.length * 400);
 
-    /* ══ PROMPT POTENZIATO v4 ══ */
-    var oggi = new Date();
-    var dataStr = oggi.toLocaleDateString('it-IT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    var oraStr = oggi.getHours() + ':' + String(oggi.getMinutes()).padStart(2, '0');
+    /* ══════════════════════════════════════════
+       FASE 1: SYSTEM + USER PROMPT
+       ══════════════════════════════════════════ */
 
-    var prompt =
-      // ═══════════════════════════════════════════
-      // IDENTITÀ E OBIETTIVO
-      // ═══════════════════════════════════════════
-      'Sei LISTAI, il più preciso generatore di annunci ottimizzati per Vinted Italia. ' +
-      'Il tuo unico obiettivo: creare un annuncio che si venda entro 7 giorni al prezzo migliore possibile. ' +
-      'Ogni parola dell\'annuncio ha uno scopo. Ogni prezzo è basato su dati reali, non su formule astratte. ' +
-      'REGOLA ASSOLUTA: se un dato non è visibile o non conosci il prezzo reale di mercato, ' +
-      'dilo esplicitamente nel campo "note" invece di inventare. ZERO allucinazioni sui prezzi.\n\n' +
+    var systemPrompt = buildSystemPrompt(isCloth);
 
-      // ═══════════════════════════════════════════
-      // CONTESTO TEMPORALE E DI MERCATO
-      // ═══════════════════════════════════════════
-      'DATA ANALISI: ' + dataStr + ' ore ' + oraStr + '\n' +
-      'MERCATO TARGET: Vinted.it (mercato italiano)\n' +
-      'VALUTA: Euro (€)\n\n' +
+    var marketDataStr = marketData
+      ? JSON.stringify(marketData)
+      : 'NON DISPONIBILI — stima con massima cautela basandoti su conoscenze generali, e dichiaralo esplicitamente nel campo note';
 
-      // ═══════════════════════════════════════════
-      // INPUT DELL'UTENTE
-      // ═══════════════════════════════════════════
-      'OGGETTO DA ANALIZZARE:\n' +
+    var userPrompt =
+      'ARTICOLO DA ANALIZZARE:\n' +
       '- Categoria: ' + categoria + '\n' +
       '- Condizione dichiarata: ' + cond + '\n' +
       '- ' + tagliaLabel + ': ' + tagliaValore + '\n' +
-      '- Stagione corrente: ' + seasonInfo.seasonName + ' · Impatto prezzo stimato: ' + seasonInfo.impactStr + '\n' +
+      '- Stagione corrente: ' + seasonInfo.seasonName + ' · Impatto prezzo: ' + seasonInfo.impactStr + '\n' +
       (seasonInfo.events.length ? '- Evento mercato attivo: ' + seasonInfo.events.join(', ') + '\n' : '') +
+      (brand ? '- Brand ' + (brandDetected ? '(identificato da AI)' : '(confermato)') + ': ' + brand + '\n' : '') +
       (extraBlock ? extraBlock + '\n' : '') +
+      '\nDATA ANALISI: ' + dataStr + ' ore ' + oraStr + '\n' +
+      'MERCATO: Vinted.it · VALUTA: Euro (€)\n' +
 
-      // ═══════════════════════════════════════════
-      // FASE 1 — ANALISI VISIVA
-      // ═══════════════════════════════════════════
-      '\n═══ FASE 1: ANALISI VISIVA ═══\n' +
-      'Esamina TUTTE le immagini con la massima attenzione. Identifica con certezza:\n\n' +
-      '1. BRAND/MARCHIO:\n' +
-      '   → Cerca logo, etichette interne, stampe, ricami, caratteristiche costruttive distintive\n' +
-      '   → Se non visibile: "non determinabile dalle foto"\n\n' +
-      '2. MODELLO/STAGIONE:\n' +
-      '   → Modello specifico se leggibile (es. "Air Force 1", "501", "Dionysus")\n' +
-      '   → Anno/stagione se deducibile da etichette o caratteristiche stilistiche\n' +
-      '   → Se non visibile: "non determinabile"\n\n' +
-      '3. COLORE ESATTO:\n' +
-      '   → NON scrivere "nero" se è antracite, "marrone" se è cognac, "blu" se è navy\n' +
-      '   → Usa sempre il termine cromatico preciso\n\n' +
-      '4. MATERIALE/COMPOSIZIONE:\n' +
-      '   → Leggi l\'etichetta di composizione se visibile (es. "100% lana vergine")\n' +
-      '   → Se non visibile: stima dal tessuto visivo\n\n' +
-      '5. CONDIZIONE REALE:\n' +
-      '   → Confronta la condizione dichiarata dall\'utente con ciò che vedi nelle foto\n' +
-      '   → Elenca TUTTI i difetti visibili: macchie, usura, pilling, graffi, sfilacciature\n' +
-      '   → Se condizione reale ≠ condizione dichiarata → aggiungi WARNING\n\n' +
-      '6. TAGLIA/MISURA:\n' +
-      '   → Leggi l\'etichetta taglia se visibile nelle foto\n' +
-      '   → Segnala se la taglia sull\'etichetta ≠ taglia dichiarata dall\'utente\n\n' +
-      '7. PREZZO ORIGINALE:\n' +
-      '   → Se il cartellino è visibile nelle foto, leggi e riporta il prezzo originale esatto\n\n' +
-      'REGOLE AGGIUNTIVE ANALISI VISIVA:\n' +
-      '- Leggi le etichette interne CON CURA: taglia, composizione, stagione, paese produzione\n' +
-      '- Cerca il modello/stagione nella trama o nel pattern se il brand lo inserisce (es: Zara SS25)\n' +
-      '- Valuta l\'usura REALE delle foto: pelliccia consumata, pilling, scoloriture, asimmetrie\n' +
-      '- Se la condizione dichiarata NON corrisponde alle foto, inserisci un WARNING nel campo warning[]\n' +
-      '- Se il cartellino è visibile nelle foto, leggi il prezzo originale dal cartellino stesso\n' +
-      '- Per scarpe: controlla la suola (usura), la tomaia (graffi) e l\'interno (odori non visibili → nota)\n' +
-      '- Per borse: controlla angoli, cerniere, tracolla, interno (se visibile), hardware (ossidazione)\n\n' +
+      '\n═══ DATI_MERCATO (da ricerca web reale) ═══\n' +
+      marketDataStr + '\n' +
 
-      // ═══════════════════════════════════════════
-      // FASE 2 — RICERCA PREZZI
-      // ═══════════════════════════════════════════
-      '\n═══ FASE 2: ANALISI PREZZI DI MERCATO ═══\n\n' +
+      '\n═══ CALCOLO PREZZI VINTED (usa SOLO DATI_MERCATO sopra) ═══\n' +
+      '• prezzo_rapido: ~percentile 20° annunci Vinted simili (min assoluto €3)\n' +
+      '• prezzo_ideale: ~percentile 40-50° (±10% per condizione/concorrenza, stagionalità ' + seasonInfo.impactStr + ')\n' +
+      '• prezzo_massimo: ~percentile 70° + 15% margine trattativa\n' +
+      '  Cap: max 40% prezzo nuovo per EUC/GUC, max 60% per NWT/NWOT\n' +
+      '  Exception: luxury/vintage/limited edition → nessun cap\n' +
+      (extraFields.shippingIncluded ? '• NOTA: spedizione inclusa → aggiungi €4-6 a ideale/massimo\n' : '') +
 
-      'A) PREZZO NUOVO — RETAIL ATTUALE:\n' +
-      '   Cerca il prezzo di vendita ATTUALE (non storico) per questo esatto articolo/modello:\n' +
-      '   - Amazon.it: prezzo attuale o più recente disponibile\n' +
-      '   - Zalando.it: prezzo di listino corrente\n' +
-      '   - Sito ufficiale brand: prezzo full-price attuale\n' +
-      '   → Indica la fonte per ogni stima (es. "Zalando ~€89", "sito brand ~€95")\n' +
-      '   → Se il brand non è venduto in Italia, usa prezzi EU del brand\n' +
-      '   → Se non hai dati: scrivi "prezzo nuovo non determinabile — stimato €X basato su categoria/brand tier"\n\n' +
+      '\n═══ DESCRIZIONI RICHIESTE ═══\n' +
+      langRules + '\n' +
 
-      'B) PREZZI SU VINTED ITALIA — MERCATO REALE:\n' +
-      '   Analizza cosa è attualmente in vendita su Vinted.it per questo articolo:\n' +
-      '   - Range prezzi attivi (min - max) per stesso brand/modello/condizione simile\n' +
-      '   - Stima della concorrenza: pochi annunci (<5) / media (5-20) / alta (>20)\n' +
-      '   - Velocità di vendita percepita per questa categoria in questo periodo\n\n' +
-
-      'C) CALCOLO FASCE PREZZO VINTED — METODOLOGIA PRECISA:\n' +
-      '   Calcola le 3 fasce usando dati reali Vinted trovati in B), non formule astratte:\n\n' +
-      '   prezzo_rapido = percentile 20° degli annunci attivi simili\n' +
-      '     → Obiettivo: vendere entro 24-72 ore\n' +
-      '     → Minimo assoluto: €3 (soglia logistica Vinted)\n\n' +
-      '   prezzo_ideale = percentile 40°-50° degli annunci attivi simili\n' +
-      '     → Aggiusta +10% se condizione è migliore della media\n' +
-      '     → Aggiusta -10% se concorrenza alta (>20 annunci simili)\n' +
-      '     → Aggiusta per stagionalità: ' + seasonInfo.impactStr + '\n\n' +
-      '   prezzo_massimo = percentile 70° degli annunci attivi + 15% margine trattativa\n' +
-      '     → Giustificato se: NWT/NWOT, brand premium, taglia rara, pochi concorrenti\n' +
-      '     → Cap: max 40% del prezzo nuovo per EUC/GUC, max 60% per NWT/NWOT\n' +
-      '     → Exception: luxury/vintage/limited edition → nessun cap\n\n' +
-      (extraFields.shippingIncluded ? '   NOTA SPEDIZIONE INCLUSA: aggiungi €4-6 al prezzo ideale e massimo\n\n' : '') +
-
-      '   Timing ottimale:\n' +
-      '   - Giorni migliori per pubblicare su Vinted IT: giovedì, venerdì, domenica\n' +
-      '   - Orario migliore: 19:00-22:00 (picco traffico utenti dopo lavoro/cena)\n' +
-      '   - Evitare: lunedì mattina, sabato pomeriggio\n' +
-      '   - Vinted mostra gli annunci NUOVI per prime 24h → pubblicare subito prima del weekend = massima esposizione\n' +
-      '   → Nel campo timing_ottimale scrivi il prossimo giorno+ora consigliata basandoti su data/ora corrente: ' + dataStr + ' ' + oraStr + '\n\n' +
-
-      // ═══════════════════════════════════════════
-      // FASE 3 — CREAZIONE ANNUNCIO
-      // ═══════════════════════════════════════════
-      '\n═══ FASE 3: CREAZIONE ANNUNCIO ═══\n\n' +
-
-      '--- TITOLO SEO (campo "t") ---\n' +
-      'Regole INVIOLABILI:\n' +
-      '- Max 50 caratteri TOTALI (inclusi spazi)\n' +
-      '- Formula: [Brand] [TipoProdotto] [ColoreEsatto/Materiale] [KeywordDifferenziante]\n' +
-      '- NON iniziare con articoli: Il, La, Un, Una, I, Le, Gli\n' +
-      '- NON includere: "usato", "ottimo stato", "spedisco" (sprecano caratteri SEO)\n' +
-      '- Usa keyword ad alto volume Vinted IT: vintage, oversize, y2k, crop, blazer, etc.\n' +
-      '- Se c\'è spazio: includi la taglia IT\n\n' +
-
-      '--- DESCRIZIONI MULTILINGUA (campo "langs") ---\n' +
-      langRules + '\n\n' +
-      'STRUTTURA OBBLIGATORIA per OGNI descrizione:\n' +
-      '  Riga 1: "🤝 Prezzo trattabile!" (IT) o equivalente lingua\n' +
-      '  Riga 2: [Apertura identificativa: capo + punto forza principale]\n' +
-      '  Riga 3-4: [Dettagli fisici: materiale esatto, colore preciso, fit/vestibilità]\n' +
-      '  Riga 5: [Condizione reale + difetti se presenti — sii onesto]\n' +
-      '  Riga 6: [CTA naturale: spedizione rapida, sconto multipli, risposta veloce]\n' +
-      'NON scrivere mai "Vendo" o "Cedo" (ovvio su Vinted)\n\n' +
-
-      '--- HASHTAG (campo "ht") ---\n' +
-      'Esattamente 7 hashtag, separati da spazio:\n' +
-      '  #1 Brand IT · #2 TipoProdotto IT · #3 KeywordPrincipale EN\n' +
-      '  #4 Colore IT · #5 Trend/Stile · #6 Taglia · #7 CategoriaAmpia IT\n' +
-      'Evita hashtag generici: #usato, #secondhand, #vendo\n\n' +
-
-      // ═══════════════════════════════════════════
-      // OUTPUT JSON
-      // ═══════════════════════════════════════════
-      '\n═══ OUTPUT: SOLO JSON VALIDO ═══\n' +
-      'Zero markdown. Zero testo fuori dal JSON. Zero commenti.\n' +
-      'Schema completo:\n' +
+      '\n═══ OUTPUT JSON (schema completo) ═══\n' +
       '{\n' +
       '  "t": "[Titolo SEO ≤50 char]",\n' +
       '  "langs": {' + langJsonTemplate + '},\n' +
-      '  "ht": "[#tag1 #tag2 #tag3 #tag4 #tag5 #tag6 #tag7]",\n' +
+      '  "ht": "#tag1 #tag2 #tag3 #tag4 #tag5 #tag6 #tag7",\n' +
       '  "p": {\n' +
-      '    "nMin": "€X",\n' +
-      '    "nMax": "€X",\n' +
-      '    "vMin": "€X",\n' +
-      '    "vMax": "€X",\n' +
-      '    "note": "Fonte prezzi nuovo: [fonti]. Vinted articoli simili: [range]. Giustificazione in 1-2 frasi.",\n' +
+      '    "nMin": "€X", "nMax": "€X",\n' +
+      '    "vMin": "€X", "vMax": "€X",\n' +
+      '    "note": "Fonti prezzi: [fonti reali o disclaimer stima]. Giustificazione in 1-2 frasi.",\n' +
       '    "advanced": {\n' +
       '      "prezzo_rapido": "€X",\n' +
       '      "prezzo_ideale": "€X",\n' +
       '      "prezzo_massimo": "€X",\n' +
-      '      "commissione_stimata": "€X (5% + €0.70 sull\'importo acquirente)",\n' +
-      '      "confidence_score": 85,\n' +
-      '      "difficolta_vendita": "facile",\n' +
-      '      "difficolta_motivo": "[1 frase motivazione]",\n' +
+      '      "difficolta_vendita": "facile|media|difficile",\n' +
+      '      "difficolta_motivo": "[1 frase]",\n' +
       '      "breakdown_fattori": [\n' +
-      '        {"fattore": "Brand", "impatto": "+X%", "spiegazione": "[1 frase]"},\n' +
-      '        {"fattore": "Stagionalità", "impatto": "+X%", "spiegazione": "[1 frase]"},\n' +
-      '        {"fattore": "Concorrenza Vinted", "impatto": "-X%", "spiegazione": "[1 frase]"},\n' +
-      '        {"fattore": "Condizione", "impatto": "+X%", "spiegazione": "[1 frase]"}\n' +
+      '        {"fattore":"Brand","impatto":"+X%","spiegazione":"[1 frase]"},\n' +
+      '        {"fattore":"Stagionalità","impatto":"' + seasonInfo.impactStr + '","spiegazione":"[1 frase]"},\n' +
+      '        {"fattore":"Concorrenza","impatto":"-X%","spiegazione":"[1 frase]"},\n' +
+      '        {"fattore":"Condizione","impatto":"+X%","spiegazione":"[1 frase]"}\n' +
       '      ],\n' +
       '      "stima_velocita_vendita": {\n' +
       '        "al_prezzo_rapido": "24-48 ore",\n' +
       '        "al_prezzo_ideale": "3-7 giorni",\n' +
       '        "al_prezzo_massimo": "1-3 settimane"\n' +
       '      },\n' +
-      '      "timing_ottimale": "[Prossimo giorno+ora ottimale basato su ' + dataStr + ' ' + oraStr + ']",\n' +
-      '      "consigli_annuncio": [\n' +
-      '        "[Consiglio specifico 1 per questo articolo]",\n' +
-      '        "[Consiglio specifico 2]",\n' +
-      '        "[Consiglio specifico 3]"\n' +
-      '      ],\n' +
+      '      "consigli_annuncio": ["[consiglio 1]","[consiglio 2]","[consiglio 3]"],\n' +
       '      "warning": []\n' +
       '    }\n' +
       '  },\n' +
       '  "s": ' + schedaTemplate + '\n' +
       '}';
 
+    btn.innerHTML = '<span class="sp"></span> ✨ Generazione annuncio…';
 
+    /* ── API Call (system + user separati) ── */
     var body = {
       model: model,
-      messages: [{ role: 'user', content: [{ type: 'text', text: prompt }].concat(imgs) }],
-      temperature: 0.10,  // Maggiore precisione
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: [{ type: 'text', text: userPrompt }].concat(imgs) }
+      ],
+      temperature: 0.10,
       max_tokens: maxTokens
     };
 
@@ -675,6 +770,7 @@ async function analyze() {
       }
     }
 
+    /* ── Validazione output ── */
     if (!parsed.t || parsed.t.length > 50) parsed.t = (parsed.t || '').slice(0, 50);
     if (!parsed.langs || typeof parsed.langs !== 'object') throw new Error('Risposta AI non valida (langs mancante). Riprova.');
     for (var ci = 0; ci < selectedLangs.length; ci++) {
@@ -683,8 +779,25 @@ async function analyze() {
       if (!desc || desc.length < 100) throw new Error('Descrizione ' + (LANG_MAP[code] || { name: code }).name + ' incompleta. Riprova.');
     }
 
-    /* Inietta stagionalità nel parsed per renderResults */
+    /* ── Inietta dati calcolati dal frontend ── */
     parsed._seasonInfo = seasonInfo;
+    parsed._marketData = marketData;
+    parsed._priceVerified = !!marketData;
+    parsed._brand = brand;
+    parsed._brandDetected = brandDetected;
+
+    /* Confidence score deterministico */
+    var hasExtraInfo = !!(extraFields.color || extraFields.material || extraFields.purchasedYear || extraFields.hasTags || extraFields.hasBox);
+    parsed._confidenceScore = calcConfidence(!!marketData, !!brand, hasExtraInfo);
+
+    /* Timing e commissione dal frontend */
+    parsed._timingOttimale = timingOttimale;
+    if (parsed.p && parsed.p.advanced && parsed.p.advanced.prezzo_ideale) {
+      var idealNum = parseEuro(parsed.p.advanced.prezzo_ideale);
+      if (idealNum) {
+        parsed._commissione = '€' + calcVintedFee(idealNum).toFixed(2) + ' (5% + €0.70)';
+      }
+    }
 
     renderResults(parsed);
     if (apiKey !== savedKey) promptSave(apiKey);
@@ -697,6 +810,7 @@ async function analyze() {
     btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg> Analizza di nuovo';
   }
 }
+
 
 /* ── Helpers ── */
 function escHtml(s) {
@@ -788,9 +902,10 @@ function renderResults(d, skipHistory) {
     document.getElementById('ptMax').textContent   = pMax;
 
     /* Confidence score */
-    if (adv.confidence_score !== undefined) {
+    var confScore = d._confidenceScore || (adv && adv.confidence_score !== undefined ? adv.confidence_score : null);
+    if (confScore !== null) {
       document.getElementById('confidenceBadge').style.display = 'inline-flex';
-      document.getElementById('confidenceText').textContent = 'Affidabilità ' + adv.confidence_score + '%';
+      document.getElementById('confidenceText').textContent = 'Affidabilità ' + confScore + '%';
     }
 
     /* Difficoltà vendita */
@@ -808,11 +923,12 @@ function renderResults(d, skipHistory) {
     }
 
     /* Commissione stimata */
-    if (adv.commissione_stimata) {
+    var commStr = d._commissione || (adv && adv.commissione_stimata) || null;
+    if (commStr) {
       var commEl = document.getElementById('commissioneDisplay');
       if (commEl) {
         commEl.style.display = 'block';
-        commEl.textContent = '💳 Commissione acquirente: ' + adv.commissione_stimata;
+        commEl.textContent = '💳 Commissione acquirente: ' + commStr;
       }
     }
 
@@ -826,10 +942,11 @@ function renderResults(d, skipHistory) {
     }
 
     /* Timing ottimale */
-    if (adv.timing_ottimale) {
+    var timingStr = d._timingOttimale || (adv && adv.timing_ottimale) || null;
+    if (timingStr) {
       var tb = document.getElementById('timingBanner');
       tb.style.display = 'block';
-      tb.innerHTML = '📅 <strong>Timing consigliato:</strong> ' + escHtml(adv.timing_ottimale);
+      tb.innerHTML = '📅 <strong>Timing consigliato:</strong> ' + escHtml(timingStr);
     }
 
   } else {
@@ -888,6 +1005,19 @@ function renderResults(d, skipHistory) {
     var seasonEmoji = { spring: '🌸', summer: '☀️', autumn: '🍂', winter: '❄️' }[seasonInfo.season] || '📅';
     var seasonBadgeHtml = '<div class="season-info"><div class="dot"></div>' + seasonEmoji + ' ' + escHtml(seasonInfo.seasonName) + ' · ' + escHtml(seasonInfo.impactStr) + '</div>';
     document.getElementById('seasonBadgeWrap').innerHTML = seasonBadgeHtml;
+  }
+
+  /* Badge prezzi verificati/stimati */
+  var pvBadge = document.getElementById('priceSourceBadge');
+  if (pvBadge) {
+    if (d._priceVerified) {
+      pvBadge.className = 'price-source-badge verified';
+      pvBadge.innerHTML = '🌐 Prezzi verificati via web';
+    } else {
+      pvBadge.className = 'price-source-badge estimated';
+      pvBadge.innerHTML = '⚠️ Prezzi stimati (AI)';
+    }
+    pvBadge.style.display = 'inline-flex';
   }
 
   /* Scheda prodotto */

@@ -334,6 +334,7 @@ function buildSystemPrompt(isCloth) {
     '• Materiale: leggi etichetta composizione, altrimenti stima dal tessuto.\n' +
     '• Condizione REALE: TUTTI i difetti visibili (macchie, usura, pilling, graffi, sfilacciature).\n' +
     '• Taglia da etichetta se visibile (segnala se ≠ dichiarata). Prezzo cartellino se visibile.\n' +
+    '• Dimensione pacco Vinted suggerita (Piccola, Media, Grande, Extra).\n' +
     (isCloth
       ? '• Scarpe: suola (usura), tomaia (graffi), interno. Borse: angoli, cerniere, tracolla, hardware (ossidazione).\n\n'
       : '• Stato funzionamento, completezza accessori, compatibilità, segni di usura.\n\n') +
@@ -701,6 +702,7 @@ async function analyze() {
       '        "al_prezzo_ideale": "3-7 giorni",\n' +
       '        "al_prezzo_massimo": "1-3 settimane"\n' +
       '      },\n' +
+      '      "dimensione_pacco": "Piccola|Media|Grande|Extra",\n' +
       '      "consigli_annuncio": ["[consiglio 1]","[consiglio 2]","[consiglio 3]"],\n' +
       '      "warning": []\n' +
       '    }\n' +
@@ -947,6 +949,15 @@ function renderResults(d, skipHistory) {
       var tb = document.getElementById('timingBanner');
       tb.style.display = 'block';
       tb.innerHTML = '📅 <strong>Timing consigliato:</strong> ' + escHtml(timingStr);
+    }
+
+    /* Dimensione pacco */
+    if (adv && adv.dimensione_pacco) {
+      var pb = document.getElementById('packageBanner');
+      if (pb) {
+        pb.style.display = 'block';
+        pb.innerHTML = '📦 <strong>Dimensione pacco consigliata:</strong> ' + escHtml(adv.dimensione_pacco);
+      }
     }
 
   } else {

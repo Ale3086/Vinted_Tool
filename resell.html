@@ -1,15 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
   <meta name="application-name" content="ListAI">
   <meta name="apple-mobile-web-app-title" content="ListAI">
-  <title>ListAI — Resell Scout</title>
+  <link rel="icon" href="icon.jpg">
+  <link rel="apple-touch-icon" href="icon.jpg">
+  <title>ListAI â€” Resell Scout</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css?v=3"/>
 </head>
 <body>
 
@@ -22,10 +24,10 @@
 <!-- Modal salvataggio chiave -->
 <div class="modal-o" id="saveModal">
   <div class="modal">
-    <h3>💾 Salvare la chiave API?</h3>
-    <p>Vuoi memorizzare la tua OpenRouter API Key per <strong>1 mese</strong>? Verrà inserita automaticamente ad ogni visita. Resta solo nel tuo browser.</p>
+    <h3>ðŸ’¾ Salvare la chiave API?</h3>
+    <p>Vuoi memorizzare la tua OpenRouter API Key per <strong>1 mese</strong>? VerrÃ  inserita automaticamente ad ogni visita. Resta solo nel tuo browser.</p>
     <div class="mbtns">
-      <button class="mbtn y" onclick="saveKey(true)">✅ Sì, salva</button>
+      <button class="mbtn y" onclick="saveKey(true)">âœ… SÃ¬, salva</button>
       <button class="mbtn n" onclick="saveKey(false)">No, grazie</button>
     </div>
   </div>
@@ -35,12 +37,12 @@
   <div class="hi">
     <a href="index.html" class="logo">List<span>AI</span></a>
     <nav class="nav">
-      <a href="index.html" id="nav-create">✨ Crea Annuncio</a>
-      <a href="resell.html" class="active" id="nav-resell">🔍 Analisi Resell</a>
-      <a href="scout.html" id="nav-scout">🎯 Scout</a>
-      <a href="prompts.html" id="nav-prompts">📚 Prompt</a>
+      <a href="index.html" id="nav-create">âœ¨ Crea Annuncio</a>
+      <a href="resell.html" class="active" id="nav-resell">ðŸ” Analisi Resell</a>
+      <a href="scout.html" id="nav-scout">ðŸŽ¯ Scout</a>
+      <a href="prompts.html" id="nav-prompts">ðŸ“š Prompt</a>
     </nav>
-    <button class="mobile-menu-btn" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
+    <button class="mobile-menu-btn" onclick="document.querySelector('.nav').classList.toggle('open')">â˜°</button>
     <span class="badge">OpenRouter</span>
   </div>
 </header>
@@ -50,7 +52,7 @@
     <p class="hero-tagline">// potenziale di rivendita con AI</p>
     <h1>Analisi Investimento <span class="gradient-text">Resell</span></h1>
     <p>
-      Fotografa un oggetto → scopri il suo valore reale, il ROI potenziale
+      Fotografa un oggetto â†’ scopri il suo valore reale, il ROI potenziale
       e un <strong>piano d'azione step-by-step</strong> per massimizzare il guadagno.
     </p>
   </div>
@@ -67,7 +69,7 @@
     <div class="api-row" style="margin-bottom:.85rem">
       <span class="albl">API Key</span>
       <div class="aiw">
-        <input class="ainp" type="password" id="apiKey" placeholder="Incolla la tua OpenRouter API Key…" autocomplete="off"/>
+        <input class="ainp" type="password" id="apiKey" placeholder="Incolla la tua OpenRouter API Keyâ€¦" autocomplete="off"/>
         <button class="eye" onclick="toggleKey()">
           <svg id="eyeIcon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
@@ -76,8 +78,8 @@
       </div>
       <span class="ahint">
         Stessa chiave di <a href="index.html">Crea Annuncio</a>
-        &nbsp;·&nbsp;
-        <a href="guide.html">📖 Guida</a>
+        &nbsp;Â·&nbsp;
+        <a href="guide.html">ðŸ“– Guida</a>
       </span>
     </div>
 
@@ -85,25 +87,25 @@
       <span class="albl">Modello</span>
       <div style="flex:1;min-width:190px;display:flex;flex-direction:column;gap:.38rem">
         <select class="msel" id="modelSelect" onchange="onModelChange()">
-          <optgroup label="⭐ Migliore qualità/prezzo">
-            <option value="google/gemini-3.1-flash-lite" selected>Gemini 3.1 Flash Lite — ~€0.008/analisi 🔥</option>
+          <optgroup label="â­ Migliore qualitÃ /prezzo">
+            <option value="google/gemini-3.1-flash-lite" selected>Gemini 3.1 Flash Lite â€” ~â‚¬0.008/analisi ðŸ”¥</option>
           </optgroup>
-          <optgroup label="✨ Gemini">
-            <option value="google/gemini-2.5-flash">Gemini 2.5 Flash — ~€0.010/analisi ⭐</option>
-            <option value="google/gemini-3-flash-preview">Gemini 3 Flash — ~€0.010/analisi</option>
-            <option value="google/gemini-3.1-pro-preview">Gemini 3.1 Pro — ~€0.017/analisi</option>
-            <option value="google/gemini-2.5-pro">Gemini 2.5 Pro — ~€0.019/analisi</option>
+          <optgroup label="âœ¨ Gemini">
+            <option value="google/gemini-2.5-flash">Gemini 2.5 Flash â€” ~â‚¬0.010/analisi â­</option>
+            <option value="google/gemini-3-flash-preview">Gemini 3 Flash â€” ~â‚¬0.010/analisi</option>
+            <option value="google/gemini-3.1-pro-preview">Gemini 3.1 Pro â€” ~â‚¬0.017/analisi</option>
+            <option value="google/gemini-2.5-pro">Gemini 2.5 Pro â€” ~â‚¬0.019/analisi</option>
           </optgroup>
-          <optgroup label="🌐 Altri">
-            <option value="openai/gpt-4o-mini">GPT-4o Mini — ~€0.011/analisi</option>
+          <optgroup label="ðŸŒ Altri">
+            <option value="openai/gpt-4o-mini">GPT-4o Mini â€” ~â‚¬0.011/analisi</option>
           </optgroup>
-          <optgroup label="🔧 Personalizzato">
-            <option value="custom">✏️ Inserisci il tuo modello…</option>
+          <optgroup label="ðŸ”§ Personalizzato">
+            <option value="custom">âœï¸ Inserisci il tuo modelloâ€¦</option>
           </optgroup>
         </select>
-        <input class="ainp-plain" type="text" id="customModel" placeholder="es. google/gemini-2.5-flash…" style="display:none" autocomplete="off"/>
+        <input class="ainp-plain" type="text" id="customModel" placeholder="es. google/gemini-2.5-flashâ€¦" style="display:none" autocomplete="off"/>
       </div>
-      <span class="ahint" style="color:var(--color-accent)">↑ Scegli il modello</span>
+      <span class="ahint" style="color:var(--color-accent)">â†‘ Scegli il modello</span>
     </div>
   </div>
 
@@ -120,76 +122,76 @@
       <div class="ig">
         <label>Categoria</label>
         <select id="r-categoria" onchange="onResellCategoriaChange()">
-          <option value="uomo">👔 Abbigliamento Uomo</option>
-          <option value="donna">👗 Abbigliamento Donna</option>
-          <option value="unisex">🧥 Abbigliamento Unisex</option>
-          <option value="griffati">💎 Articoli Griffati</option>
-          <option value="bambini">🧸 Bambini</option>
-          <option value="sport">⚽ Sport</option>
-          <option value="elettronica">📱 Elettronica</option>
-          <option value="casa">🏠 Casa / Arredamento</option>
-          <option value="intrattenimento">🎬 Intrattenimento</option>
-          <option value="hobby">🎨 Hobby e Collezionismo</option>
+          <option value="uomo">ðŸ‘” Abbigliamento Uomo</option>
+          <option value="donna">ðŸ‘— Abbigliamento Donna</option>
+          <option value="unisex">ðŸ§¥ Abbigliamento Unisex</option>
+          <option value="griffati">ðŸ’Ž Articoli Griffati</option>
+          <option value="bambini">ðŸ§¸ Bambini</option>
+          <option value="sport">âš½ Sport</option>
+          <option value="elettronica">ðŸ“± Elettronica</option>
+          <option value="casa">ðŸ  Casa / Arredamento</option>
+          <option value="intrattenimento">ðŸŽ¬ Intrattenimento</option>
+          <option value="hobby">ðŸŽ¨ Hobby e Collezionismo</option>
         </select>
       </div>
       <div class="ig">
         <label>Prezzo pagato / budget <span style="font-weight:400;font-size:.68rem;text-transform:none">(opzionale)</span></label>
-        <input type="number" id="r-prezzo" min="0" step="0.5" placeholder="€ es. 15.00"/>
+        <input type="number" id="r-prezzo" min="0" step="0.5" placeholder="â‚¬ es. 15.00"/>
         <span class="hint">Se visibile nelle foto (cartellino, annuncio), lascia vuoto</span>
       </div>
     </div>
 
     <!-- Opzioni contestuali per categoria -->
     <div class="conditional-opts" id="opts-elettronica">
-      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">📱 Gestione elettronica:</label>
+      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">ðŸ“± Gestione elettronica:</label>
       <div class="radio-group">
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Riparo da solo (DIY)"/><span>🔧 Riparo da solo (DIY)</span></label>
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Porto da un tecnico specializzato"/><span>🏪 Porto da un tecnico</span></label>
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo as-is senza riparare"/><span>💸 Vendo as-is (senza riparare)</span></label>
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Smonto per parti"/><span>🔩 Smonto per parti</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Riparo da solo (DIY)"/><span>ðŸ”§ Riparo da solo (DIY)</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Porto da un tecnico specializzato"/><span>ðŸª Porto da un tecnico</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo as-is senza riparare"/><span>ðŸ’¸ Vendo as-is (senza riparare)</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Smonto per parti"/><span>ðŸ”© Smonto per parti</span></label>
       </div>
     </div>
 
     <div class="conditional-opts" id="opts-abbigliamento">
-      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">👗 Gestione difetti:</label>
+      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">ðŸ‘— Gestione difetti:</label>
       <div class="radio-group">
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Lavo e stiro da solo"/><span>🫧 Lavo/stiro da solo</span></label>
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Porto in lavanderia professionale"/><span>👔 Lavanderia professionale</span></label>
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Porto da una sartoria"/><span>🧵 Sartoria (riparazioni)</span></label>
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo com'è dichiarando i difetti"/><span>💬 Vendo com'è (dichiaro difetti)</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Lavo e stiro da solo"/><span>ðŸ«§ Lavo/stiro da solo</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Porto in lavanderia professionale"/><span>ðŸ‘” Lavanderia professionale</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Porto da una sartoria"/><span>ðŸ§µ Sartoria (riparazioni)</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo com'Ã¨ dichiarando i difetti"/><span>ðŸ’¬ Vendo com'Ã¨ (dichiaro difetti)</span></label>
       </div>
     </div>
 
     <div class="conditional-opts" id="opts-griffati">
-      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">💎 Autenticazione:</label>
+      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">ðŸ’Ž Autenticazione:</label>
       <div class="radio-group">
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Autenticazione online (Entrupy, Real Authentication)"/><span>✅ Servizio autenticazione online</span></label>
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo fidandomi delle foto senza autenticazione"/><span>📸 Vendo fidandomi delle foto</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Autenticazione online (Entrupy, Real Authentication)"/><span>âœ… Servizio autenticazione online</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo fidandomi delle foto senza autenticazione"/><span>ðŸ“¸ Vendo fidandomi delle foto</span></label>
       </div>
     </div>
 
     <div class="conditional-opts" id="opts-casa">
-      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">🏠 Dove vuoi vendere:</label>
+      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">ðŸ  Dove vuoi vendere:</label>
       <div class="radio-group">
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo su Vinted (articoli piccoli)"/><span>🛍 Vinted (articoli piccoli)</span></label>
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo su Marketplace o Subito (articoli grandi)"/><span>🚚 Marketplace/Subito (articoli grandi)</span></label>
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Valuta entrambe le opzioni di vendita"/><span>🔍 Valuta entrambe le opzioni</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo su Vinted (articoli piccoli)"/><span>ðŸ› Vinted (articoli piccoli)</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Vendo su Marketplace o Subito (articoli grandi)"/><span>ðŸšš Marketplace/Subito (articoli grandi)</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Valuta entrambe le opzioni di vendita"/><span>ðŸ” Valuta entrambe le opzioni</span></label>
       </div>
     </div>
 
     <div class="conditional-opts" id="opts-hobby">
-      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">🎨 Piattaforma preferita:</label>
+      <label style="font-size:var(--text-sm);font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:var(--space-2)">ðŸŽ¨ Piattaforma preferita:</label>
       <div class="radio-group">
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Vinted"/><span>🛍 Vinted</span></label>
-        <label class="radio-item"><input type="radio" name="r-modalita" value="eBay"/><span>🌐 eBay</span></label>
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Mercatino specializzato"/><span>🏪 Mercatino specializzato</span></label>
-        <label class="radio-item"><input type="radio" name="r-modalita" value="Valuta la migliore opzione di vendita"/><span>🔍 Valuta la migliore opzione</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Vinted"/><span>ðŸ› Vinted</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="eBay"/><span>ðŸŒ eBay</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Mercatino specializzato"/><span>ðŸª Mercatino specializzato</span></label>
+        <label class="radio-item"><input type="radio" name="r-modalita" value="Valuta la migliore opzione di vendita"/><span>ðŸ” Valuta la migliore opzione</span></label>
       </div>
     </div>
 
     <div class="ig" style="margin-top:var(--space-4)">
-      <label>ℹ️ Info aggiuntive <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.68rem">(opzionale)</span></label>
-      <textarea id="r-extra" placeholder="Es: schermo rotto ma accende, manca caricabatteria, piccolo graffio sul retro, acquistato in Germania…"></textarea>
+      <label>â„¹ï¸ Info aggiuntive <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.68rem">(opzionale)</span></label>
+      <textarea id="r-extra" placeholder="Es: schermo rotto ma accende, manca caricabatteria, piccolo graffio sul retro, acquistato in Germaniaâ€¦"></textarea>
     </div>
   </div>
 
@@ -208,7 +210,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
       </svg>
       <p class="drop-t">Trascina le foto qui oppure clicca</p>
-      <p class="drop-s">PNG e JPEG — max <strong>10 immagini</strong></p>
+      <p class="drop-s">PNG e JPEG â€” max <strong>10 immagini</strong></p>
     </div>
     <div class="pgrid" id="pg"></div>
     <p class="pcnt" id="pc"></p>
@@ -217,7 +219,7 @@
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
       </svg>
-      Analizza Potenziale Resell →
+      Analizza Potenziale Resell â†’
     </button>
   </div>
 
@@ -239,13 +241,13 @@
       </div>
       <div id="r-prodotto"  class="prodotto-header">
         <div>
-          <div class="prodotto-nome" id="r-prodotto-nome">—</div>
-          <div class="prodotto-condizioni" id="r-prodotto-cond">—</div>
+          <div class="prodotto-nome" id="r-prodotto-nome">â€”</div>
+          <div class="prodotto-condizioni" id="r-prodotto-cond">â€”</div>
           <div class="prodotto-timing" id="r-timing-vendita" style="display:none"></div>
         </div>
         <div style="display:flex;flex-direction:column;gap:.35rem;align-items:flex-end">
-          <span class="auth-badge auth-nd" id="r-auth-badge">—</span>
-          <span class="trend-badge" id="r-trend-badge" style="display:none">—</span>
+          <span class="auth-badge auth-nd" id="r-auth-badge">â€”</span>
+          <span class="trend-badge" id="r-trend-badge" style="display:none">â€”</span>
         </div>
       </div>
     </div>
@@ -260,23 +262,23 @@
       <div class="roi-display" id="r-roi" style="display:none">
         <div class="roi-item">
           <div class="roi-label">ROI as-is</div>
-          <div class="roi-value" id="r-roi-asis">—</div>
+          <div class="roi-value" id="r-roi-asis">â€”</div>
         </div>
         <div class="roi-item">
           <div class="roi-label">ROI ottimale</div>
-          <div class="roi-value" id="r-roi-ottimale">—</div>
+          <div class="roi-value" id="r-roi-ottimale">â€”</div>
         </div>
         <div class="roi-item">
           <div class="roi-label">Prezzo acquisto</div>
-          <div class="roi-value neutral" id="r-roi-prezzo">—</div>
+          <div class="roi-value neutral" id="r-roi-prezzo">â€”</div>
         </div>
         <div class="roi-item" style="display:none">
-          <div class="roi-label">💰 Netto as-is</div>
-          <div class="roi-value" id="r-gain-asis">—</div>
+          <div class="roi-label">ðŸ’° Netto as-is</div>
+          <div class="roi-value" id="r-gain-asis">â€”</div>
         </div>
         <div class="roi-item" style="display:none">
-          <div class="roi-label">💰 Netto ottimale</div>
-          <div class="roi-value" id="r-gain-ottimale">—</div>
+          <div class="roi-label">ðŸ’° Netto ottimale</div>
+          <div class="roi-value" id="r-gain-ottimale">â€”</div>
         </div>
       </div>
     </div>
@@ -305,10 +307,10 @@
         <svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         Raccomandazione Finale
       </div>
-      <div class="rec-price" id="r-rec-price">—</div>
-      <div class="rec-gain" id="r-rec-gain">—</div>
-      <div class="rec-time" id="r-rec-time">—</div>
-      <div class="rec-why" id="r-rec-why">—</div>
+      <div class="rec-price" id="r-rec-price">â€”</div>
+      <div class="rec-gain" id="r-rec-gain">â€”</div>
+      <div class="rec-time" id="r-rec-time">â€”</div>
+      <div class="rec-why" id="r-rec-why">â€”</div>
     </div>
 
     <!-- Card 6: Avvertenze (se presenti) -->
@@ -324,19 +326,19 @@
 </main>
 
 <footer>
-  ListAI — Powered by <a href="https://openrouter.ai" target="_blank">OpenRouter</a>
+  ListAI â€” Powered by <a href="https://openrouter.ai" target="_blank">OpenRouter</a>
   &middot; <a href="guide.html">Guida API</a>
   &middot; <a href="prompts.html">Prompt Utili</a>
 </footer>
 
 <script>
-/* ════════════════════════════════════════════
-   resell.js — inline (pagina autonoma)
-   ════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   resell.js â€” inline (pagina autonoma)
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 var files = [], pendingKey = '';
 
-/* ── Scroll progress ── */
+/* â”€â”€ Scroll progress â”€â”€ */
 window.addEventListener('scroll', function() {
   var el = document.getElementById('scroll-progress');
   if (!el) return;
@@ -344,7 +346,7 @@ window.addEventListener('scroll', function() {
   el.style.width = Math.min(pct, 100) + '%';
 });
 
-/* ── Toast ── */
+/* â”€â”€ Toast â”€â”€ */
 function showToast(msg) {
   var t = document.getElementById('toast'), m = document.getElementById('toast-msg');
   if (!t || !m) return;
@@ -353,14 +355,14 @@ function showToast(msg) {
   t._timeout = setTimeout(function() { t.style.display = 'none'; }, 2800);
 }
 
-/* ── Nav active ── */
+/* â”€â”€ Nav active â”€â”€ */
 (function() {
   var page = location.pathname.split('/').pop() || 'index.html';
   var link = document.querySelector('a[href="' + page + '"]');
   if (link) link.classList.add('active');
 })();
 
-/* ── Carica chiave salvata ── */
+/* â”€â”€ Carica chiave salvata â”€â”€ */
 (function() {
   try {
     var k = localStorage.getItem('lai_k'), e = localStorage.getItem('lai_e');
@@ -377,12 +379,12 @@ function saveKey(yes) {
   document.getElementById('saveModal').classList.remove('open');
   if (yes && pendingKey) {
     try { localStorage.setItem('lai_k', pendingKey); localStorage.setItem('lai_e', Date.now() + 30*24*60*60*1000); } catch (_) {}
-    showToast('✅ Chiave API salvata per 1 mese');
+    showToast('âœ… Chiave API salvata per 1 mese');
   }
   pendingKey = '';
 }
 
-/* ── Model ── */
+/* â”€â”€ Model â”€â”€ */
 function onModelChange() {
   var v = document.getElementById('modelSelect').value;
   var ci = document.getElementById('customModel');
@@ -395,7 +397,7 @@ function getModel() {
   return v;
 }
 
-/* ── Opzioni contestuali ── */
+/* â”€â”€ Opzioni contestuali â”€â”€ */
 var CLOTHING_CATS_R = ['uomo', 'donna', 'unisex', 'bambini', 'sport'];
 
 function onResellCategoriaChange() {
@@ -424,7 +426,7 @@ function getCategoriaResell() {
   return map[document.getElementById('r-categoria').value] || 'Generico';
 }
 
-/* ── File upload ── */
+/* â”€â”€ File upload â”€â”€ */
 var dz = document.getElementById('dz');
 dz.addEventListener('dragover', function(e) { e.preventDefault(); dz.classList.add('over'); });
 dz.addEventListener('dragleave', function() { dz.classList.remove('over'); });
@@ -452,7 +454,7 @@ function renderP() {
 function showErr(m) { var e = document.getElementById('em'); e.textContent = m; e.style.display = 'block'; }
 function hideErr() { document.getElementById('em').style.display = 'none'; }
 
-/* ── Resize ── */
+/* â”€â”€ Resize â”€â”€ */
 function resEnc(file, max) {
   max = max || 640;
   return new Promise(function(res, rej) {
@@ -474,9 +476,9 @@ function escHtml(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-/* ════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    ANALYZE RESELL
-   ════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 async function analyzeResell() {
   var apiKey = document.getElementById('apiKey').value.trim();
   var model = getModel();
@@ -486,7 +488,7 @@ async function analyzeResell() {
 
   var btn = document.getElementById('go');
   btn.disabled = true;
-  btn.innerHTML = '<span class="sp"></span> Analisi in corso…';
+  btn.innerHTML = '<span class="sp"></span> Analisi in corsoâ€¦';
   document.getElementById('results-r').style.display = 'none';
 
   var savedKey = (function() { try { return localStorage.getItem('lai_k'); } catch (_) { return null; } })();
@@ -506,9 +508,9 @@ async function analyzeResell() {
     var dataResell = oggi.toLocaleDateString('it-IT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
     var resellPrompt =
-      // ═══════════════════════════════════════════
-      // IDENTITÀ
-      // ═══════════════════════════════════════════
+      // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+      // IDENTITÃ€
+      // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
       'Sei RESELLAI, un analista esperto di investimenti nel mercato second-hand con specializzazione ' +
       'su Vinted Italia, eBay IT e Subito.it. ' +
       'La tua analisi deve essere CONCRETA e REMUNERATIVA: zero consigli vaghi, zero ottimismo ingiustificato. ' +
@@ -516,31 +518,31 @@ async function analyzeResell() {
 
       'DATA ANALISI: ' + dataResell + '\n\n' +
 
-      // ═══════════════════════════════════════════
+      // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
       // INPUT
-      // ═══════════════════════════════════════════
+      // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
       'PRODOTTO DA ANALIZZARE:\n' +
       '- Categoria: ' + categoria + '\n' +
-      (prezzoAcquisto ? '- Prezzo pagato: €' + prezzoAcquisto + '\n' : '- Prezzo acquisto: non fornito (stimalo da foto o cartellino visibile)\n') +
+      (prezzoAcquisto ? '- Prezzo pagato: â‚¬' + prezzoAcquisto + '\n' : '- Prezzo acquisto: non fornito (stimalo da foto o cartellino visibile)\n') +
       (modalitaRiparazione ? '- Approccio preferito: ' + modalitaRiparazione + '\n' : '') +
       (infoExtra ? '- Note aggiuntive: ' + infoExtra + '\n' : '') +
 
-      // ═══════════════════════════════════════════
-      // FASE 1 — IDENTIFICAZIONE
-      // ═══════════════════════════════════════════
-      '\n═══ FASE 1: IDENTIFICAZIONE PRODOTTO ═══\n' +
+      // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+      // FASE 1 â€” IDENTIFICAZIONE
+      // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+      '\nâ•â•â• FASE 1: IDENTIFICAZIONE PRODOTTO â•â•â•\n' +
       'Analizza TUTTE le immagini. Identifica:\n' +
       '1. Brand + modello + anno/generazione esatti (leggi le etichette)\n' +
       '2. Tutti i difetti visibili: graffi, rotture, macchie, usura, deformazioni\n' +
       '3. Componenti presenti/mancanti (es: iPhone senza caricabatterie, borsa senza tracolla)\n' +
-      '4. Autenticità: "verificata visivamente" / "sospetta (motivo: X)" / "non determinabile"\n' +
+      '4. AutenticitÃ : "verificata visivamente" / "sospetta (motivo: X)" / "non determinabile"\n' +
       '5. Prezzo originale dal cartellino se visibile nelle foto\n' +
       '6. Valore specifico come oggetto da collezione se applicabile\n\n' +
 
-      // ═══════════════════════════════════════════
-      // FASE 2 — VALORE DI MERCATO
-      // ═══════════════════════════════════════════
-      '\n═══ FASE 2: ANALISI VALORE ═══\n\n' +
+      // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+      // FASE 2 â€” VALORE DI MERCATO
+      // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+      '\nâ•â•â• FASE 2: ANALISI VALORE â•â•â•\n\n' +
       'A) VALORE ATTUALE (as-is, senza interventi):\n' +
       '   - Vinted.it: range realistico per questo articolo in QUESTE condizioni ora\n' +
       '   - eBay.it: range usato (considera shipped prices, non listed prices)\n' +
@@ -548,70 +550,70 @@ async function analyzeResell() {
       '   - "Per parti" se elettronica: valore totale dei singoli componenti venduti separatamente\n\n' +
 
       'B) VALORE DOPO INTERVENTO:\n' +
-      '   - Dopo pulizia professionale: stima incremento valore (€X in più)\n' +
-      '   - Dopo riparazione specifica: stima incremento (€X in più)\n' +
+      '   - Dopo pulizia professionale: stima incremento valore (â‚¬X in piÃ¹)\n' +
+      '   - Dopo riparazione specifica: stima incremento (â‚¬X in piÃ¹)\n' +
       '   - Valore massimo raggiungibile con intervento ottimale\n' +
-      '   → Indica NULL se un intervento non è applicabile o non conviene\n\n' +
+      '   â†’ Indica NULL se un intervento non Ã¨ applicabile o non conviene\n\n' +
 
       'C) CALCOLO ROI REALE (incluse commissioni):\n' +
-      '   Commissioni Vinted: 5% dell\'importo + €0.70 fissi (pagati dall\'acquirente, ma impattano sul prezzo percepito)\n' +
+      '   Commissioni Vinted: 5% dell\'importo + â‚¬0.70 fissi (pagati dall\'acquirente, ma impattano sul prezzo percepito)\n' +
       '   Commissioni eBay: ~12.8% sul totale transazione + PayPal fees ~2.5%\n' +
-      '   → Calcola guadagno_netto = valore_vendita - costo_acquisto - costo_intervento - commissioni_piattaforma\n' +
-      '   → Calcola ROI = (guadagno_netto / costo_totale) × 100\n' +
-      '   → Calcola per scenario as-is E scenario ottimale\n\n' +
+      '   â†’ Calcola guadagno_netto = valore_vendita - costo_acquisto - costo_intervento - commissioni_piattaforma\n' +
+      '   â†’ Calcola ROI = (guadagno_netto / costo_totale) Ã— 100\n' +
+      '   â†’ Calcola per scenario as-is E scenario ottimale\n\n' +
 
       'D) TREND DI MERCATO:\n' +
       '   - Questo articolo sta salendo o scendendo di valore nel 2025-2026?\n' +
       '   - C\'\u00e8 un trend attivo che lo valorizza? (es. Y2K, vintage 90s, gorpcore, quiet luxury)\n' +
-      '   - Conviene vendere ORA o aspettare il momento migliore? (es. piumino → aspetta ottobre)\n\n' +
+      '   - Conviene vendere ORA o aspettare il momento migliore? (es. piumino â†’ aspetta ottobre)\n\n' +
 
-      // ═══════════════════════════════════════════
-      // FASE 3 — PIANO D'AZIONE
-      // ═══════════════════════════════════════════
-      '\n═══ FASE 3: PIANO D\'AZIONE STEP-BY-STEP ═══\n' +
-      'Approccio preferito dall\'utente: ' + (modalitaRiparazione || 'determina il più redditizio') + '\n' +
+      // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+      // FASE 3 â€” PIANO D'AZIONE
+      // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+      '\nâ•â•â• FASE 3: PIANO D\'AZIONE STEP-BY-STEP â•â•â•\n' +
+      'Approccio preferito dall\'utente: ' + (modalitaRiparazione || 'determina il piÃ¹ redditizio') + '\n' +
       'Per OGNI step fornisci:\n' +
-      '- Azione SPECIFICA (es. "Lava a 30° in lavatrice con detersivo delicato", non "lava il capo")\n' +
+      '- Azione SPECIFICA (es. "Lava a 30Â° in lavatrice con detersivo delicato", non "lava il capo")\n' +
       '- Tempo stimato realistico\n' +
-      '- Costo stimato (€0 se fai da solo, stima mercato se affidata)\n' +
-      '- Difficoltà: facile / media / difficile\n' +
+      '- Costo stimato (â‚¬0 se fai da solo, stima mercato se affidata)\n' +
+      '- DifficoltÃ : facile / media / difficile\n' +
       '- Rischio di peggiorare l\'articolo: basso / medio / alto\n' +
-      '- Guadagno atteso da QUESTO step specifico (+€X sul prezzo di vendita)\n\n' +
+      '- Guadagno atteso da QUESTO step specifico (+â‚¬X sul prezzo di vendita)\n\n' +
 
-      // ═══════════════════════════════════════════
-      // FASE 4 — PIATTAFORME
-      // ═══════════════════════════════════════════
-      '\n═══ FASE 4: DOVE VENDERE ═══\n' +
+      // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+      // FASE 4 â€” PIATTAFORME
+      // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+      '\nâ•â•â• FASE 4: DOVE VENDERE â•â•â•\n' +
       'Confronta le piattaforme rilevanti per questo articolo:\n' +
-      '- Vinted.it: commissioni acquirente 5%+€0.70, zero commissioni venditore, spedizione gestita\n' +
-      '- eBay.it: commissioni ~12.8% totale, audience più ampia, buyer protection più rigida\n' +
+      '- Vinted.it: commissioni acquirente 5%+â‚¬0.70, zero commissioni venditore, spedizione gestita\n' +
+      '- eBay.it: commissioni ~12.8% totale, audience piÃ¹ ampia, buyer protection piÃ¹ rigida\n' +
       '- Subito.it / Facebook Marketplace: zero commissioni, consegna a mano, pubblico locale\n' +
       '- Piattaforme specializzate se rilevanti: StockX, GOAT (sneakers), Depop (vintage), ecc.\n' +
-      'Per ogni piattaforma: pro, contro, commissione esatta, consigliata sì/no e perché.\n\n' +
+      'Per ogni piattaforma: pro, contro, commissione esatta, consigliata sÃ¬/no e perchÃ©.\n\n' +
 
-      // ═══════════════════════════════════════════
+      // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
       // OUTPUT JSON
-      // ═══════════════════════════════════════════
-      '\n═══ OUTPUT: SOLO JSON VALIDO ═══\n' +
+      // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+      '\nâ•â•â• OUTPUT: SOLO JSON VALIDO â•â•â•\n' +
       'Zero markdown. Zero testo fuori dal JSON.\n' +
       '{\n' +
       '  "prodotto": {\n' +
       '    "identificato": "Brand Modello Anno",\n' +
       '    "condizioni_attuali": "descrizione onesta e completa di tutti i difetti",\n' +
-      '    "prezzo_acquisto_rilevato": "€X o null",\n' +
+      '    "prezzo_acquisto_rilevato": "â‚¬X o null",\n' +
       '    "autenticita": "verificata visivamente / sospetta / non determinabile",\n' +
       '    "trend_mercato": "in crescita / stabile / in declino",\n' +
       '    "momento_vendita_ottimale": "ora / tra X mesi (mese consigliato)"\n' +
       '  },\n' +
       '  "valori": {\n' +
-      '    "as_is": {"vinted": "€X-Y", "ebay": "€X-Y", "subito": "€X-Y o null", "per_parti": "€X-Y o null"},\n' +
-      '    "dopo_pulizia": "€X-Y o null",\n' +
-      '    "dopo_riparazione": "€X-Y o null",\n' +
-      '    "valore_massimo_raggiungibile": "€X",\n' +
+      '    "as_is": {"vinted": "â‚¬X-Y", "ebay": "â‚¬X-Y", "subito": "â‚¬X-Y o null", "per_parti": "â‚¬X-Y o null"},\n' +
+      '    "dopo_pulizia": "â‚¬X-Y o null",\n' +
+      '    "dopo_riparazione": "â‚¬X-Y o null",\n' +
+      '    "valore_massimo_raggiungibile": "â‚¬X",\n' +
       '    "roi_as_is": "X% o null",\n' +
       '    "roi_ottimale": "X% o null",\n' +
-      '    "guadagno_netto_as_is": "€X (dopo commissioni e costi) o null",\n' +
-      '    "guadagno_netto_ottimale": "€X (dopo commissioni e costi) o null"\n' +
+      '    "guadagno_netto_as_is": "â‚¬X (dopo commissioni e costi) o null",\n' +
+      '    "guadagno_netto_ottimale": "â‚¬X (dopo commissioni e costi) o null"\n' +
       '  },\n' +
       '  "piano_azione": [\n' +
       '    {\n' +
@@ -619,21 +621,21 @@ async function analyzeResell() {
       '      "titolo": "Titolo breve e specifico",\n' +
       '      "descrizione": "Istruzione pratica esatta, non generica",\n' +
       '      "tempo": "X minuti/ore",\n' +
-      '      "costo": "€X",\n' +
+      '      "costo": "â‚¬X",\n' +
       '      "difficolta": "facile",\n' +
       '      "rischio": "basso",\n' +
-      '      "guadagno_atteso": "+€X sul valore finale"\n' +
+      '      "guadagno_atteso": "+â‚¬X sul valore finale"\n' +
       '    }\n' +
       '  ],\n' +
       '  "piattaforme": [\n' +
-      '    {"nome": "Vinted", "commissione": "0% venditore + 5%+€0.70 acquirente", "pro": "...", "contro": "...", "consigliata": true},\n' +
+      '    {"nome": "Vinted", "commissione": "0% venditore + 5%+â‚¬0.70 acquirente", "pro": "...", "contro": "...", "consigliata": true},\n' +
       '    {"nome": "eBay", "commissione": "~12.8% totale + PayPal", "pro": "...", "contro": "...", "consigliata": false}\n' +
       '  ],\n' +
       '  "raccomandazione_finale": {\n' +
       '    "piattaforma": "Nome",\n' +
       '    "strategia": "as_is / dopo_pulizia / dopo_riparazione / per_parti / aspetta",\n' +
-      '    "prezzo_target": "€X",\n' +
-      '    "guadagno_netto_stimato": "€X (dopo commissioni, costi e spedizione)",\n' +
+      '    "prezzo_target": "â‚¬X",\n' +
+      '    "guadagno_netto_stimato": "â‚¬X (dopo commissioni, costi e spedizione)",\n' +
       '    "roi_effettivo": "X%",\n' +
       '    "tempo_totale_stimato": "X ore di lavoro + X giorni attesa vendita",\n' +
       '    "perche": "Spiegazione 2-3 frasi con dati concreti"\n' +
@@ -655,7 +657,7 @@ async function analyzeResell() {
         var r = await fetch(url, opts);
         if ((r.status === 429 || r.status === 503) && i < n) {
           var w = i * 10;
-          btn.innerHTML = '<span class="sp"></span> Occupato, riprovo tra ' + w + 's…';
+          btn.innerHTML = '<span class="sp"></span> Occupato, riprovo tra ' + w + 'sâ€¦';
           await new Promise(function(res) { setTimeout(res, w * 1000); });
           continue;
         }
@@ -676,8 +678,8 @@ async function analyzeResell() {
 
     if (!resp.ok) {
       var err = await resp.json().catch(function() { return {}; });
-      if (resp.status === 401) throw new Error('API Key non valida — controlla su openrouter.ai/keys');
-      if (resp.status === 429) throw new Error('Modello sovraccarico — prova un altro dal menu!');
+      if (resp.status === 401) throw new Error('API Key non valida â€” controlla su openrouter.ai/keys');
+      if (resp.status === 429) throw new Error('Modello sovraccarico â€” prova un altro dal menu!');
       throw new Error((err && err.error && err.error.message) || 'Errore API (' + resp.status + ')');
     }
 
@@ -699,7 +701,7 @@ async function analyzeResell() {
 
     renderResellResults(parsed);
     if (apiKey !== savedKey) promptSave(apiKey);
-    showToast('✅ Analisi resell completata!');
+    showToast('âœ… Analisi resell completata!');
 
   } catch (e) {
     showErr(e.message || 'Errore imprevisto.');
@@ -709,9 +711,9 @@ async function analyzeResell() {
   }
 }
 
-/* ════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    RENDER RESELL RESULTS
-   ════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function renderResellResults(d) {
   var prodotto = d.prodotto || {};
   var valori = d.valori || {};
@@ -721,57 +723,57 @@ function renderResellResults(d) {
   var avvertenze = d.avvertenze || [];
   var confidence = d.confidence_score || 0;
 
-  // ── Prodotto Identificato ──
+  // â”€â”€ Prodotto Identificato â”€â”€
   document.getElementById('r-prodotto-nome').textContent = prodotto.identificato || 'Non identificato';
-  document.getElementById('r-prodotto-cond').textContent = prodotto.condizioni_attuali || '—';
+  document.getElementById('r-prodotto-cond').textContent = prodotto.condizioni_attuali || 'â€”';
 
   var authBadge = document.getElementById('r-auth-badge');
   var auth = (prodotto.autenticita || 'non determinabile').toLowerCase();
-  authBadge.textContent = auth === 'verificata' ? '✅ Autenticità verificata' :
-    auth === 'sospetta' ? '⚠️ Autenticità sospetta' : '❓ Non determinabile';
+  authBadge.textContent = auth === 'verificata' ? 'âœ… AutenticitÃ  verificata' :
+    auth === 'sospetta' ? 'âš ï¸ AutenticitÃ  sospetta' : 'â“ Non determinabile';
   authBadge.className = 'auth-badge ' + (auth === 'verificata' ? 'auth-verificata' : auth === 'sospetta' ? 'auth-sospetta' : 'auth-nd');
 
-  // ── Trend e Timing (nuovi campi) ──
+  // â”€â”€ Trend e Timing (nuovi campi) â”€â”€
   var trendEl = document.getElementById('r-trend-badge');
   if (trendEl && prodotto.trend_mercato) {
     trendEl.style.display = 'inline-flex';
     var trend = (prodotto.trend_mercato || '').toLowerCase();
-    var trendEmoji = trend.indexOf('crescita') >= 0 ? '📈' : (trend.indexOf('declino') >= 0 ? '📉' : '➖');
+    var trendEmoji = trend.indexOf('crescita') >= 0 ? 'ðŸ“ˆ' : (trend.indexOf('declino') >= 0 ? 'ðŸ“‰' : 'âž–');
     trendEl.textContent = trendEmoji + ' ' + prodotto.trend_mercato;
     trendEl.className = 'trend-badge trend-' + (trend.indexOf('crescita') >= 0 ? 'up' : (trend.indexOf('declino') >= 0 ? 'down' : 'stable'));
   }
   var timingEl = document.getElementById('r-timing-vendita');
   if (timingEl && prodotto.momento_vendita_ottimale) {
     timingEl.style.display = 'block';
-    timingEl.textContent = '📅 Momento ideale: ' + prodotto.momento_vendita_ottimale;
+    timingEl.textContent = 'ðŸ“… Momento ideale: ' + prodotto.momento_vendita_ottimale;
   }
 
-  // ── Valore di Mercato ──
+  // â”€â”€ Valore di Mercato â”€â”€
   var asIs = valori.as_is || {};
   var valCells = [
-    { label: 'As-is · Vinted', val: asIs.vinted, sub: 'Stato attuale' },
-    { label: 'As-is · eBay', val: asIs.ebay, sub: 'Stato attuale' },
-    asIs.subito ? { label: 'As-is · Subito', val: asIs.subito, sub: 'Marketplace locale' } : null,
-    asIs.per_parti && asIs.per_parti !== 'null' ? { label: '🔩 Per parti', val: asIs.per_parti, sub: 'Smontaggio' } : null,
-    valori.dopo_pulizia && valori.dopo_pulizia !== 'null' ? { label: '🫧 Dopo pulizia', val: valori.dopo_pulizia, sub: 'Con pulizia' } : null,
-    valori.dopo_riparazione && valori.dopo_riparazione !== 'null' ? { label: '🔧 Dopo riparazione', val: valori.dopo_riparazione, sub: 'Con riparazione' } : null,
-    { label: '★ Valore massimo', val: valori.valore_massimo_raggiungibile, sub: 'Intervento ottimale', highlight: true }
+    { label: 'As-is Â· Vinted', val: asIs.vinted, sub: 'Stato attuale' },
+    { label: 'As-is Â· eBay', val: asIs.ebay, sub: 'Stato attuale' },
+    asIs.subito ? { label: 'As-is Â· Subito', val: asIs.subito, sub: 'Marketplace locale' } : null,
+    asIs.per_parti && asIs.per_parti !== 'null' ? { label: 'ðŸ”© Per parti', val: asIs.per_parti, sub: 'Smontaggio' } : null,
+    valori.dopo_pulizia && valori.dopo_pulizia !== 'null' ? { label: 'ðŸ«§ Dopo pulizia', val: valori.dopo_pulizia, sub: 'Con pulizia' } : null,
+    valori.dopo_riparazione && valori.dopo_riparazione !== 'null' ? { label: 'ðŸ”§ Dopo riparazione', val: valori.dopo_riparazione, sub: 'Con riparazione' } : null,
+    { label: 'â˜… Valore massimo', val: valori.valore_massimo_raggiungibile, sub: 'Intervento ottimale', highlight: true }
   ].filter(Boolean);
 
   document.getElementById('r-values').innerHTML = valCells.map(function(c) {
     return '<div class="val-cell' + (c.highlight ? ' highlight' : '') + '">' +
       '<div class="val-cell-label">' + escHtml(c.label) + '</div>' +
-      '<div class="val-cell-value">' + escHtml(c.val || '—') + '</div>' +
+      '<div class="val-cell-value">' + escHtml(c.val || 'â€”') + '</div>' +
       '<div class="val-cell-sub">' + escHtml(c.sub) + '</div>' +
       '</div>';
   }).join('');
 
-  // ── ROI ──
+  // â”€â”€ ROI â”€â”€
   if (valori.roi_as_is || valori.roi_ottimale) {
     document.getElementById('r-roi').style.display = 'flex';
-    var roiAsis = valori.roi_as_is || '—';
-    var roiOtt = valori.roi_ottimale || '—';
-    var prezzoAcq = prodotto.prezzo_acquisto_rilevato || (document.getElementById('r-prezzo').value ? '€' + document.getElementById('r-prezzo').value : null);
+    var roiAsis = valori.roi_as_is || 'â€”';
+    var roiOtt = valori.roi_ottimale || 'â€”';
+    var prezzoAcq = prodotto.prezzo_acquisto_rilevato || (document.getElementById('r-prezzo').value ? 'â‚¬' + document.getElementById('r-prezzo').value : null);
 
     var roiAsisEl = document.getElementById('r-roi-asis');
     roiAsisEl.textContent = roiAsis;
@@ -783,7 +785,7 @@ function renderResellResults(d) {
     var num2 = parseFloat(String(roiOtt).replace('%',''));
     roiOttEl.className = 'roi-value ' + (num2 > 0 ? 'positive' : num2 < 0 ? 'negative' : 'neutral');
 
-    document.getElementById('r-roi-prezzo').textContent = prezzoAcq || '—';
+    document.getElementById('r-roi-prezzo').textContent = prezzoAcq || 'â€”';
 
     /* Guadagno netto (nuovi campi) */
     var gainAsisEl = document.getElementById('r-gain-asis');
@@ -800,7 +802,7 @@ function renderResellResults(d) {
     document.getElementById('r-roi').style.display = 'none';
   }
 
-  // ── Piano d'azione ──
+  // â”€â”€ Piano d'azione â”€â”€
   document.getElementById('r-steps').innerHTML = piano.map(function(s) {
     var diff = (s.difficolta || 'facile').toLowerCase();
     return '<div class="step" onclick="this.classList.toggle(\'open\')">' +
@@ -808,8 +810,8 @@ function renderResellResults(d) {
         '<span class="step-num">' + escHtml(String(s.step)) + '</span>' +
         '<span class="step-title">' + escHtml(s.titolo || '') + '</span>' +
         '<div class="step-meta">' +
-          '<span class="badge-tempo">⏱ ' + escHtml(s.tempo || '') + '</span>' +
-          '<span class="badge-costo">💰 ' + escHtml(s.costo || '') + '</span>' +
+          '<span class="badge-tempo">â± ' + escHtml(s.tempo || '') + '</span>' +
+          '<span class="badge-costo">ðŸ’° ' + escHtml(s.costo || '') + '</span>' +
           '<span class="badge-diff diff-' + diff + '">' + escHtml(s.difficolta || '') + '</span>' +
         '</div>' +
         '<span class="step-gain">' + escHtml(s.guadagno_atteso || '') + '</span>' +
@@ -818,45 +820,45 @@ function renderResellResults(d) {
     '</div>';
   }).join('');
 
-  // ── Piattaforme ──
+  // â”€â”€ Piattaforme â”€â”€
   document.getElementById('r-platforms').innerHTML = piattaforme.map(function(p) {
     return '<div class="platform-card' + (p.consigliata ? ' recommended' : '') + '">' +
       '<div style="flex:1">' +
         '<div class="platform-name">' + escHtml(p.nome || '') + '</div>' +
         '<div class="platform-comm">Commissione: ' + escHtml(p.commissione || '') + '</div>' +
         '<div class="platform-pros-cons">' +
-          (p.pro ? '<span class="platform-pro">✓ ' + escHtml(p.pro) + '</span>' : '') +
-          (p.contro ? '<span class="platform-con">✗ ' + escHtml(p.contro) + '</span>' : '') +
+          (p.pro ? '<span class="platform-pro">âœ“ ' + escHtml(p.pro) + '</span>' : '') +
+          (p.contro ? '<span class="platform-con">âœ— ' + escHtml(p.contro) + '</span>' : '') +
         '</div>' +
       '</div>' +
-      (p.consigliata ? '<span class="platform-badge-rec">⭐ Consigliata</span>' : '') +
+      (p.consigliata ? '<span class="platform-badge-rec">â­ Consigliata</span>' : '') +
     '</div>';
   }).join('');
 
-  // ── Raccomandazione finale ──
-  document.getElementById('r-rec-price').textContent = rec.prezzo_target || '—';
-  document.getElementById('r-rec-gain').textContent = rec.guadagno_netto_stimato ? '💰 Guadagno netto: ' + rec.guadagno_netto_stimato : '—';
-  document.getElementById('r-rec-time').textContent = rec.tempo_totale_stimato ? '⏱ ' + rec.tempo_totale_stimato : '—';
-  document.getElementById('r-rec-why').textContent = rec.perche || '—';
+  // â”€â”€ Raccomandazione finale â”€â”€
+  document.getElementById('r-rec-price').textContent = rec.prezzo_target || 'â€”';
+  document.getElementById('r-rec-gain').textContent = rec.guadagno_netto_stimato ? 'ðŸ’° Guadagno netto: ' + rec.guadagno_netto_stimato : 'â€”';
+  document.getElementById('r-rec-time').textContent = rec.tempo_totale_stimato ? 'â± ' + rec.tempo_totale_stimato : 'â€”';
+  document.getElementById('r-rec-why').textContent = rec.perche || 'â€”';
 
-  // ── Avvertenze ──
+  // â”€â”€ Avvertenze â”€â”€
   if (avvertenze.length) {
     document.getElementById('r-warnings-card').style.display = 'block';
     document.getElementById('r-warnings-list').innerHTML = avvertenze.map(function(w) {
-      return '<div class="warning-item">⚠️ ' + escHtml(w) + '</div>';
+      return '<div class="warning-item">âš ï¸ ' + escHtml(w) + '</div>';
     }).join('');
   } else {
     document.getElementById('r-warnings-card').style.display = 'none';
   }
 
-  // ── Low confidence banner ──
+  // â”€â”€ Low confidence banner â”€â”€
   var existingBanner = document.getElementById('low-conf-banner');
   if (existingBanner) existingBanner.remove();
   if (confidence < 60) {
     var banner = document.createElement('div');
     banner.id = 'low-conf-banner';
     banner.className = 'low-confidence-banner';
-    banner.innerHTML = '⚠️ <strong>Bassa affidabilità (' + confidence + '%)</strong> — Il modello non ha identificato il prodotto con certezza. Verifica manualmente i prezzi prima di procedere.';
+    banner.innerHTML = 'âš ï¸ <strong>Bassa affidabilitÃ  (' + confidence + '%)</strong> â€” Il modello non ha identificato il prodotto con certezza. Verifica manualmente i prezzi prima di procedere.';
     document.getElementById('results-r').insertBefore(banner, document.getElementById('results-r').firstChild.nextSibling);
   }
 
@@ -867,3 +869,4 @@ function renderResellResults(d) {
 </script>
 </body>
 </html>
+

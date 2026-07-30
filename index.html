@@ -1,15 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
   <meta name="application-name" content="ListAI">
   <meta name="apple-mobile-web-app-title" content="ListAI">
-  <title>ListAI — Crea Annunci Vinted</title>
+  <link rel="icon" href="icon.jpg">
+  <link rel="apple-touch-icon" href="icon.jpg">
+  <title>ListAI â€” Crea Annunci Vinted</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css?v=3"/>
 </head>
 <body>
 
@@ -25,10 +27,10 @@
 <!-- Modal salvataggio chiave -->
 <div class="modal-o" id="saveModal">
   <div class="modal">
-    <h3>💾 Salvare la chiave API?</h3>
-    <p>Vuoi memorizzare la tua OpenRouter API Key per <strong>1 mese</strong>? Verrà inserita automaticamente ad ogni visita. Resta solo nel tuo browser.</p>
+    <h3>ðŸ’¾ Salvare la chiave API?</h3>
+    <p>Vuoi memorizzare la tua OpenRouter API Key per <strong>1 mese</strong>? VerrÃ  inserita automaticamente ad ogni visita. Resta solo nel tuo browser.</p>
     <div class="mbtns">
-      <button class="mbtn y" onclick="saveKey(true)">✅ Sì, salva</button>
+      <button class="mbtn y" onclick="saveKey(true)">âœ… SÃ¬, salva</button>
       <button class="mbtn n" onclick="saveKey(false)">No, grazie</button>
     </div>
   </div>
@@ -38,12 +40,12 @@
   <div class="hi">
     <a href="index.html" class="logo">List<span>AI</span></a>
     <nav class="nav">
-      <a href="index.html" class="active" id="nav-create">✨ Crea Annuncio</a>
-      <a href="resell.html" id="nav-resell">🔍 Analisi Resell</a>
-      <a href="scout.html" id="nav-scout">🎯 Scout</a>
-      <a href="prompts.html" id="nav-prompts">📚 Prompt</a>
+      <a href="index.html" class="active" id="nav-create">âœ¨ Crea Annuncio</a>
+      <a href="resell.html" id="nav-resell">ðŸ” Analisi Resell</a>
+      <a href="scout.html" id="nav-scout">ðŸŽ¯ Scout</a>
+      <a href="prompts.html" id="nav-prompts">ðŸ“š Prompt</a>
     </nav>
-    <button class="mobile-menu-btn" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
+    <button class="mobile-menu-btn" onclick="document.querySelector('.nav').classList.toggle('open')">â˜°</button>
     <span class="badge">OpenRouter</span>
   </div>
 </header>
@@ -71,7 +73,7 @@
     <div class="api-row" style="margin-bottom:.85rem">
       <span class="albl">API Key</span>
       <div class="aiw">
-        <input class="ainp" type="password" id="apiKey" placeholder="Incolla la tua OpenRouter API Key…" autocomplete="off"/>
+        <input class="ainp" type="password" id="apiKey" placeholder="Incolla la tua OpenRouter API Keyâ€¦" autocomplete="off"/>
         <button class="eye" onclick="toggleKey()">
           <svg id="eyeIcon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
@@ -79,9 +81,9 @@
         </button>
       </div>
       <span class="ahint">
-        Gratuita su <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys ↗</a>
-        &nbsp;·&nbsp;
-        <a href="guide.html">📖 Guida</a>
+        Gratuita su <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys â†—</a>
+        &nbsp;Â·&nbsp;
+        <a href="guide.html">ðŸ“– Guida</a>
       </span>
     </div>
 
@@ -89,30 +91,30 @@
       <span class="albl">Modello</span>
       <div style="flex:1;min-width:190px;display:flex;flex-direction:column;gap:.38rem">
         <select class="msel" id="modelSelect" onchange="onModelChange()">
-          <optgroup label="⭐ Migliore qualità/prezzo">
-            <option value="google/gemini-3.1-flash-lite" selected>Gemini 3.1 Flash Lite — ~€0.002/analisi 🔥</option>
+          <optgroup label="â­ Migliore qualitÃ /prezzo">
+            <option value="google/gemini-3.1-flash-lite" selected>Gemini 3.1 Flash Lite â€” ~â‚¬0.002/analisi ðŸ”¥</option>
           </optgroup>
-          <optgroup label="✨ Gemini">
-            <option value="google/gemini-2.5-flash">Gemini 2.5 Flash — ~€0.002/analisi ⭐</option>
-            <option value="google/gemini-3-flash-preview">Gemini 3 Flash — ~€0.002/analisi</option>
-            <option value="google/gemini-3.1-pro-preview">Gemini 3.1 Pro — ~€0.009/analisi</option>
-            <option value="google/gemini-2.5-flash-lite">Gemini 2.5 Flash Lite — ~€0.0012/analisi</option>
-            <option value="google/gemini-2.5-pro">Gemini 2.5 Pro — ~€0.011/analisi</option>
+          <optgroup label="âœ¨ Gemini">
+            <option value="google/gemini-2.5-flash">Gemini 2.5 Flash â€” ~â‚¬0.002/analisi â­</option>
+            <option value="google/gemini-3-flash-preview">Gemini 3 Flash â€” ~â‚¬0.002/analisi</option>
+            <option value="google/gemini-3.1-pro-preview">Gemini 3.1 Pro â€” ~â‚¬0.009/analisi</option>
+            <option value="google/gemini-2.5-flash-lite">Gemini 2.5 Flash Lite â€” ~â‚¬0.0012/analisi</option>
+            <option value="google/gemini-2.5-pro">Gemini 2.5 Pro â€” ~â‚¬0.011/analisi</option>
           </optgroup>
-          <optgroup label="🌐 Altri">
-            <option value="openai/gpt-4o-mini">GPT-4o Mini — ~€0.003/analisi</option>
+          <optgroup label="ðŸŒ Altri">
+            <option value="openai/gpt-4o-mini">GPT-4o Mini â€” ~â‚¬0.003/analisi</option>
           </optgroup>
-          <optgroup label="🔧 Personalizzato">
-            <option value="custom">✏️ Inserisci il tuo modello…</option>
+          <optgroup label="ðŸ”§ Personalizzato">
+            <option value="custom">âœï¸ Inserisci il tuo modelloâ€¦</option>
           </optgroup>
         </select>
-        <input class="ainp-plain" type="text" id="customModel" placeholder="es. google/gemini-2.5-flash…" style="display:none" autocomplete="off"/>
+        <input class="ainp-plain" type="text" id="customModel" placeholder="es. google/gemini-2.5-flashâ€¦" style="display:none" autocomplete="off"/>
         <label style="display:flex;align-items:center;gap:.45rem;cursor:pointer;margin-top:.35rem">
           <input type="checkbox" id="priceResearch" checked style="accent-color:var(--color-accent);width:15px;height:15px"/>
-          <span style="font-size:.75rem;color:var(--color-text-secondary)">🔍 Ricerca prezzi live via web (+~€0.006)</span>
+          <span style="font-size:.75rem;color:var(--color-text-secondary)">ðŸ” Ricerca prezzi live via web (+~â‚¬0.006)</span>
         </label>
       </div>
-      <span class="ahint" style="color:var(--color-accent)">↑ Scegli il modello</span>
+      <span class="ahint" style="color:var(--color-accent)">â†‘ Scegli il modello</span>
     </div>
 
   </div>
@@ -130,23 +132,23 @@
     <div class="ig" style="margin-bottom:.85rem">
       <label>Categoria articolo</label>
       <select id="categoria" onchange="onCategoriaChange()">
-        <option value="uomo">👔 Uomo</option>
-        <option value="donna">👗 Donna</option>
-        <option value="unisex">🧥 Unisex</option>
-        <option value="griffati">💎 Articoli Griffati</option>
-        <option value="bambini">🧸 Bambini</option>
-        <option value="sport">⚽ Sport</option>
-        <option value="casa">🏠 Casa</option>
-        <option value="elettronica">📱 Elettronica</option>
-        <option value="intrattenimento">🎬 Intrattenimento</option>
-        <option value="hobby">🎨 Hobby e Collezionismo</option>
+        <option value="uomo">ðŸ‘” Uomo</option>
+        <option value="donna">ðŸ‘— Donna</option>
+        <option value="unisex">ðŸ§¥ Unisex</option>
+        <option value="griffati">ðŸ’Ž Articoli Griffati</option>
+        <option value="bambini">ðŸ§¸ Bambini</option>
+        <option value="sport">âš½ Sport</option>
+        <option value="casa">ðŸ  Casa</option>
+        <option value="elettronica">ðŸ“± Elettronica</option>
+        <option value="intrattenimento">ðŸŽ¬ Intrattenimento</option>
+        <option value="hobby">ðŸŽ¨ Hobby e Collezionismo</option>
       </select>
       <div class="bambini-sub" id="bambiniSub">
         <div class="ig" style="margin-top:.45rem">
           <label>Tipo articolo bambini</label>
           <select id="bambiniTipo" onchange="onBambiniTipoChange()">
-            <option value="vestiti">👕 Vestiti / Abbigliamento</option>
-            <option value="oggetti">🧸 Giochi / Oggetti</option>
+            <option value="vestiti">ðŸ‘• Vestiti / Abbigliamento</option>
+            <option value="oggetti">ðŸ§¸ Giochi / Oggetti</option>
           </select>
         </div>
       </div>
@@ -155,24 +157,24 @@
     <div class="ig" style="margin-bottom:.85rem">
       <label>Condizione articolo</label>
       <select id="condizione">
-        <option value="NWT">🏷️ Nuovo con cartellino</option>
-        <option value="NWOT">✨ Nuovo senza cartellino</option>
-        <option value="EUC">⭐ Usato — ottime condizioni</option>
-        <option value="GUC">👍 Usato — buone condizioni</option>
-        <option value="POOR">⚠️ Usato — condizioni pessime</option>
+        <option value="NWT">ðŸ·ï¸ Nuovo con cartellino</option>
+        <option value="NWOT">âœ¨ Nuovo senza cartellino</option>
+        <option value="EUC">â­ Usato â€” ottime condizioni</option>
+        <option value="GUC">ðŸ‘ Usato â€” buone condizioni</option>
+        <option value="POOR">âš ï¸ Usato â€” condizioni pessime</option>
       </select>
     </div>
 
     <div class="ig" style="margin-bottom:.85rem">
-      <label>Brand <span style="font-weight:400;font-size:.68rem;text-transform:none;letter-spacing:0;color:var(--color-text-muted)">(opzionale — rilevamento AI automatico se vuoto)</span></label>
-      <input class="ainp" type="text" id="brandField" placeholder="es. Nike, Zara, Gucci, Samsung…" autocomplete="off"/>
+      <label>Brand <span style="font-weight:400;font-size:.68rem;text-transform:none;letter-spacing:0;color:var(--color-text-muted)">(opzionale â€” rilevamento AI automatico se vuoto)</span></label>
+      <input class="ainp" type="text" id="brandField" placeholder="es. Nike, Zara, Gucci, Samsungâ€¦" autocomplete="off"/>
     </div>
 
     <!-- Accordion opzioni avanzate -->
     <details id="advanced-opts" class="advanced-accordion">
       <summary class="advanced-summary">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-        ⚙️ Opzioni avanzate
+        âš™ï¸ Opzioni avanzate
         <svg class="acc-arrow" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
       </summary>
 
@@ -181,10 +183,10 @@
         <div class="ig" id="blockTaglia" style="margin-bottom:.85rem">
           <label>Taglia <span style="font-weight:400;font-size:.68rem;text-transform:none;letter-spacing:0">(AI la ricava dalle foto)</span></label>
           <select id="tagliaTipo" onchange="onT()">
-            <option value="photo">📸 Visibile nelle foto</option>
-            <option value="unica">📐 Taglia Unica</option>
-            <option value="na">❌ Non applicabile</option>
-            <option value="manual">✏️ Inserisci manualmente</option>
+            <option value="photo">ðŸ“¸ Visibile nelle foto</option>
+            <option value="unica">ðŸ“ Taglia Unica</option>
+            <option value="na">âŒ Non applicabile</option>
+            <option value="manual">âœï¸ Inserisci manualmente</option>
           </select>
           <div class="tsub" id="tsub">
             <div class="trow">
@@ -196,27 +198,27 @@
                 <option>Vestito/Gonna</option><option>Scarpe donna</option>
                 <option>Scarpe uomo</option><option>Bambino/a</option>
               </select>
-              <input type="text" id="tagliaVal" placeholder="es. M, 42…" style="flex:.7;min-width:55px"/>
+              <input type="text" id="tagliaVal" placeholder="es. M, 42â€¦" style="flex:.7;min-width:55px"/>
             </div>
-            <a href="#" class="szbt-link" onclick="document.getElementById('sizeModal').classList.add('open');return false;">📏 Tabella taglie IT</a>
+            <a href="#" class="szbt-link" onclick="document.getElementById('sizeModal').classList.add('open');return false;">ðŸ“ Tabella taglie IT</a>
           </div>
         </div>
 
         <!-- Sottocategoria (non-clothing) -->
         <div class="ig" id="blockSottocat" style="display:none;margin-bottom:.85rem">
           <label>Sottocategoria oggetto</label>
-          <input type="text" id="sottocatVal" placeholder="es. iPhone, Lampada, Libro… (opzionale)"/>
+          <input type="text" id="sottocatVal" placeholder="es. iPhone, Lampada, Libroâ€¦ (opzionale)"/>
           <span class="hint">Il modello lo identifica dalle foto</span>
         </div>
 
         <div class="egrid" style="margin-bottom:.85rem">
           <div class="ig">
             <label>Colore</label>
-            <input type="text" id="colorField" placeholder="es. nero, rosso bordeaux…"/>
+            <input type="text" id="colorField" placeholder="es. nero, rosso bordeauxâ€¦"/>
           </div>
           <div class="ig">
             <label>Materiale</label>
-            <input type="text" id="materialField" placeholder="es. 100% cotone, pelle…"/>
+            <input type="text" id="materialField" placeholder="es. 100% cotone, pelleâ€¦"/>
           </div>
           <div class="ig">
             <label>Anno acquisto</label>
@@ -250,39 +252,39 @@
           </label>
           <label class="checkbox-item">
             <input type="checkbox" id="fastShipping" checked/>
-            <span>⚡ Inserisci garanzia spedizione in 24h</span>
+            <span>âš¡ Inserisci garanzia spedizione in 24h</span>
           </label>
         </div>
 
         <!-- Info aggiuntive -->
         <div class="ig">
-          <label>ℹ️ Informazioni aggiuntive</label>
-          <textarea id="extraInfo" placeholder="Es: acquistato a Londra, piccolo difetto sul bottone, limited edition…"></textarea>
-          <span class="hint">Il modello verificherà e integrerà queste info nell'annuncio</span>
+          <label>â„¹ï¸ Informazioni aggiuntive</label>
+          <textarea id="extraInfo" placeholder="Es: acquistato a Londra, piccolo difetto sul bottone, limited editionâ€¦"></textarea>
+          <span class="hint">Il modello verificherÃ  e integrerÃ  queste info nell'annuncio</span>
         </div>
 
         <!-- Lingue (moved from API config) -->
         <div class="ig" style="margin-top:var(--space-4)">
-          <label>🌍 Lingue annuncio</label>
+          <label>ðŸŒ Lingue annuncio</label>
           <div style="display:flex;flex-direction:column;gap:.48rem">
             <div class="lang-tags-row" id="langTags"></div>
             <div style="display:flex;gap:.5rem;align-items:center">
               <select class="msel" id="langAdd" onchange="addLangFromSelect()" style="flex:1">
-                <option value="">+ Aggiungi lingua…</option>
-                <option value="it">🇮🇹 Italiano</option>
-                <option value="en">🇬🇧 English</option>
-                <option value="fr">🇫🇷 Français</option>
-                <option value="de">🇩🇪 Deutsch</option>
-                <option value="es">🇪🇸 Español</option>
-                <option value="pt">🇵🇹 Português</option>
-                <option value="nl">🇳🇱 Nederlands</option>
-                <option value="pl">🇵🇱 Polski</option>
-                <option value="sv">🇸🇪 Svenska</option>
-                <option value="ro">🇷🇴 Română</option>
+                <option value="">+ Aggiungi linguaâ€¦</option>
+                <option value="it">ðŸ‡®ðŸ‡¹ Italiano</option>
+                <option value="en">ðŸ‡¬ðŸ‡§ English</option>
+                <option value="fr">ðŸ‡«ðŸ‡· FranÃ§ais</option>
+                <option value="de">ðŸ‡©ðŸ‡ª Deutsch</option>
+                <option value="es">ðŸ‡ªðŸ‡¸ EspaÃ±ol</option>
+                <option value="pt">ðŸ‡µðŸ‡¹ PortuguÃªs</option>
+                <option value="nl">ðŸ‡³ðŸ‡± Nederlands</option>
+                <option value="pl">ðŸ‡µðŸ‡± Polski</option>
+                <option value="sv">ðŸ‡¸ðŸ‡ª Svenska</option>
+                <option value="ro">ðŸ‡·ðŸ‡´ RomÃ¢nÄƒ</option>
               </select>
             </div>
           </div>
-          <span class="hint">Default IT + EN · salvate nel browser</span>
+          <span class="hint">Default IT + EN Â· salvate nel browser</span>
         </div>
       </div>
     </details>
@@ -292,8 +294,8 @@
   <div class="modal-o" id="sizeModal">
     <div class="modal">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4)">
-        <h3>📏 Tabella Taglie IT</h3>
-        <button class="mbtn n" onclick="document.getElementById('sizeModal').classList.remove('open')" style="padding:4px 12px;min-width:auto">✕</button>
+        <h3>ðŸ“ Tabella Taglie IT</h3>
+        <button class="mbtn n" onclick="document.getElementById('sizeModal').classList.remove('open')" style="padding:4px 12px;min-width:auto">âœ•</button>
       </div>
       <div class="sztabs">
         <button class="sztab active" onclick="showSz('donna',this)">Donna</button>
@@ -320,7 +322,7 @@
         <tr><td>XXL</td><td>54</td><td>54</td><td>44</td><td>44</td></tr>
       </table></div>
       <div class="szp" id="szp-scarpe"><table>
-        <tr><th>IT/EU</th><th>UK</th><th>US♀</th><th>US♂</th></tr>
+        <tr><th>IT/EU</th><th>UK</th><th>USâ™€</th><th>USâ™‚</th></tr>
         <tr><td>35</td><td>2.5</td><td>5</td><td>3.5</td></tr>
         <tr><td>36</td><td>3.5</td><td>6</td><td>4.5</td></tr>
         <tr><td>37</td><td>4</td><td>6.5</td><td>5</td></tr>
@@ -351,7 +353,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
       </svg>
       <p class="drop-t">Trascina le foto qui oppure clicca</p>
-      <p class="drop-s">PNG e JPEG — max <strong>10 immagini</strong></p>
+      <p class="drop-s">PNG e JPEG â€” max <strong>10 immagini</strong></p>
     </div>
     <div class="pgrid" id="pg"></div>
     <p class="pcnt" id="pc"></p>
@@ -374,26 +376,26 @@
       <div style="margin-left:auto" id="seasonBadgeWrap"></div>
     </div>
 
-    <!-- 1. ✅ TITOLO SEO (primo, copia immediata) -->
+    <!-- 1. âœ… TITOLO SEO (primo, copia immediata) -->
     <div class="card">
       <div class="clbl">
         <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 7h10M7 12h7"/></svg>
         Titolo SEO
         <button class="cpbtn" onclick="cp('seoTitle',this)">copia</button>
       </div>
-      <div class="tval" id="seoTitle">—</div>
+      <div class="tval" id="seoTitle">â€”</div>
       <div class="tlen" id="titleLen"></div>
     </div>
 
-    <!-- 2. 💰 PREZZO CONSIGLIATO -->
+    <!-- 2. ðŸ’° PREZZO CONSIGLIATO -->
     <div class="price-slider-wrap" id="priceSliderWrap" style="display:none">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-6);flex-wrap:wrap;gap:.4rem">
-        <div class="price-slider-title">💰 Prezzo Consigliato</div>
+        <div class="price-slider-title">ðŸ’° Prezzo Consigliato</div>
         <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
           <div class="price-source-badge" id="priceSourceBadge" style="display:none"></div>
           <div class="confidence-badge" id="confidenceBadge" style="display:none">
             <svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            <span id="confidenceText">—</span>
+            <span id="confidenceText">â€”</span>
           </div>
         </div>
       </div>
@@ -406,18 +408,18 @@
 
       <div class="price-tier-row">
         <div class="price-tier tier-fast">
-          <div class="price-tier-label">⚡ Rapido</div>
-          <div class="price-tier-value" id="ptFast">—</div>
+          <div class="price-tier-label">âš¡ Rapido</div>
+          <div class="price-tier-value" id="ptFast">â€”</div>
           <div class="price-tier-sub">Vendi in 24-48h</div>
         </div>
         <div class="price-tier tier-ideal">
-          <div class="price-tier-label">🎯 Ideale</div>
-          <div class="price-tier-value" id="ptIdeal">—</div>
+          <div class="price-tier-label">ðŸŽ¯ Ideale</div>
+          <div class="price-tier-value" id="ptIdeal">â€”</div>
           <div class="price-tier-sub">Valore ottimale</div>
         </div>
         <div class="price-tier tier-max">
-          <div class="price-tier-label">💎 Massimo</div>
-          <div class="price-tier-value" id="ptMax">—</div>
+          <div class="price-tier-label">ðŸ’Ž Massimo</div>
+          <div class="price-tier-value" id="ptMax">â€”</div>
           <div class="price-tier-sub">Con margine trattativa</div>
         </div>
       </div>
@@ -427,16 +429,16 @@
 
       <div class="velocity-row" id="velocityRow" style="display:none">
         <div class="velocity-item">
-          <div class="velocity-label" style="color:var(--color-warning)">⚡ Rapido</div>
-          <div class="velocity-time" id="velFastTime">—</div>
+          <div class="velocity-label" style="color:var(--color-warning)">âš¡ Rapido</div>
+          <div class="velocity-time" id="velFastTime">â€”</div>
         </div>
         <div class="velocity-item">
-          <div class="velocity-label" style="color:var(--color-accent)">🎯 Ideale</div>
-          <div class="velocity-time" id="velIdealTime">—</div>
+          <div class="velocity-label" style="color:var(--color-accent)">ðŸŽ¯ Ideale</div>
+          <div class="velocity-time" id="velIdealTime">â€”</div>
         </div>
         <div class="velocity-item">
-          <div class="velocity-label" style="color:#a78bfa">💎 Massimo</div>
-          <div class="velocity-time" id="velMaxTime">—</div>
+          <div class="velocity-label" style="color:#a78bfa">ðŸ’Ž Massimo</div>
+          <div class="velocity-time" id="velMaxTime">â€”</div>
         </div>
       </div>
 
@@ -444,49 +446,49 @@
       <div id="packageBanner" style="display:none; margin-top:var(--space-2)" class="timing-banner"></div>
     </div>
 
-    <!-- 3. 📝 DESCRIZIONE COMPLETA (tutte le lingue + hashtag) -->
+    <!-- 3. ðŸ“ DESCRIZIONE COMPLETA (tutte le lingue + hashtag) -->
     <div class="dgrid">
       <div class="dc">
-        <div class="clbl">📝 Annuncio completo (descrizione + hashtag)
-          <button class="cpbtn qcb-primary" onclick="cp('descFull',this)">📋 Copia tutto</button>
+        <div class="clbl">ðŸ“ Annuncio completo (descrizione + hashtag)
+          <button class="cpbtn qcb-primary" onclick="cp('descFull',this)">ðŸ“‹ Copia tutto</button>
         </div>
-        <div class="dtxt" id="descFull">—</div>
+        <div class="dtxt" id="descFull">â€”</div>
         <div class="dlen" id="descFullLen"></div>
       </div>
     </div>
 
-    <!-- 5. 🌍 DESCRIZIONI ALTRE LINGUE (collapsabile) -->
+    <!-- 5. ðŸŒ DESCRIZIONI ALTRE LINGUE (collapsabile) -->
     <details class="collapsible-section">
       <summary class="collapsible-summary">
         <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-        🌍 Descrizioni in altre lingue
+        ðŸŒ Descrizioni in altre lingue
       </summary>
       <div class="collapsible-body">
         <div style="display:flex;flex-direction:column;gap:.95rem" id="descLangCards"></div>
       </div>
     </details>
 
-    <!-- 6. 📊 SCHEDA PRODOTTO (collapsabile) -->
+    <!-- 6. ðŸ“Š SCHEDA PRODOTTO (collapsabile) -->
     <details class="collapsible-section">
       <summary class="collapsible-summary">
         <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-        📊 Scheda Prodotto
+        ðŸ“Š Scheda Prodotto
       </summary>
       <div class="collapsible-body">
         <table class="dt" id="detailTable"></table>
       </div>
     </details>
 
-    <!-- 7. 🔍 ANALISI AVANZATA (collapsabile) -->
+    <!-- 7. ðŸ” ANALISI AVANZATA (collapsabile) -->
     <details class="collapsible-section">
       <summary class="collapsible-summary">
         <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-        🔍 Analisi Avanzata
+        ðŸ” Analisi Avanzata
       </summary>
       <div class="collapsible-body">
         <!-- Breakdown fattori -->
         <div class="breakdown-wrap" id="breakdownWrap" style="display:none">
-          <div class="breakdown-title">📊 Breakdown Fattori Prezzo</div>
+          <div class="breakdown-title">ðŸ“Š Breakdown Fattori Prezzo</div>
           <div id="factorsList"></div>
         </div>
 
@@ -501,8 +503,8 @@
 
         <!-- Analisi mercato -->
         <div class="pnote">
-          <div class="pnlbl">📊 Analisi di mercato</div>
-          <div id="priceNote">—</div>
+          <div class="pnlbl">ðŸ“Š Analisi di mercato</div>
+          <div id="priceNote">â€”</div>
         </div>
 
         <!-- Warnings -->
@@ -515,19 +517,19 @@
     <!-- Prezzi legacy (fallback se advanced non disponibili) -->
     <div class="pgrd3" id="legacyPrices" style="display:none">
       <div class="pc">
-        <div class="pclbl">🏪 Prezzo in negozio (nuovo)</div>
-        <div class="prow"><span class="pl">Minimo mercato</span><span class="pv" id="pNMin">—</span></div>
-        <div class="prow"><span class="pl">Massimo mercato</span><span class="pv" id="pNMax">—</span></div>
+        <div class="pclbl">ðŸª Prezzo in negozio (nuovo)</div>
+        <div class="prow"><span class="pl">Minimo mercato</span><span class="pv" id="pNMin">â€”</span></div>
+        <div class="prow"><span class="pl">Massimo mercato</span><span class="pv" id="pNMax">â€”</span></div>
       </div>
       <div class="pc">
-        <div class="pclbl">🛍️ Valore equo su Vinted</div>
-        <div class="prow hi"><span class="pl">Minimo consigliato</span><span class="pv" id="pVMin">—</span></div>
-        <div class="prow hi"><span class="pl">Massimo consigliato</span><span class="pv" id="pVMax">—</span></div>
+        <div class="pclbl">ðŸ›ï¸ Valore equo su Vinted</div>
+        <div class="prow hi"><span class="pl">Minimo consigliato</span><span class="pv" id="pVMin">â€”</span></div>
+        <div class="prow hi"><span class="pl">Massimo consigliato</span><span class="pv" id="pVMax">â€”</span></div>
       </div>
       <div class="pc nego-card">
-        <div class="pclbl">💬 Da pubblicare (~+15%)</div>
-        <div class="prow nego"><span class="pl">Minimo da pubblicare</span><span class="pv" id="pCMin">—</span></div>
-        <div class="prow nego"><span class="pl">Massimo da pubblicare</span><span class="pv" id="pCMax">—</span></div>
+        <div class="pclbl">ðŸ’¬ Da pubblicare (~+15%)</div>
+        <div class="prow nego"><span class="pl">Minimo da pubblicare</span><span class="pv" id="pCMin">â€”</span></div>
+        <div class="prow nego"><span class="pl">Massimo da pubblicare</span><span class="pv" id="pCMax">â€”</span></div>
         <div class="nego-hint">Pubblica a questi prezzi: dopo trattativa arrivi al valore equo</div>
       </div>
     </div>
@@ -544,7 +546,7 @@
         <span class="hist-badge" id="histBadge">0</span>
       </div>
       <div style="display:flex;align-items:center;gap:.7rem">
-        <button class="hist-clear-btn" id="histClearBtn" onclick="event.stopPropagation();clearHistory()" style="display:none">🗑 Cancella tutto</button>
+        <button class="hist-clear-btn" id="histClearBtn" onclick="event.stopPropagation();clearHistory()" style="display:none">ðŸ—‘ Cancella tutto</button>
         <svg class="hist-arrow" id="histArrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
     </div>
@@ -555,7 +557,7 @@
 </main>
 
 <footer>
-  ListAI — Powered by <a href="https://openrouter.ai" target="_blank">OpenRouter</a>
+  ListAI â€” Powered by <a href="https://openrouter.ai" target="_blank">OpenRouter</a>
   &middot; <a href="guide.html">Guida API</a>
   &middot; <a href="prompts.html">Prompt Utili</a>
 </footer>
@@ -570,3 +572,4 @@
 </script>
 </body>
 </html>
+

@@ -1,15 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <meta name="application-name" content="ListAI">
+  <meta name="apple-mobile-web-app-title" content="ListAI">
   <link rel="icon" href="icon.jpg">
   <link rel="apple-touch-icon" href="icon.jpg">
-  <title>ListAI â€” Prompt Utili Vinted</title>
+  <title>ListAI — Prompt Utili Vinted</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css?v=3"/>
+  <link rel="stylesheet" href="style.css?v=4"/>
 </head>
 <body>
 
@@ -19,12 +21,12 @@
   <div class="hi">
     <a href="index.html" class="logo">List<span>AI</span></a>
     <nav class="nav">
-      <a href="index.html" id="nav-create">âœ¨ Crea Annuncio</a>
-      <a href="resell.html" id="nav-resell">ðŸ” Analisi Resell</a>
-      <a href="scout.html" id="nav-scout">ðŸŽ¯ Scout</a>
-      <a href="prompts.html" class="active" id="nav-prompts">ðŸ“š Prompt</a>
+      <a href="index.html" id="nav-create">✨ Crea Annuncio</a>
+      <a href="resell.html" id="nav-resell">🔍 Analisi Resell</a>
+      <a href="scout.html" id="nav-scout">🎯 Scout</a>
+      <a href="prompts.html" class="active" id="nav-prompts">📚 Prompt</a>
     </nav>
-    <button class="mobile-menu-btn" onclick="document.querySelector('.nav').classList.toggle('open')">â˜°</button>
+    <button class="mobile-menu-btn" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
     <span class="badge">Database</span>
   </div>
 </header>
@@ -42,21 +44,21 @@
   <!-- Filtri -->
   <div class="filter-bar">
     <button class="filter-btn active" onclick="filterPrompts('all',this)">Tutti</button>
-    <button class="filter-btn" onclick="filterPrompts('descrizione',this)">ðŸ“ Descrizione</button>
-    <button class="filter-btn" onclick="filterPrompts('prezzo',this)">ðŸ’° Prezzo</button>
-    <button class="filter-btn" onclick="filterPrompts('risposta',this)">ðŸ’¬ Risposte</button>
-    <button class="filter-btn" onclick="filterPrompts('seo',this)">ðŸ” SEO</button>
-    <button class="filter-btn" onclick="filterPrompts('spedizione',this)">ðŸ“¦ Spedizione</button>
-    <button class="filter-btn" id="filterPersonale" onclick="filterPrompts('personale',this)">â­ Miei Prompt</button>
+    <button class="filter-btn" onclick="filterPrompts('descrizione',this)">📝 Descrizione</button>
+    <button class="filter-btn" onclick="filterPrompts('prezzo',this)">💰 Prezzo</button>
+    <button class="filter-btn" onclick="filterPrompts('risposta',this)">💬 Risposte</button>
+    <button class="filter-btn" onclick="filterPrompts('seo',this)">🔍 SEO</button>
+    <button class="filter-btn" onclick="filterPrompts('spedizione',this)">📦 Spedizione</button>
+    <button class="filter-btn" id="filterPersonale" onclick="filterPrompts('personale',this)">⭐ Miei Prompt</button>
   </div>
 
   <!-- Grid -->
   <div class="prompt-grid" id="promptGrid">
 
-    <!-- â•â•â• DESCRIZIONE â•â•â• -->
+    <!-- ═══ DESCRIZIONE ═══ -->
     <div class="prompt-card" data-cat="descrizione">
       <div class="pcard-top">
-        <span class="prompt-tag">ðŸ“ Descrizione</span>
+        <span class="prompt-tag">📝 Descrizione</span>
         <div class="prompt-title">Creazione Annuncio Completo</div>
         <p class="prompt-preview">Genera titolo SEO, descrizione IT+EN, 7 hashtag, scheda tecnica e analisi prezzi da zero partendo dalle foto caricate.</p>
       </div>
@@ -68,18 +70,18 @@ OUTPUT RICHIESTO (tutto in italiano):
 **TITOLO SEO** (max 50 caratteri, obbligatorio):
 - Formula: Brand + Tipo articolo + Taglia IT + Keyword differenziante
 - No articoli iniziali (il/la/un), no punteggiatura inutile
-- Usa le keyword piÃ¹ cercate su Vinted Italia
+- Usa le keyword più cercate su Vinted Italia
 
 **DESCRIZIONE IT** (380-420 caratteri):
-- Inizia SEMPRE con "ðŸ¤ Prezzo trattabile!"
-- Paragrafo 1: materiale, colore esatto, vestibilitÃ /fit
+- Inizia SEMPRE con "🤝 Prezzo trattabile!"
+- Paragrafo 1: materiale, colore esatto, vestibilità/fit
 - Paragrafo 2: stato di conservazione dettagliato, difetti se presenti
 - Paragrafo 3: stile, abbinamenti consigliati, punto di forza principale
 - Zero hashtag nel corpo
 - Chiudi con invito all'acquisto naturale
 
 **DESCRIZIONE EN** (380-420 caratteri):
-- Inizia con "ðŸ¤ Price negotiable!"
+- Inizia con "🤝 Price negotiable!"
 - Stessa struttura ma in inglese fluente (non traduzione letterale)
 
 **HASHTAG** (esattamente 7):
@@ -96,22 +98,22 @@ OUTPUT RICHIESTO (tutto in italiano):
 - Condizione: [Nuovo con cartellino / Nuovo / Ottime / Buone / Scarse]
 
 **ANALISI PREZZI**:
-- Prezzo nuovo (fonte): â‚¬X-â‚¬Y (cita Amazon IT o Zalando)
-- Prezzo consigliato Vinted: â‚¬X-â‚¬Y
+- Prezzo nuovo (fonte): €X-€Y (cita Amazon IT o Zalando)
+- Prezzo consigliato Vinted: €X-€Y
 - Motivazione: [1 frase che giustifica il prezzo proposto]
 
 Rispondi seguendo esattamente questa struttura. Sii preciso e professionale.</div>
       </div>
       <div class="pcard-foot">
-        <button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
         <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
       </div>
     </div>
 
     <div class="prompt-card" data-cat="descrizione">
       <div class="pcard-top">
-        <span class="prompt-tag">ðŸ“ Descrizione</span>
-        <div class="prompt-title">Elettronica Usata â€” Scheda Tecnica + Stima Valore</div>
+        <span class="prompt-tag">📝 Descrizione</span>
+        <div class="prompt-title">Elettronica Usata — Scheda Tecnica + Stima Valore</div>
         <p class="prompt-preview">Identifica marca e modello, valuta lo stato visivo del dispositivo, analizza i prezzi su Backmarket/Vinted e genera l'annuncio ottimizzato con hashtag.</p>
       </div>
       <div class="prompt-body-wrap" hidden>
@@ -120,7 +122,7 @@ Rispondi seguendo esattamente questa struttura. Sii preciso e professionale.</di
 IDENTIFICAZIONE PRECISA:
 - Marca e modello esatto (inclusa variante/versione se visibile)
 - Anno di uscita stimato
-- CapacitÃ /specifiche visibili (storage, colore, RAM se deducibile)
+- Capacità/specifiche visibili (storage, colore, RAM se deducibile)
 - Accessori presenti nelle foto
 
 VALUTAZIONE STATO:
@@ -132,27 +134,27 @@ Analizza visivamente:
 Assegna un voto: Ottimo / Buono / Discreto / Da riparare
 
 ANALISI PREZZI MERCATO (aggiornata):
-- Prezzo nuovo oggi: â‚¬X (fonte: Amazon IT)
-- Prezzo usato su Backmarket/Swappie (grado B): â‚¬X
-- Prezzo medio Vinted per stesso modello/stato: â‚¬X-â‚¬Y
-- Prezzo consigliato per vendita veloce: â‚¬X
-- Prezzo consigliato per massimo profitto: â‚¬X
+- Prezzo nuovo oggi: €X (fonte: Amazon IT)
+- Prezzo usato su Backmarket/Swappie (grado B): €X
+- Prezzo medio Vinted per stesso modello/stato: €X-€Y
+- Prezzo consigliato per vendita veloce: €X
+- Prezzo consigliato per massimo profitto: €X
 
 ANNUNCIO OTTIMIZZATO:
 Titolo SEO (max 50 char): Brand + Modello + Storage + Colore
-Descrizione IT (400 char): inizia "ðŸ¤ Prezzo trattabile!". Specifiche tecniche, stato, cosa Ã¨ incluso, funzionamento garantito.
+Descrizione IT (400 char): inizia "🤝 Prezzo trattabile!". Specifiche tecniche, stato, cosa è incluso, funzionamento garantito.
 Descrizione EN (400 char): stessa struttura in inglese.
 Hashtag (7): brand + modello + elettronica IT+EN.</div>
       </div>
       <div class="pcard-foot">
-        <button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
         <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
       </div>
     </div>
 
     <div class="prompt-card" data-cat="descrizione">
       <div class="pcard-top">
-        <span class="prompt-tag">ðŸ“ Descrizione</span>
+        <span class="prompt-tag">📝 Descrizione</span>
         <div class="prompt-title">Ripubblicazione: Rinnovo Titolo e Descrizione</div>
         <p class="prompt-preview">Analizza un annuncio fermo e genera una strategia di ripubblicazione: 2 titoli alternativi (A/B test), nuovo testo, nuovi hashtag e consiglio sul prezzo.</p>
       </div>
@@ -163,21 +165,21 @@ Ecco il mio annuncio attuale:
 ---
 TITOLO: [incolla qui il titolo attuale]
 DESCRIZIONE: [incolla qui la descrizione attuale]
-PREZZO: â‚¬[X]
+PREZZO: €[X]
 GIORNI ONLINE: [X]
 ---
 
 ANALISI DEL PROBLEMA:
 - Identifica i punti deboli del titolo attuale (keyword mancanti, troppo generico, caratteri sprecati)
 - Identifica i punti deboli della descrizione (tono, struttura, informazioni mancanti, lunghezza)
-- Valuta se il prezzo Ã¨ il problema principale
+- Valuta se il prezzo è il problema principale
 
 STRATEGIA DI RIPUBBLICAZIONE:
-1. Nuovo titolo SEO (max 50 char) â€” approccio completamente diverso
-2. Nuovo titolo alternativo B (max 50 char) â€” per test A/B
-3. Nuova descrizione IT (400 char) â€” angle narrativo diverso
+1. Nuovo titolo SEO (max 50 char) — approccio completamente diverso
+2. Nuovo titolo alternativo B (max 50 char) — per test A/B
+3. Nuova descrizione IT (400 char) — angle narrativo diverso
 4. Nuova descrizione EN (400 char)
-5. 7 nuovi hashtag â€” diversi dai precedenti
+5. 7 nuovi hashtag — diversi dai precedenti
 6. Consiglio prezzo: mantieni / abbassa di X% / applica sconto tempo
 
 TRUCCHI EXTRA PER RIATTIVARE L'ANNUNCIO:
@@ -186,19 +188,19 @@ TRUCCHI EXTRA PER RIATTIVARE L'ANNUNCIO:
 - Suggerisci se conviene abbinarlo ad altri articoli in bundle</div>
       </div>
       <div class="pcard-foot">
-        <button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
         <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
       </div>
     </div>
 
     <div class="prompt-card" data-cat="descrizione">
       <div class="pcard-top">
-        <span class="prompt-tag">ðŸ“ Descrizione</span>
+        <span class="prompt-tag">📝 Descrizione</span>
         <div class="prompt-title">Annuncio Multilingue Avanzato (IT + EN + FR + DE)</div>
-        <p class="prompt-preview">Genera un annuncio completo in 4 lingue con note di localizzazione per ogni mercato â€” massima visibilitÃ  internazionale su Vinted.</p>
+        <p class="prompt-preview">Genera un annuncio completo in 4 lingue con note di localizzazione per ogni mercato — massima visibilità internazionale su Vinted.</p>
       </div>
       <div class="prompt-body-wrap" hidden>
-        <div class="prompt-body">Sei un copywriter multilingue specializzato in marketplace second-hand europei. Analizza le immagini e crea un annuncio completo in 4 lingue per massimizzare la visibilitÃ  internazionale su Vinted.
+        <div class="prompt-body">Sei un copywriter multilingue specializzato in marketplace second-hand europei. Analizza le immagini e crea un annuncio completo in 4 lingue per massimizzare la visibilità internazionale su Vinted.
 
 IDENTIFICAZIONE ARTICOLO: [dalle foto]
 
@@ -207,17 +209,17 @@ Usa brand + caratteristiche visive universali + taglia IT.
 
 DESCRIZIONI PER MERCATO:
 
-ðŸ‡®ðŸ‡¹ ITALIANO (400 char):
-"ðŸ¤ Prezzo trattabile!" â€” Tono caldo, familiare, enfasi su qualitÃ  e convenienza. Chiudi con invito diretto.
+🇮🇹 ITALIANO (400 char):
+"🤝 Prezzo trattabile!" — Tono caldo, familiare, enfasi su qualità e convenienza. Chiudi con invito diretto.
 
-ðŸ‡¬ðŸ‡§ ENGLISH (400 char):
-"ðŸ¤ Price negotiable!" â€” Tono diretto, facts-first. Inglese internazionale (non british slang).
+🇬🇧 ENGLISH (400 char):
+"🤝 Price negotiable!" — Tono diretto, facts-first. Inglese internazionale (non british slang).
 
-ðŸ‡«ðŸ‡· FRANÃ‡AIS (400 char):
-"ðŸ¤ Prix nÃ©gociable!" â€” Tono elegante, valorizza lo stile.
+🇫🇷 FRANÇAIS (400 char):
+"🤝 Prix négociable!" — Tono elegante, valorizza lo stile.
 
-ðŸ‡©ðŸ‡ª DEUTSCH (400 char):
-"ðŸ¤ Preis verhandelbar!" â€” Tono preciso, enfasi su condizioni e affidabilitÃ .
+🇩🇪 DEUTSCH (400 char):
+"🤝 Preis verhandelbar!" — Tono preciso, enfasi su condizioni e affidabilità.
 
 HASHTAG INTERNAZIONALI (10):
 Mix di tutte e 4 le lingue, brand, categoria, stile.
@@ -226,16 +228,16 @@ NOTE DI LOCALIZZAZIONE:
 Per ogni mercato indica una cosa da evidenziare diversamente (es. per il mercato tedesco enfatizza le misure precise, per il francese lo stile, per l'italiano il prezzo).</div>
       </div>
       <div class="pcard-foot">
-        <button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
         <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
       </div>
     </div>
 
     <div class="prompt-card" data-cat="descrizione">
       <div class="pcard-top">
-        <span class="prompt-tag">ðŸ“ Descrizione</span>
+        <span class="prompt-tag">📝 Descrizione</span>
         <div class="prompt-title">Prompt Veloce: Solo Titolo + Hashtag in JSON</div>
-        <p class="prompt-preview">Output rapido: JSON puro con titolo IT e EN, 7 hashtag, taglia, colore e brand â€” senza testo extra. Ideale per flussi automatizzati.</p>
+        <p class="prompt-preview">Output rapido: JSON puro con titolo IT e EN, 7 hashtag, taglia, colore e brand — senza testo extra. Ideale per flussi automatizzati.</p>
       </div>
       <div class="prompt-body-wrap" hidden>
         <div class="prompt-body">Analizza l'immagine. Rispondi SOLO con questo JSON, zero testo extra:
@@ -250,33 +252,33 @@ Per ogni mercato indica una cosa da evidenziare diversamente (es. per il mercato
 Se non riesci a identificare un campo con certezza scrivi "?" nel valore. Solo JSON valido.</div>
       </div>
       <div class="pcard-foot">
-        <button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
         <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
       </div>
     </div>
 
-    <!-- â•â•â• PREZZO â•â•â• -->
+    <!-- ═══ PREZZO ═══ -->
     <div class="prompt-card" data-cat="prezzo">
       <div class="pcard-top">
-        <span class="prompt-tag">ðŸ’° Prezzo</span>
-        <div class="prompt-title">Verifica AffidabilitÃ  Venditore + Acquisto Sicuro</div>
-        <p class="prompt-preview">Analizza un annuncio che vuoi comprare: autenticitÃ  foto, coerenza del prezzo, segnali di truffa e domande specifiche da fare al venditore prima di acquistare.</p>
+        <span class="prompt-tag">💰 Prezzo</span>
+        <div class="prompt-title">Verifica Affidabilità Venditore + Acquisto Sicuro</div>
+        <p class="prompt-preview">Analizza un annuncio che vuoi comprare: autenticità foto, coerenza del prezzo, segnali di truffa e domande specifiche da fare al venditore prima di acquistare.</p>
       </div>
       <div class="prompt-body-wrap" hidden>
-        <div class="prompt-body">Sei un consulente esperto di acquisti sicuri su Vinted e marketplace second-hand. Ho trovato questo articolo in vendita e voglio capire se Ã¨ un buon acquisto e se il venditore Ã¨ affidabile.
+        <div class="prompt-body">Sei un consulente esperto di acquisti sicuri su Vinted e marketplace second-hand. Ho trovato questo articolo in vendita e voglio capire se è un buon acquisto e se il venditore è affidabile.
 
 ARTICOLO IN VALUTAZIONE:
-Prezzo richiesto: â‚¬[X]
+Prezzo richiesto: €[X]
 Foto allegate: [allega le screenshot dell'annuncio]
 
 ANALISI DELL'ANNUNCIO:
 - Le foto sono originali o sembrano prese dal web/altri annunci? (cerca pattern tipici delle truffe: angoli identici, sfondi da catalogo, filigrane)
-- La descrizione Ã¨ coerente con le foto?
-- Il prezzo Ã¨: Congruo / Troppo basso (sospetto) / Troppo alto
-- Elementi di allerta presenti: sÃ¬/no (e quali)
+- La descrizione è coerente con le foto?
+- Il prezzo è: Congruo / Troppo basso (sospetto) / Troppo alto
+- Elementi di allerta presenti: sì/no (e quali)
 
-VALUTAZIONE AUTENTICITÃ€ PRODOTTO (dalle foto):
-- Segnali di autenticitÃ  visibili
+VALUTAZIONE AUTENTICITÀ PRODOTTO (dalle foto):
+- Segnali di autenticità visibili
 - Segnali dubbi da approfondire
 - Domande da fare al venditore prima di acquistare (lista puntata)
 
@@ -287,21 +289,21 @@ CONSIGLI PER ACQUISTO SICURO:
 4. Specifiche domande da fare a questo venditore per questo articolo
 
 VERDICT:
-âœ… Sembra affidabile, procedi / âš ï¸ Chiedi questi chiarimenti prima / âŒ Segnali di allarme, evita â€” motivazione dettagliata.
+✅ Sembra affidabile, procedi / ⚠️ Chiedi questi chiarimenti prima / ❌ Segnali di allarme, evita — motivazione dettagliata.
 
 STIMA VALORE REALE:
-- Vale i â‚¬X richiesti? SÃ¬ / No â€” il prezzo equo sarebbe â‚¬Y
-- Margine di trattativa consigliato: offri â‚¬Z (-X%)</div>
+- Vale i €X richiesti? Sì / No — il prezzo equo sarebbe €Y
+- Margine di trattativa consigliato: offri €Z (-X%)</div>
       </div>
       <div class="pcard-foot">
-        <button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
         <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
       </div>
     </div>
 
     <div class="prompt-card" data-cat="prezzo">
       <div class="pcard-top">
-        <span class="prompt-tag">ðŸ’° Prezzo</span>
+        <span class="prompt-tag">💰 Prezzo</span>
         <div class="prompt-title">Valutazione Profitto Rivendita (Flipping)</div>
         <p class="prompt-preview">Analizza il potenziale di flipping di un articolo: domanda, trend, prezzi su Vinted/Depop/eBay, margine stimato, rischi e lista di azioni per massimizzare il valore.</p>
       </div>
@@ -312,39 +314,39 @@ IDENTIFICAZIONE ARTICOLO:
 Descrivi marca, modello, anno, materiale, taglia/dimensioni dalle immagini.
 
 ANALISI DOMANDA DI MERCATO:
-- Questo articolo Ã¨ cercato? Alta / Media / Bassa domanda su Vinted IT
+- Questo articolo è cercato? Alta / Media / Bassa domanda su Vinted IT
 - Trend: in crescita / stabile / in calo
 - Target acquirente principale: chi lo cerca su Vinted?
-- StagionalitÃ : periodo dell'anno migliore per venderlo
+- Stagionalità: periodo dell'anno migliore per venderlo
 
 VALUTAZIONE PREZZI:
-- Prezzo medio acquisto (mercatino/vintage/subasta): â‚¬X stima
-- Prezzo medio vendita Vinted Italia: â‚¬X-â‚¬Y
-- Prezzo medio vendita Depop: â‚¬X-â‚¬Y
-- Prezzo medio vendita eBay IT: â‚¬X-â‚¬Y
-- Margine potenziale stimato: â‚¬X (X%)
+- Prezzo medio acquisto (mercatino/vintage/subasta): €X stima
+- Prezzo medio vendita Vinted Italia: €X-€Y
+- Prezzo medio vendita Depop: €X-€Y
+- Prezzo medio vendita eBay IT: €X-€Y
+- Margine potenziale stimato: €X (X%)
 
 FATTORI DI RISCHIO:
-- DifficoltÃ  di vendita (1-5): X/5
+- Difficoltà di vendita (1-5): X/5
 - Tempo medio per vendere: X settimane stima
 - Concorrenza presente su Vinted: Alta / Media / Bassa
 - Difetti che abbassano il valore: [da foto]
 
 VERDETTO FINALE:
-âœ… Vale la pena rivendere / âš ï¸ Margine basso, valuta bene / âŒ Non conviene â€” e perchÃ©.
+✅ Vale la pena rivendere / ⚠️ Margine basso, valuta bene / ❌ Non conviene — e perché.
 
 COSA FARE PRIMA DI VENDERE:
-Lista pratica di azioni per massimizzare il valore (es. lavaggio, stiratura, foto in luce naturale, rimozione pelucchi, lucidatura scarpeâ€¦)</div>
+Lista pratica di azioni per massimizzare il valore (es. lavaggio, stiratura, foto in luce naturale, rimozione pelucchi, lucidatura scarpe…)</div>
       </div>
       <div class="pcard-foot">
-        <button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
         <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
       </div>
     </div>
 
     <div class="prompt-card" data-cat="prezzo">
       <div class="pcard-top">
-        <span class="prompt-tag">ðŸ’° Prezzo</span>
+        <span class="prompt-tag">💰 Prezzo</span>
         <div class="prompt-title">Analisi Competitiva e Posizionamento</div>
         <p class="prompt-preview">Analizza la concorrenza su Vinted per il tuo articolo e genera una strategia di differenziazione: keyword esclusive, angle unico e prezzo ottimale di ingresso.</p>
       </div>
@@ -352,19 +354,19 @@ Lista pratica di azioni per massimizzare il valore (es. lavaggio, stiratura, fot
         <div class="prompt-body">Sei un analista di mercato specializzato in Vinted Italia. Ho questo articolo da vendere e voglio posizionarmi in modo strategico rispetto alla concorrenza.
 
 ARTICOLO IN ANALISI:
-[descrivi brevemente o allega foto â€” Gemini analizzerÃ ]
+[descrivi brevemente o allega foto — Gemini analizzerà]
 
 BENCHMARK DI MERCATO:
 Basandoti sulle tue conoscenze di Vinted Italia, dimmi:
 - Quanti annunci simili ci sono tipicamente su Vinted IT?
-- Fascia di prezzo piÃ¹ comune per questo articolo
-- Prezzo degli annunci che vendono piÃ¹ velocemente
+- Fascia di prezzo più comune per questo articolo
+- Prezzo degli annunci che vendono più velocemente
 - Errori comuni negli annunci concorrenti (titoli, descrizioni, prezzi)
 
 STRATEGIA DI DIFFERENZIAZIONE:
-Come distinguere il mio annuncio dai 10 simili giÃ  presenti:
+Come distinguere il mio annuncio dai 10 simili già presenti:
 1. Keyword non sfruttata dai competitor da inserire nel titolo
-2. Angle della descrizione non ancora usato (es. sostenibilitÃ , storia del brand, abbinamenti specifici)
+2. Angle della descrizione non ancora usato (es. sostenibilità, storia del brand, abbinamenti specifici)
 3. Prezzo di ingresso consigliato per posizionarsi bene
 4. Hashtag di nicchia poco usati ma molto cercati
 
@@ -375,20 +377,20 @@ Descrizione EN (400 char): [stesso approccio in inglese]
 Hashtag (7): [mix mainstream + nicchia]</div>
       </div>
       <div class="pcard-foot">
-        <button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
         <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
       </div>
     </div>
 
-    <!-- â•â•â• RISPOSTE â•â•â• -->
+    <!-- ═══ RISPOSTE ═══ -->
     <div class="prompt-card" data-cat="risposta">
       <div class="pcard-top">
-        <span class="prompt-tag">ðŸ’¬ Risposta</span>
+        <span class="prompt-tag">💬 Risposta</span>
         <div class="prompt-title">Analisi Messaggio Acquirente + Risposta Consigliata</div>
-        <p class="prompt-preview">Analizza un messaggio ricevuto e genera 3 risposte pronte: mantieni il prezzo, apri alla trattativa, oppure proponi bundle/alternativa â€” con raccomandazione su quale usare.</p>
+        <p class="prompt-preview">Analizza un messaggio ricevuto e genera 3 risposte pronte: mantieni il prezzo, apri alla trattativa, oppure proponi bundle/alternativa — con raccomandazione su quale usare.</p>
       </div>
       <div class="prompt-body-wrap" hidden>
-        <div class="prompt-body">Sei un esperto di comunicazione su Vinted con anni di esperienza nella gestione di trattative su marketplace italiani. Analizza questo messaggio che ho ricevuto da un potenziale acquirente e aiutami a rispondere nel modo piÃ¹ efficace.
+        <div class="prompt-body">Sei un esperto di comunicazione su Vinted con anni di esperienza nella gestione di trattative su marketplace italiani. Analizza questo messaggio che ho ricevuto da un potenziale acquirente e aiutami a rispondere nel modo più efficace.
 
 MESSAGGIO RICEVUTO:
 ---
@@ -397,41 +399,41 @@ MESSAGGIO RICEVUTO:
 
 CONTESTO ANNUNCIO (opzionale ma consigliato):
 - Articolo: [descrivi brevemente]
-- Prezzo attuale: â‚¬X
-- Prezzo minimo accettabile: â‚¬X
+- Prezzo attuale: €X
+- Prezzo minimo accettabile: €X
 - Giorni online: X
 - Quante visualizzazioni ha: X
 
 ANALISI DEL MESSAGGIO:
 - Tipo di richiesta: offerta / domanda info / richiesta foto / trattativa / altro
 - Tono dell'acquirente: serio / curioso / aggressivo / indeciso
-- ProbabilitÃ  di acquisto: Alta / Media / Bassa
+- Probabilità di acquisto: Alta / Media / Bassa
 
 3 RISPOSTE PRONTE (copiaincolla):
 
-RISPOSTA 1 â€” Mantieni il prezzo:
+RISPOSTA 1 — Mantieni il prezzo:
 [tono fermo ma cortese, spiega il valore]
 
-RISPOSTA 2 â€” Apri alla trattativa:
+RISPOSTA 2 — Apri alla trattativa:
 [disponibile ma non disperato, suggerisci un contro-prezzo]
 
-RISPOSTA 3 â€” Proponi alternativa:
+RISPOSTA 3 — Proponi alternativa:
 [bundle, sconto su spese spedizione, o offerta tempo limitato]
 
 RACCOMANDAZIONE:
-Quale risposta usare in questo caso specifico e perchÃ©.</div>
+Quale risposta usare in questo caso specifico e perché.</div>
       </div>
       <div class="pcard-foot">
-        <button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
         <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
       </div>
     </div>
 
     <div class="prompt-card" data-cat="risposta">
       <div class="pcard-top">
-        <span class="prompt-tag">ðŸ’¬ Risposta</span>
+        <span class="prompt-tag">💬 Risposta</span>
         <div class="prompt-title">Gestione Problemi Post-Vendita</div>
-        <p class="prompt-preview">Risposte professionali per reclami, articoli non conformi, richieste di rimborso e dispute â€” tutela i tuoi diritti mantenendo un profilo positivo.</p>
+        <p class="prompt-preview">Risposte professionali per reclami, articoli non conformi, richieste di rimborso e dispute — tutela i tuoi diritti mantenendo un profilo positivo.</p>
       </div>
       <div class="prompt-body-wrap" hidden>
         <div class="prompt-body">Sei un esperto di diritto dei consumatori e gestione controversie su marketplace. Ho un problema post-vendita su Vinted e ho bisogno di risposte professionali.
@@ -439,17 +441,17 @@ Quale risposta usare in questo caso specifico e perchÃ©.</div>
 TIPO DI PROBLEMA:
 [ ] L'acquirente dice che l'articolo non corrisponde alla descrizione
 [ ] L'acquirente vuole il rimborso senza motivo valido
-[ ] Il pacco Ã¨ arrivato danneggiato
+[ ] Il pacco è arrivato danneggiato
 [ ] L'acquirente non rilascia la conferma ricezione
 [ ] Altro: [descrivi]
 
 DETTAGLI CASO:
 - Cosa hai venduto: [descrivi]
-- Prezzo: â‚¬X
+- Prezzo: €X
 - Data vendita: [X giorni fa]
 - Stato in cui hai spedito: [descrivi onestamente]
-- Foto che hai della condizione pre-spedizione: sÃ¬ / no
-- Messaggi giÃ  scambiati: [riassumi]
+- Foto che hai della condizione pre-spedizione: sì / no
+- Messaggi già scambiati: [riassumi]
 
 RISPOSTA PROFESSIONALE:
 Genera una risposta all'acquirente che:
@@ -464,15 +466,15 @@ COME PROCEDERE CON VINTED:
 - Tempistiche di risposta del supporto</div>
       </div>
       <div class="pcard-foot">
-        <button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
         <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
       </div>
     </div>
 
-    <!-- â•â•â• SEO â•â•â• -->
+    <!-- ═══ SEO ═══ -->
     <div class="prompt-card" data-cat="seo">
       <div class="pcard-top">
-        <span class="prompt-tag">ðŸ” SEO</span>
+        <span class="prompt-tag">🔍 SEO</span>
         <div class="prompt-title">Audit SEO Annuncio Esistente</div>
         <p class="prompt-preview">Analizza un tuo annuncio attivo e ottieni un punteggio SEO, i punti deboli e una versione migliorata di titolo, descrizione e hashtag.</p>
       </div>
@@ -486,11 +488,11 @@ HASHTAG: [incolla]
 CATEGORIA: [es. Donna > Tops > T-shirt]
 
 AUDIT SEO VINTED:
-Valuta ogni elemento con un punteggio 1-10 e spiega il perchÃ©:
-- Titolo: X/10 â€” [punti forti e deboli]
+Valuta ogni elemento con un punteggio 1-10 e spiega il perché:
+- Titolo: X/10 — [punti forti e deboli]
 - Keyword principali: presenti / mancanti / sbagliate
-- Descrizione: X/10 â€” [lunghezza, struttura, leggibilitÃ , keyword density]
-- Hashtag: X/10 â€” [rilevanza, mix lingue, volume di ricerca stimato]
+- Descrizione: X/10 — [lunghezza, struttura, leggibilità, keyword density]
+- Hashtag: X/10 — [rilevanza, mix lingue, volume di ricerca stimato]
 - Categoria: corretta / da cambiare in [X]
 
 PUNTEGGIO GLOBALE: X/10
@@ -506,23 +508,23 @@ DESCRIZIONE: [400 char, ristrutturata]
 HASHTAG: [7 nuovi, ottimizzati]</div>
       </div>
       <div class="pcard-foot">
-        <button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
         <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
       </div>
     </div>
 
     <div class="prompt-card" data-cat="seo">
       <div class="pcard-top">
-        <span class="prompt-tag">ðŸ” SEO</span>
+        <span class="prompt-tag">🔍 SEO</span>
         <div class="prompt-title">Keyword Research per Categoria Specifica</div>
-        <p class="prompt-preview">Trova le 20 keyword piÃ¹ cercate su Vinted per una categoria prodotto specifica, con volume stimato e consigli su come usarle nel titolo.</p>
+        <p class="prompt-preview">Trova le 20 keyword più cercate su Vinted per una categoria prodotto specifica, con volume stimato e consigli su come usarle nel titolo.</p>
       </div>
       <div class="prompt-body-wrap" hidden>
         <div class="prompt-body">Sei un esperto di search behavior su Vinted Italia. Analizza le keyword migliori per questa categoria di prodotti.
 
 CATEGORIA: [es. "giacche invernali donna", "sneakers uomo", "borse pelle"]
 BRAND PRINCIPALE: [se applicabile]
-FASCIA DI PREZZO TARGET: â‚¬X-â‚¬Y
+FASCIA DI PREZZO TARGET: €X-€Y
 
 TOP 20 KEYWORD SU VINTED IT:
 Per ognuna indica:
@@ -541,26 +543,26 @@ STRUTTURA TITOLO OTTIMALE:
 Template con le keyword nell'ordine giusto per questa categoria specifica</div>
       </div>
       <div class="pcard-foot">
-        <button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
         <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
       </div>
     </div>
 
-    <!-- â•â•â• SPEDIZIONE â•â•â• -->
+    <!-- ═══ SPEDIZIONE ═══ -->
     <div class="prompt-card" data-cat="spedizione">
       <div class="pcard-top">
-        <span class="prompt-tag">ðŸ“¦ Spedizione</span>
+        <span class="prompt-tag">📦 Spedizione</span>
         <div class="prompt-title">Calcolo Costo Spedizione Ottimale</div>
-        <p class="prompt-preview">Calcola il corriere piÃ¹ economico per il tuo articolo considerando peso, dimensioni e destinazione â€” con confronto prezzi e consiglio su come includere la spedizione nel prezzo.</p>
+        <p class="prompt-preview">Calcola il corriere più economico per il tuo articolo considerando peso, dimensioni e destinazione — con confronto prezzi e consiglio su come includere la spedizione nel prezzo.</p>
       </div>
       <div class="prompt-body-wrap" hidden>
-        <div class="prompt-body">Sei un esperto di logistica e spedizioni per e-commerce e marketplace italiani. Aiutami a trovare la soluzione di spedizione piÃ¹ conveniente per questo articolo su Vinted.
+        <div class="prompt-body">Sei un esperto di logistica e spedizioni per e-commerce e marketplace italiani. Aiutami a trovare la soluzione di spedizione più conveniente per questo articolo su Vinted.
 
 DETTAGLI ARTICOLO:
 - Tipo: [es. giacca, scarpe, smartphone, libro]
 - Peso stimato (con imballo): [X] kg o grammi
-- Dimensioni stimate (con imballo): [X Ã— X Ã— X] cm
-- Valore dichiarato: â‚¬X
+- Dimensioni stimate (con imballo): [X × X × X] cm
+- Valore dichiarato: €X
 - Destinazione: Italia / Tutta Europa / Solo Nord Italia ecc.
 
 CONFRONTO CORRIERI VINTED IT (aggiornato):
@@ -572,40 +574,40 @@ Per ogni corriere integrato in Vinted, dimmi:
 - Pro e contro per questo tipo di articolo
 
 CONSIGLIO OTTIMALE:
-- Corriere consigliato per il miglior rapporto prezzo/affidabilitÃ 
-- Se conviene offrire spedizione gratuita (inclusa nel prezzo) â€” e come ricalcolare il prezzo di vendita
+- Corriere consigliato per il miglior rapporto prezzo/affidabilità
+- Se conviene offrire spedizione gratuita (inclusa nel prezzo) — e come ricalcolare il prezzo di vendita
 - Imballo consigliato per questo articolo specifico (materiali, dimensioni box)
 
 CALCOLO PREZZO FINALE:
-Se voglio guadagnare â‚¬X netto dopo commissioni Vinted (5%) + spedizione:
-Prezzo da pubblicare = â‚¬[calcola]</div>
+Se voglio guadagnare €X netto dopo commissioni Vinted (5%) + spedizione:
+Prezzo da pubblicare = €[calcola]</div>
       </div>
       <div class="pcard-foot">
-        <button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
         <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
       </div>
     </div>
 
     <div class="prompt-card" data-cat="spedizione">
       <div class="pcard-top">
-        <span class="prompt-tag">ðŸ“¦ Spedizione</span>
+        <span class="prompt-tag">📦 Spedizione</span>
         <div class="prompt-title">Guida Imballaggio Anti-Danni per Categoria</div>
         <p class="prompt-preview">Istruzioni specifiche per imballare correttamente qualsiasi tipo di articolo: materiali da usare, tecniche di protezione e come fotografare il pacco prima di spedire.</p>
       </div>
       <div class="prompt-body-wrap" hidden>
         <div class="prompt-body">Sei un esperto di logistica e packaging per marketplace. Dammi una guida completa per imballare correttamente questo articolo.
 
-ARTICOLO DA SPEDIRE: [descrivi â€” es. "paio di scarpe tacco 10cm", "smartphone con schermo", "maglione di lana"]
+ARTICOLO DA SPEDIRE: [descrivi — es. "paio di scarpe tacco 10cm", "smartphone con schermo", "maglione di lana"]
 CORRIERE SCELTO: [es. BRT, InPost, GLS, Poste]
 
 GUIDA IMBALLAGGIO STEP BY STEP:
-1. Materiali necessari (lista specifica â€” cosa comprare/usare)
+1. Materiali necessari (lista specifica — cosa comprare/usare)
 2. Come proteggere le parti fragili/delicate di questo articolo specifico
 3. Tecnica di avvolgimento/posizionamento nel box
 4. Come fissare/immobilizzare l'articolo dentro la scatola
 5. Come chiudere e sigillare il pacco
 
-MISURE BOX CONSIGLIATE: [X Ã— X Ã— X] cm
+MISURE BOX CONSIGLIATE: [X × X × X] cm
 
 PESO TOTALE STIMATO: [X] kg
 
@@ -616,24 +618,24 @@ COSA SCRIVERE SUL PACCO:
 Etichetta, fragile?, istruzioni per il corriere</div>
       </div>
       <div class="pcard-foot">
-        <button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>
+        <button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>
         <button class="prompt-copy" onclick="cpPrompt(this)">copia</button>
       </div>
     </div>
 
-    <!-- â•â•â• PROMPT PERSONALI (iniettati via JS) â•â•â• -->
+    <!-- ═══ PROMPT PERSONALI (iniettati via JS) ═══ -->
     <div id="personalPromptsContainer" style="display:contents"></div>
 
   </div><!-- /prompt-grid -->
 
-  <!-- â•â•â• SEZIONE AGGIUNGI PROMPT â•â•â• -->
+  <!-- ═══ SEZIONE AGGIUNGI PROMPT ═══ -->
   <div class="add-section card" style="margin-top:var(--space-8)">
     <div class="add-header">
       <div class="add-header-left">
-        <span class="add-icon">â­</span>
+        <span class="add-icon">⭐</span>
         <div>
           <div class="add-title">I tuoi prompt personali</div>
-          <div class="add-subtitle">Salvati nel browser â€” disponibili ad ogni visita, anche offline</div>
+          <div class="add-subtitle">Salvati nel browser — disponibili ad ogni visita, anche offline</div>
         </div>
       </div>
       <button class="add-toggle-btn" id="addToggleBtn" onclick="toggleAddForm()">+ Aggiungi prompt</button>
@@ -644,33 +646,33 @@ Etichetta, fragile?, istruzioni per il corriere</div>
         <div class="add-field-row">
           <div class="add-field">
             <label class="add-lbl">Titolo del prompt</label>
-            <input type="text" class="add-inp" id="newTitle" placeholder="Es. Annuncio per scarpe vintage anni '90â€¦" maxlength="80"/>
+            <input type="text" class="add-inp" id="newTitle" placeholder="Es. Annuncio per scarpe vintage anni '90…" maxlength="80"/>
           </div>
           <div class="add-field" style="max-width:190px">
             <label class="add-lbl">Categoria</label>
             <select class="add-inp" id="newCat">
-              <option value="personale">â­ Personale</option>
-              <option value="descrizione">ðŸ“ Descrizione</option>
-              <option value="prezzo">ðŸ’° Prezzo</option>
-              <option value="risposta">ðŸ’¬ Risposta</option>
-              <option value="seo">ðŸ” SEO</option>
-              <option value="spedizione">ðŸ“¦ Spedizione</option>
+              <option value="personale">⭐ Personale</option>
+              <option value="descrizione">📝 Descrizione</option>
+              <option value="prezzo">💰 Prezzo</option>
+              <option value="risposta">💬 Risposta</option>
+              <option value="seo">🔍 SEO</option>
+              <option value="spedizione">📦 Spedizione</option>
             </select>
           </div>
         </div>
         <div class="add-field">
-          <label class="add-lbl">Breve descrizione <span style="text-transform:none;letter-spacing:0;font-weight:400">(opzionale â€” mostrata come anteprima)</span></label>
-          <input type="text" class="add-inp" id="newPreview" placeholder="Es. Genera un annuncio ottimizzato perâ€¦" maxlength="140"/>
+          <label class="add-lbl">Breve descrizione <span style="text-transform:none;letter-spacing:0;font-weight:400">(opzionale — mostrata come anteprima)</span></label>
+          <input type="text" class="add-inp" id="newPreview" placeholder="Es. Genera un annuncio ottimizzato per…" maxlength="140"/>
         </div>
         <div class="add-field">
           <label class="add-lbl">Testo del prompt</label>
-          <textarea class="add-ta" id="newBody" placeholder="Incolla o scrivi qui il tuo prompt completoâ€¦" rows="9"></textarea>
+          <textarea class="add-ta" id="newBody" placeholder="Incolla o scrivi qui il tuo prompt completo…" rows="9"></textarea>
         </div>
         <div class="add-footer">
           <span class="add-err" id="addError"></span>
           <div style="display:flex;gap:.55rem">
             <button class="add-cancel" onclick="toggleAddForm()">Annulla</button>
-            <button class="add-save" onclick="savePersonalPrompt()">ðŸ’¾ Salva</button>
+            <button class="add-save" onclick="savePersonalPrompt()">💾 Salva</button>
           </div>
         </div>
       </div>
@@ -680,7 +682,7 @@ Etichetta, fragile?, istruzioni per il corriere</div>
 </main>
 
 <footer>
-  ListAI â€” Powered by <a href="https://openrouter.ai" target="_blank">OpenRouter</a>
+  ListAI — Powered by <a href="https://openrouter.ai" target="_blank">OpenRouter</a>
   &middot; <a href="index.html">Crea Annuncio</a>
   &middot; <a href="guide.html">Guida API</a>
 </footer>
@@ -742,21 +744,21 @@ Etichetta, fragile?, istruzioni per il corriere</div>
     var wrap = btn.closest('.prompt-card').querySelector('.prompt-body-wrap');
     var opening = wrap.hidden;
     wrap.hidden = !opening;
-    btn.textContent = opening ? 'â†‘ Nascondi prompt' : 'â†“ Mostra prompt';
+    btn.textContent = opening ? '↑ Nascondi prompt' : '↓ Mostra prompt';
   }
 
   function cpPrompt(btn) {
     var card = btn.closest('.prompt-card');
     var text = card.querySelector('.prompt-body').textContent.trim();
     navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = 'âœ“ copiato'; btn.classList.add('ok');
+      btn.textContent = '✓ copiato'; btn.classList.add('ok');
       setTimeout(function() { btn.textContent = 'copia'; btn.classList.remove('ok'); }, 2200);
     }).catch(function() {
       var ta = document.createElement('textarea');
       ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
       document.body.appendChild(ta); ta.select();
       document.execCommand('copy'); document.body.removeChild(ta);
-      btn.textContent = 'âœ“ copiato'; btn.classList.add('ok');
+      btn.textContent = '✓ copiato'; btn.classList.add('ok');
       setTimeout(function() { btn.textContent = 'copia'; btn.classList.remove('ok'); }, 2200);
     });
   }
@@ -766,7 +768,7 @@ Etichetta, fragile?, istruzioni per il corriere</div>
     var btn = document.getElementById('addToggleBtn');
     var opening = form.hidden;
     form.hidden = !opening;
-    btn.textContent = opening ? 'âœ• Chiudi' : '+ Aggiungi prompt';
+    btn.textContent = opening ? '✕ Chiudi' : '+ Aggiungi prompt';
     btn.classList.toggle('is-open', opening);
     document.getElementById('addError').textContent = '';
   }
@@ -776,9 +778,9 @@ Etichetta, fragile?, istruzioni per il corriere</div>
   function savePrompts(arr) { try { localStorage.setItem(LS_KEY, JSON.stringify(arr)); } catch(e) {} }
 
   var CAT_LABELS = {
-    personale: 'â­ Personale', descrizione: 'ðŸ“ Descrizione',
-    prezzo: 'ðŸ’° Prezzo', risposta: 'ðŸ’¬ Risposta',
-    seo: 'ðŸ” SEO', spedizione: 'ðŸ“¦ Spedizione'
+    personale: '⭐ Personale', descrizione: '📝 Descrizione',
+    prezzo: '💰 Prezzo', risposta: '💬 Risposta',
+    seo: '🔍 SEO', spedizione: '📦 Spedizione'
   };
 
   function esc(s) {
@@ -797,7 +799,7 @@ Etichetta, fragile?, istruzioni per il corriere</div>
       card.dataset.cat = cat;
       card.innerHTML =
         '<div class="pcard-top">' +
-          '<span class="prompt-tag">' + esc(CAT_LABELS[cat] || 'â­ Personale') + '</span>' +
+          '<span class="prompt-tag">' + esc(CAT_LABELS[cat] || '⭐ Personale') + '</span>' +
           '<div class="prompt-title">' + esc(p.title) + '</div>' +
           (p.preview ? '<p class="prompt-preview">' + esc(p.preview) + '</p>' : '') +
         '</div>' +
@@ -805,16 +807,16 @@ Etichetta, fragile?, istruzioni per il corriere</div>
           '<div class="prompt-body">' + esc(p.body) + '</div>' +
         '</div>' +
         '<div class="pcard-foot">' +
-          '<button class="prompt-toggle" onclick="toggleBody(this)">â†“ Mostra prompt</button>' +
+          '<button class="prompt-toggle" onclick="toggleBody(this)">↓ Mostra prompt</button>' +
           '<div class="personal-foot-right">' +
-            '<button class="prompt-delete" onclick="deletePrompt(' + idx + ')">ðŸ—‘ Rimuovi</button>' +
+            '<button class="prompt-delete" onclick="deletePrompt(' + idx + ')">🗑 Rimuovi</button>' +
             '<button class="prompt-copy" onclick="cpPrompt(this)">copia</button>' +
           '</div>' +
         '</div>';
       container.appendChild(card);
     });
     var fb = document.getElementById('filterPersonale');
-    fb.textContent = prompts.length ? 'â­ Miei Prompt (' + prompts.length + ')' : 'â­ Miei Prompt';
+    fb.textContent = prompts.length ? '⭐ Miei Prompt (' + prompts.length + ')' : '⭐ Miei Prompt';
   }
 
   function savePersonalPrompt() {
@@ -823,8 +825,8 @@ Etichetta, fragile?, istruzioni per il corriere</div>
     var preview = document.getElementById('newPreview').value.trim();
     var body    = document.getElementById('newBody').value.trim();
     var err     = document.getElementById('addError');
-    if (!title) { err.textContent = 'âš  Inserisci un titolo per il prompt.'; return; }
-    if (!body)  { err.textContent = 'âš  Il testo del prompt non puÃ² essere vuoto.'; return; }
+    if (!title) { err.textContent = '⚠ Inserisci un titolo per il prompt.'; return; }
+    if (!body)  { err.textContent = '⚠ Il testo del prompt non può essere vuoto.'; return; }
     err.textContent = '';
     var prompts = loadPrompts();
     prompts.push({ title: title, cat: cat, preview: preview, body: body, createdAt: Date.now() });
@@ -836,7 +838,7 @@ Etichetta, fragile?, istruzioni per il corriere</div>
   }
 
   function deletePrompt(idx) {
-    if (!confirm('Rimuovere questo prompt personale?\nL\'operazione non Ã¨ reversibile.')) return;
+    if (!confirm('Rimuovere questo prompt personale?\nL\'operazione non è reversibile.')) return;
     var prompts = loadPrompts();
     prompts.splice(idx, 1);
     savePrompts(prompts);
@@ -855,4 +857,3 @@ Etichetta, fragile?, istruzioni per il corriere</div>
 </script>
 </body>
 </html>
-

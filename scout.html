@@ -1,16 +1,18 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <meta name="application-name" content="ListAI">
+  <meta name="apple-mobile-web-app-title" content="ListAI">
   <link rel="icon" href="icon.jpg">
   <link rel="apple-touch-icon" href="icon.jpg">
-  <title>ListAI â€” Scout Affari</title>
+  <title>ListAI — Scout Affari</title>
   <meta name="description" content="Analizza screenshot di Vinted e marketplace per trovare affari da rivendere con profitto."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css?v=3"/>
+  <link rel="stylesheet" href="style.css?v=4"/>
 </head>
 <body>
 
@@ -25,10 +27,10 @@
 <!-- Modal salvataggio chiave -->
 <div class="modal-o" id="saveModal">
   <div class="modal">
-    <h3>ðŸ’¾ Salvare la chiave API?</h3>
-    <p>Vuoi memorizzare la tua OpenRouter API Key per <strong>1 mese</strong>? VerrÃ  inserita automaticamente ad ogni visita. Resta solo nel tuo browser.</p>
+    <h3>💾 Salvare la chiave API?</h3>
+    <p>Vuoi memorizzare la tua OpenRouter API Key per <strong>1 mese</strong>? Verrà inserita automaticamente ad ogni visita. Resta solo nel tuo browser.</p>
     <div class="mbtns">
-      <button class="mbtn y" onclick="saveKey(true)">âœ… SÃ¬, salva</button>
+      <button class="mbtn y" onclick="saveKey(true)">✅ Sì, salva</button>
       <button class="mbtn n" onclick="saveKey(false)">No, grazie</button>
     </div>
   </div>
@@ -38,12 +40,12 @@
   <div class="hi">
     <a href="index.html" class="logo">List<span>AI</span></a>
     <nav class="nav">
-      <a href="index.html" id="nav-create">âœ¨ Crea Annuncio</a>
-      <a href="resell.html" id="nav-resell">ðŸ” Analisi Resell</a>
-      <a href="scout.html" class="active" id="nav-scout">ðŸŽ¯ Scout</a>
-      <a href="prompts.html" id="nav-prompts">ðŸ“š Prompt</a>
+      <a href="index.html" id="nav-create">✨ Crea Annuncio</a>
+      <a href="resell.html" id="nav-resell">🔍 Analisi Resell</a>
+      <a href="scout.html" class="active" id="nav-scout">🎯 Scout</a>
+      <a href="prompts.html" id="nav-prompts">📚 Prompt</a>
     </nav>
-    <button class="mobile-menu-btn" onclick="document.querySelector('.nav').classList.toggle('open')">â˜°</button>
+    <button class="mobile-menu-btn" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
     <span class="badge">OpenRouter</span>
   </div>
 </header>
@@ -70,7 +72,7 @@
     <div class="api-row" style="margin-bottom:.85rem">
       <span class="albl">API Key</span>
       <div class="aiw">
-        <input class="ainp" type="password" id="apiKey" placeholder="Incolla la tua OpenRouter API Keyâ€¦" autocomplete="off"/>
+        <input class="ainp" type="password" id="apiKey" placeholder="Incolla la tua OpenRouter API Key…" autocomplete="off"/>
         <button class="eye" onclick="toggleKey()">
           <svg id="eyeIcon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
@@ -79,8 +81,8 @@
       </div>
       <span class="ahint">
         Stessa chiave di <a href="index.html">Crea Annuncio</a>
-        &nbsp;Â·&nbsp;
-        <a href="guide.html">ðŸ“– Guida</a>
+        &nbsp;·&nbsp;
+        <a href="guide.html">📖 Guida</a>
       </span>
     </div>
 
@@ -88,25 +90,25 @@
       <span class="albl">Modello</span>
       <div style="flex:1;min-width:190px;display:flex;flex-direction:column;gap:.38rem">
         <select class="msel" id="modelSelect" onchange="onModelChange()">
-          <optgroup label="â­ Migliore qualitÃ /prezzo">
-            <option value="google/gemini-3.1-flash-lite" selected>Gemini 3.1 Flash Lite â€” ~â‚¬0.0004/analisi ðŸ”¥</option>
+          <optgroup label="⭐ Migliore qualità/prezzo">
+            <option value="google/gemini-3.1-flash-lite" selected>Gemini 3.1 Flash Lite — ~€0.0004/analisi 🔥</option>
           </optgroup>
-          <optgroup label="âœ¨ Gemini">
-            <option value="google/gemini-2.5-flash">Gemini 2.5 Flash â€” ~â‚¬0.001/analisi â­</option>
-            <option value="google/gemini-3-flash-preview">Gemini 3 Flash â€” ~â‚¬0.001/analisi</option>
-            <option value="google/gemini-3.1-pro-preview">Gemini 3.1 Pro â€” ~â‚¬0.008/analisi</option>
-            <option value="google/gemini-2.5-pro">Gemini 2.5 Pro â€” ~â‚¬0.010/analisi</option>
+          <optgroup label="✨ Gemini">
+            <option value="google/gemini-2.5-flash">Gemini 2.5 Flash — ~€0.001/analisi ⭐</option>
+            <option value="google/gemini-3-flash-preview">Gemini 3 Flash — ~€0.001/analisi</option>
+            <option value="google/gemini-3.1-pro-preview">Gemini 3.1 Pro — ~€0.008/analisi</option>
+            <option value="google/gemini-2.5-pro">Gemini 2.5 Pro — ~€0.010/analisi</option>
           </optgroup>
-          <optgroup label="ðŸŒ Altri">
-            <option value="openai/gpt-4o-mini">GPT-4o Mini â€” ~â‚¬0.002/analisi</option>
+          <optgroup label="🌐 Altri">
+            <option value="openai/gpt-4o-mini">GPT-4o Mini — ~€0.002/analisi</option>
           </optgroup>
-          <optgroup label="ðŸ”§ Personalizzato">
-            <option value="custom">âœï¸ Inserisci il tuo modelloâ€¦</option>
+          <optgroup label="🔧 Personalizzato">
+            <option value="custom">✏️ Inserisci il tuo modello…</option>
           </optgroup>
         </select>
-        <input class="ainp-plain" type="text" id="customModel" placeholder="es. google/gemini-2.5-flashâ€¦" style="display:none" autocomplete="off"/>
+        <input class="ainp-plain" type="text" id="customModel" placeholder="es. google/gemini-2.5-flash…" style="display:none" autocomplete="off"/>
       </div>
-      <span class="ahint" style="color:var(--color-accent)">â†‘ Scegli il modello</span>
+      <span class="ahint" style="color:var(--color-accent)">↑ Scegli il modello</span>
     </div>
   </div>
 
@@ -124,7 +126,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M8 10l4-3 4 3" stroke-linecap="round"/></svg>
       </div>
       <div class="drop-t">Carica screenshot di prodotti in vendita</div>
-      <div class="drop-s">Screenshot da <strong>Vinted</strong>, eBay, Subito, Facebook Marketplaceâ€¦</div>
+      <div class="drop-s">Screenshot da <strong>Vinted</strong>, eBay, Subito, Facebook Marketplace…</div>
     </div>
     <div class="pgrid" id="thumbs"></div>
     <div class="pcnt" id="fileCnt"></div>
@@ -154,7 +156,7 @@
 </main>
 
 <footer>
-  ListAI â€” Powered by <a href="https://openrouter.ai" target="_blank">OpenRouter</a>
+  ListAI — Powered by <a href="https://openrouter.ai" target="_blank">OpenRouter</a>
   &middot; <a href="index.html">Crea Annuncio</a>
   &middot; <a href="resell.html">Analisi Resell</a>
 </footer>
@@ -244,9 +246,9 @@
 </style>
 
 <script>
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   SCOUT â€” Trova Affari nei Marketplace
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ════════════════════════════════
+   SCOUT — Trova Affari nei Marketplace
+   ════════════════════════════════ */
 
 /* Active nav */
 (function() {
@@ -327,7 +329,7 @@ function renderThumbs() {
   files.forEach(function(f, i) {
     var d = document.createElement('div'); d.className = 'pi';
     var img = document.createElement('img'); img.src = URL.createObjectURL(f); d.appendChild(img);
-    var btn = document.createElement('button'); btn.className = 'pr'; btn.textContent = 'âœ•';
+    var btn = document.createElement('button'); btn.className = 'pr'; btn.textContent = '✕';
     btn.onclick = function() { files.splice(i, 1); renderThumbs(); }; d.appendChild(btn);
     g.appendChild(d);
   });
@@ -359,9 +361,9 @@ function escHtml(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ════════════════════════════════
    ANALYZE SCOUT
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   ════════════════════════════════ */
 async function analyzeScout() {
   var apiKey = document.getElementById('apiKey').value.trim();
   var model = getModel();
@@ -371,7 +373,7 @@ async function analyzeScout() {
 
   var btn = document.getElementById('go');
   btn.disabled = true;
-  btn.innerHTML = '<span class="sp"></span> Analisi in corsoâ€¦';
+  btn.innerHTML = '<span class="sp"></span> Analisi in corso…';
   document.getElementById('results-scout').style.display = 'none';
 
   var savedKey = (function() { try { return localStorage.getItem('lai_k'); } catch (_) { return null; } })();
@@ -387,40 +389,40 @@ async function analyzeScout() {
 
     var scoutPrompt =
       'Sei SCOUTAI, un analista esperto di affari nei marketplace second-hand (Vinted, eBay, Subito, Facebook Marketplace, Depop). ' +
-      'Il tuo compito Ã¨ analizzare screenshot di marketplace e identificare QUALI prodotti vale la pena comprare per rivenderli con profitto.\n\n' +
+      'Il tuo compito è analizzare screenshot di marketplace e identificare QUALI prodotti vale la pena comprare per rivenderli con profitto.\n\n' +
 
       'DATA: ' + dataStr + '\n\n' +
 
-      'â•â•â• ISTRUZIONI â•â•â•\n' +
+      '═══ ISTRUZIONI ═══\n' +
       'Analizza OGNI prodotto visibile negli screenshot. Per ciascuno:\n' +
       '1. Identifica il prodotto (brand, modello, tipo, condizione stimata)\n' +
       '2. Leggi il prezzo richiesto dallo screenshot\n' +
       '3. Stima il valore reale di rivendita su Vinted/eBay\n' +
-      '4. Calcola il profitto potenziale NETTO (dopo commissioni Vinted 5%+â‚¬0.70 acquirente)\n' +
-      '5. Valuta la difficoltÃ  di rivendita\n' +
+      '4. Calcola il profitto potenziale NETTO (dopo commissioni Vinted 5%+€0.70 acquirente)\n' +
+      '5. Valuta la difficoltà di rivendita\n' +
       '6. Dai un verdetto: COMPRARE / VALUTARE / EVITARE\n\n' +
 
       'REGOLE:\n' +
       '- Sii REALISTICO: non gonfiare i prezzi di rivendita\n' +
       '- Considera le commissioni piattaforma nel calcolo del profitto\n' +
-      '- Se un prodotto Ã¨ troppo consumato, dillo chiaramente\n' +
-      '- Considera la domanda reale: un prodotto di nicchia Ã¨ piÃ¹ difficile da vendere\n' +
+      '- Se un prodotto è troppo consumato, dillo chiaramente\n' +
+      '- Considera la domanda reale: un prodotto di nicchia è più difficile da vendere\n' +
       '- Se non riesci a leggere il prezzo, stimalo dal contesto\n' +
-      '- Considera i costi di spedizione (~â‚¬3-5 per articoli piccoli)\n\n' +
+      '- Considera i costi di spedizione (~€3-5 per articoli piccoli)\n\n' +
 
-      'â•â•â• OUTPUT: SOLO JSON VALIDO â•â•â•\n' +
+      '═══ OUTPUT: SOLO JSON VALIDO ═══\n' +
       'Zero markdown. Zero testo fuori dal JSON.\n' +
       '{\n' +
       '  "prodotti": [\n' +
       '    {\n' +
-      '      "nome": "Brand Modello â€” descrizione breve",\n' +
-      '      "prezzo_richiesto": "â‚¬X",\n' +
-      '      "prezzo_rivendita_stimato": "â‚¬X-Y",\n' +
-      '      "profitto_netto_stimato": "â‚¬X (dopo commissioni e spedizione)",\n' +
+      '      "nome": "Brand Modello — descrizione breve",\n' +
+      '      "prezzo_richiesto": "€X",\n' +
+      '      "prezzo_rivendita_stimato": "€X-Y",\n' +
+      '      "profitto_netto_stimato": "€X (dopo commissioni e spedizione)",\n' +
       '      "margine_percentuale": "X%",\n' +
       '      "difficolta_rivendita": "facile / media / difficile",\n' +
       '      "verdetto": "COMPRARE / VALUTARE / EVITARE",\n' +
-      '      "motivazione": "2-3 frasi concrete sul perchÃ© comprare o evitare",\n' +
+      '      "motivazione": "2-3 frasi concrete sul perché comprare o evitare",\n' +
       '      "strategia": "as-is / pulizia / riparazione / aspetta stagione X"\n' +
       '    }\n' +
       '  ],\n' +
@@ -429,8 +431,8 @@ async function analyzeScout() {
       '    "da_comprare": 0,\n' +
       '    "da_valutare": 0,\n' +
       '    "da_evitare": 0,\n' +
-      '    "investimento_totale_consigliato": "â‚¬X",\n' +
-      '    "profitto_totale_stimato": "â‚¬X"\n' +
+      '    "investimento_totale_consigliato": "€X",\n' +
+      '    "profitto_totale_stimato": "€X"\n' +
       '  }\n' +
       '}';
 
@@ -447,7 +449,7 @@ async function analyzeScout() {
         var r = await fetch(url, opts);
         if ((r.status === 429 || r.status === 503) && i < n) {
           var w = i * 10;
-          btn.innerHTML = '<span class="sp"></span> Occupato, riprovo tra ' + w + 'sâ€¦';
+          btn.innerHTML = '<span class="sp"></span> Occupato, riprovo tra ' + w + 's…';
           await new Promise(function(res) { setTimeout(res, w * 1000); });
           continue;
         }
@@ -484,7 +486,7 @@ async function analyzeScout() {
 
     renderScoutResults(parsed);
     if (apiKey !== savedKey) promptSave(apiKey);
-    showToast('âœ… Analisi Scout completata!');
+    showToast('✅ Analisi Scout completata!');
 
   } catch (e) {
     showErr(e.message || 'Errore imprevisto.');
@@ -494,9 +496,9 @@ async function analyzeScout() {
   }
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ════════════════════════════════
    RENDER SCOUT RESULTS
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   ════════════════════════════════ */
 function renderScoutResults(d) {
   var prodotti = d.prodotti || [];
   var riepilogo = d.riepilogo || {};
@@ -505,7 +507,7 @@ function renderScoutResults(d) {
   var summaryEl = document.getElementById('scoutSummary');
   summaryEl.innerHTML =
     '<span class="scout-summary-badge">' +
-    'ðŸŽ¯ ' + (riepilogo.da_comprare || 0) + ' affari su ' + (riepilogo.totale_prodotti || prodotti.length) + ' prodotti' +
+    '🎯 ' + (riepilogo.da_comprare || 0) + ' affari su ' + (riepilogo.totale_prodotti || prodotti.length) + ' prodotti' +
     '</span>';
 
   // Sort: COMPRARE first, then VALUTARE, then EVITARE
@@ -522,12 +524,12 @@ function renderScoutResults(d) {
     var verdetto = (p.verdetto || 'EVITARE').toUpperCase();
     var cardClass = verdetto === 'COMPRARE' ? 'buy' : (verdetto === 'VALUTARE' ? 'maybe' : 'skip');
     var verdictClass = verdetto === 'COMPRARE' ? 'verdict-buy' : (verdetto === 'VALUTARE' ? 'verdict-maybe' : 'verdict-skip');
-    var verdictIcon = verdetto === 'COMPRARE' ? 'âœ…' : (verdetto === 'VALUTARE' ? 'ðŸ¤”' : 'âŒ');
+    var verdictIcon = verdetto === 'COMPRARE' ? '✅' : (verdetto === 'VALUTARE' ? '🤔' : '❌');
 
     var diff = (p.difficolta_rivendita || 'media').toLowerCase();
     var diffClass = diff === 'facile' ? 'diff-facile' : (diff === 'difficile' ? 'diff-difficile' : 'diff-media');
 
-    var profitValue = p.profitto_netto_stimato || 'â€”';
+    var profitValue = p.profitto_netto_stimato || '—';
     var profitNum = parseFloat(String(profitValue).replace(/[^0-9.\-]/g, ''));
     var profitClass = profitNum > 0 ? 'profit' : (profitNum < 0 ? 'loss' : '');
 
@@ -542,24 +544,24 @@ function renderScoutResults(d) {
       '</div>' +
       '<div class="scout-grid">' +
         '<div class="scout-stat">' +
-          '<div class="scout-stat-label">ðŸ’° Prezzo richiesto</div>' +
-          '<div class="scout-stat-value">' + escHtml(p.prezzo_richiesto || 'â€”') + '</div>' +
+          '<div class="scout-stat-label">💰 Prezzo richiesto</div>' +
+          '<div class="scout-stat-value">' + escHtml(p.prezzo_richiesto || '—') + '</div>' +
         '</div>' +
         '<div class="scout-stat">' +
-          '<div class="scout-stat-label">ðŸ“ˆ Rivendita stimata</div>' +
-          '<div class="scout-stat-value">' + escHtml(p.prezzo_rivendita_stimato || 'â€”') + '</div>' +
+          '<div class="scout-stat-label">📈 Rivendita stimata</div>' +
+          '<div class="scout-stat-value">' + escHtml(p.prezzo_rivendita_stimato || '—') + '</div>' +
         '</div>' +
         '<div class="scout-stat">' +
-          '<div class="scout-stat-label">ðŸ’µ Profitto netto</div>' +
+          '<div class="scout-stat-label">💵 Profitto netto</div>' +
           '<div class="scout-stat-value ' + profitClass + '">' + escHtml(profitValue) + '</div>' +
         '</div>' +
         '<div class="scout-stat">' +
-          '<div class="scout-stat-label">ðŸ“Š Margine</div>' +
-          '<div class="scout-stat-value ' + profitClass + '">' + escHtml(p.margine_percentuale || 'â€”') + '</div>' +
+          '<div class="scout-stat-label">📊 Margine</div>' +
+          '<div class="scout-stat-value ' + profitClass + '">' + escHtml(p.margine_percentuale || '—') + '</div>' +
         '</div>' +
       '</div>' +
       '<div class="scout-reason">' + escHtml(p.motivazione || '') + '</div>' +
-      (p.strategia ? '<div class="scout-strategy">ðŸŽ¯ Strategia: ' + escHtml(p.strategia) + '</div>' : '');
+      (p.strategia ? '<div class="scout-strategy">🎯 Strategia: ' + escHtml(p.strategia) + '</div>' : '');
 
     cardsEl.appendChild(card);
   });
@@ -571,24 +573,24 @@ function renderScoutResults(d) {
     footer.style.animationDelay = (prodotti.length * 80) + 'ms';
     footer.innerHTML =
       '<div class="scout-header">' +
-        '<span class="scout-verdict verdict-buy">ðŸ“Š RIEPILOGO</span>' +
+        '<span class="scout-verdict verdict-buy">📊 RIEPILOGO</span>' +
         '<span class="scout-product-name">Investimento totale consigliato</span>' +
       '</div>' +
       '<div class="scout-grid">' +
         '<div class="scout-stat">' +
-          '<div class="scout-stat-label">ðŸ’° Da investire</div>' +
-          '<div class="scout-stat-value">' + escHtml(riepilogo.investimento_totale_consigliato || 'â€”') + '</div>' +
+          '<div class="scout-stat-label">💰 Da investire</div>' +
+          '<div class="scout-stat-value">' + escHtml(riepilogo.investimento_totale_consigliato || '—') + '</div>' +
         '</div>' +
         '<div class="scout-stat">' +
-          '<div class="scout-stat-label">ðŸ’µ Profitto stimato</div>' +
-          '<div class="scout-stat-value profit">' + escHtml(riepilogo.profitto_totale_stimato || 'â€”') + '</div>' +
+          '<div class="scout-stat-label">💵 Profitto stimato</div>' +
+          '<div class="scout-stat-value profit">' + escHtml(riepilogo.profitto_totale_stimato || '—') + '</div>' +
         '</div>' +
         '<div class="scout-stat">' +
-          '<div class="scout-stat-label">âœ… Da comprare</div>' +
+          '<div class="scout-stat-label">✅ Da comprare</div>' +
           '<div class="scout-stat-value">' + (riepilogo.da_comprare || 0) + '</div>' +
         '</div>' +
         '<div class="scout-stat">' +
-          '<div class="scout-stat-label">âŒ Da evitare</div>' +
+          '<div class="scout-stat-label">❌ Da evitare</div>' +
           '<div class="scout-stat-value">' + (riepilogo.da_evitare || 0) + '</div>' +
         '</div>' +
       '</div>';
@@ -603,4 +605,3 @@ function renderScoutResults(d) {
 
 </body>
 </html>
-

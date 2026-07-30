@@ -320,6 +320,12 @@ async function researchMarketPrices(apiKey, brand, categoria, condizione, taglia
 
 /* ── System Prompt Builder (identità + regole + few-shot) ── */
 function buildSystemPrompt(isCloth) {
+  var fsEl = document.getElementById('fastShipping');
+  var hasFastShipping = fsEl ? fsEl.checked : true;
+  var ctaRule = hasFastShipping ? 'spedizione in 24h, sconto multipli' : 'spedizione rapida (NON menzionare 24h), sconto multipli';
+  var ctaIt = hasFastShipping ? 'Spedisco in 24h 📦' : 'Spedizione rapida 📦';
+  var ctaEn = hasFastShipping ? 'Ships within 24h 📦' : 'Fast shipping 📦';
+
   return 'Sei LISTAI, generatore di annunci Vinted Italia. Obiettivo: annuncio venduto entro 7 giorni al miglior prezzo.\n\n' +
     'REGOLE ASSOLUTE:\n' +
     '1. Output: SOLO JSON valido. Zero testo/markdown fuori dal JSON.\n' +
@@ -350,7 +356,7 @@ function buildSystemPrompt(isCloth) {
     'Riga 2: Identificazione capo + punto forza principale\n' +
     'Riga 3-4: Materiale esatto, colore preciso, fit/vestibilità\n' +
     'Riga 5: Condizione reale + difetti se presenti (onestà)\n' +
-    'Riga 6: CTA naturale (spedizione rapida, sconto multipli)\n' +
+    'Riga 6: CTA naturale (' + ctaRule + ')\n' +
     'NO "Vendo"/"Cedo". NO hashtag nella descrizione.\n\n' +
 
     (isCloth
@@ -359,25 +365,25 @@ function buildSystemPrompt(isCloth) {
         'Blazer oversize Zara in misto lana bouclé, colore écru/panna.\n' +
         'Spalle scese, vestibilità comoda TG M. Fodera interna viscosa, chiusura bottone singolo dorato.\n' +
         'Condizione eccellente: indossato 2 volte, nessun difetto visibile.\n' +
-        'Spedisco in 24h 📦 Sconto per acquisti multipli!"\n\n' +
+        ctaIt + ' Sconto per acquisti multipli!"\n\n' +
         'ESEMPIO CORRETTO (EN, ~380 char):\n' +
         '"🤝 Price negotiable!\n' +
         'Zara oversized bouclé wool-blend blazer, ecru/cream.\n' +
         'Dropped shoulders, relaxed fit size M. Viscose lining, single gold button closure.\n' +
         'Excellent condition: worn twice, zero visible flaws.\n' +
-        'Ships within 24h 📦 Bundle discount available!"\n\n'
+        ctaEn + ' Bundle discount available!"\n\n'
       : 'ESEMPIO CORRETTO ELETTRONICA (IT, ~390 char — usa la STRUTTURA, non il contenuto):\n' +
         '"🤝 Prezzo trattabile!\n' +
         'Sony WH-1000XM4 cuffie wireless noise-cancelling, nero opaco.\n' +
         '30h batteria, Bluetooth 5.0 multipoint, comandi touch. Custodia rigida inclusa.\n' +
         'Ottime condizioni: leggera usura archetto, ANC perfettamente funzionante.\n' +
-        'Spedisco in 24h 📦 Sconto per acquisti multipli!"\n\n' +
+        ctaIt + ' Sconto per acquisti multipli!"\n\n' +
         'ESEMPIO CORRETTO (EN, ~380 char):\n' +
         '"🤝 Price negotiable!\n' +
         'Sony WH-1000XM4 wireless noise-cancelling headphones, matte black.\n' +
         '30h battery, Bluetooth 5.0 multipoint, touch controls. Hard case included.\n' +
         'Excellent condition: minimal headband wear, fully functional ANC.\n' +
-        'Fast shipping 📦 Bundle discount available!"\n\n') +
+        ctaEn + ' Bundle discount available!"\n\n') +
 
     'HASHTAG (campo "ht"): esattamente 7 separati da spazio.\n' +
     '#1_Brand_IT · #2_TipoProdotto_IT · #3_Keyword_EN · #4_Colore_IT · #5_Trend/Stile · #6_Taglia · #7_CategoriaAmpia_IT\n' +
